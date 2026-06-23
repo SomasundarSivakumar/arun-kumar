@@ -5,6 +5,21 @@
   --font-sans: 'Montserrat', sans-serif;
   --font-serif: 'Syne', sans-serif;
   --font-inter: 'Inter', sans-serif;
+
+  --color-bg-deep: #03050a;
+  --color-bg-deep-rgb: 3, 5, 10;
+  --color-bg-base: #060913;
+  --color-bg-base-rgb: 6, 9, 19;
+  --color-bg-surface: #0a0e1c;
+  --color-bg-surface-rgb: 10, 14, 28;
+  --color-bg-hover: #12182c;
+  --color-bg-hover-rgb: 18, 24, 44;
+  --color-primary: #60a5fa;
+  --color-primary-rgb: 96, 165, 250;
+  --color-accent: #3b82f6;
+  --color-accent-rgb: 59, 130, 246;
+  --color-dark-accent: #1d4ed8;
+  --color-dark-accent-rgb: 29, 78, 216;
 }
 
 /* Custom Scrollbar */
@@ -13,23 +28,23 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #0d0d11;
+  background: var(--color-bg-deep);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1f1f2e;
+  background: var(--color-bg-surface);
   border-radius: 5px;
-  border: 2px solid #0d0d11;
+  border: 2px solid var(--color-bg-deep);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #3b3b4f;
+  background: var(--color-bg-hover);
 }
 
 /* Base resets & layout settings */
 html,
 body {
-  background-color: #0b0b0f;
+  background-color: var(--color-bg-base);
   color: #f3f4f6;
   overflow-x: hidden;
   font-family: var(--font-sans);
@@ -59,7 +74,7 @@ html.lenis body {
 
 /* Custom visual styling helpers */
 .glassmorphism {
-  background: rgba(17, 17, 27, 0.65);
+  background: rgba(var(--color-bg-surface-rgb), 0.65);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.05);
@@ -84,7 +99,7 @@ html.lenis body {
   content: "";
   position: absolute;
   inset: 0;
-  background-image: linear-gradient(to bottom, transparent 60%, #0b0b0f 100%), url('/assets/images/hero.jpg');
+  background-image: linear-gradient(to bottom, transparent 60%, var(--color-bg-base) 100%), url('/assets/images/hero.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -179,12 +194,12 @@ html.lenis body {
   0%,
   100% {
     opacity: 0.35;
-    filter: drop-shadow(0 0 0.25rem rgba(232, 192, 96, 0.2));
+    filter: drop-shadow(0 0 0.25rem rgba(var(--color-accent-rgb), 0.2));
   }
 
   50% {
     opacity: 0.85;
-    filter: drop-shadow(0 0 1rem rgba(232, 192, 96, 0.5));
+    filter: drop-shadow(0 0 1rem rgba(var(--color-accent-rgb), 0.5));
   }
 }
 
@@ -236,13 +251,13 @@ html.lenis body {
   100% {
     transform: scale(1);
     opacity: 0.7;
-    filter: drop-shadow(0 0 0.3125rem rgba(232, 192, 96, 0.4));
+    filter: drop-shadow(0 0 0.3125rem rgba(var(--color-accent-rgb), 0.4));
   }
 
   50% {
     transform: scale(1.15);
     opacity: 1;
-    filter: drop-shadow(0 0 1.25rem rgba(232, 192, 96, 0.8));
+    filter: drop-shadow(0 0 1.25rem rgba(var(--color-accent-rgb), 0.8));
   }
 }
 
@@ -308,7 +323,7 @@ html.lenis body {
 /* Services Section Styles */
 .service-card {
   position: relative;
-  background: rgba(17, 17, 27, 0.45);
+  background: rgba(var(--color-bg-surface-rgb), 0.45);
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 1.5rem;
   padding: 2.25rem 2rem;
@@ -322,9 +337,9 @@ html.lenis body {
 
 .service-card:hover {
   transform: translateY(-0.5rem) scale(1.02);
-  border-color: rgba(232, 192, 96, 0.3);
+  border-color: rgba(var(--color-accent-rgb), 0.3);
   box-shadow: 0 1.25rem 3.125rem rgba(0, 0, 0, 0.6),
-    0 0 1.5rem rgba(172, 122, 0, 0.15);
+    0 0 1.5rem rgba(var(--color-dark-accent-rgb), 0.15);
 }
 
 .service-card::before {
@@ -334,7 +349,7 @@ html.lenis body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle at top right, rgba(232, 192, 96, 0.08) 0%, transparent 60%);
+  background: radial-gradient(circle at top right, rgba(var(--color-accent-rgb), 0.08) 0%, transparent 60%);
   opacity: 0;
   transition: opacity 0.5s ease;
   pointer-events: none;
@@ -356,9 +371,9 @@ html.lenis body {
   left: 0;
   width: 0;
   height: 2px;
-  background: #e8c060;
+  background: var(--color-accent);
   transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 0 8px rgba(232, 192, 96, 0.5);
+  box-shadow: 0 0 8px rgba(var(--color-accent-rgb), 0.5);
 }
 
 .client-nav-item:hover .nav-line,
@@ -372,7 +387,7 @@ html.lenis body {
 }
 
 .client-nav-item.active-item span:first-of-type {
-  color: #e8c060;
+  color: var(--color-accent);
 }
 
 .showcase-panel {
@@ -415,13 +430,13 @@ html.lenis body {
   100% {
     r: 3.5px;
     fill-opacity: 1;
-    filter: drop-shadow(0 0 2px rgba(255, 215, 0, 0.6));
+    filter: drop-shadow(0 0 2px rgba(var(--color-primary-rgb), 0.6));
   }
 
   50% {
     r: 5px;
     fill-opacity: 0.8;
-    filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.9));
+    filter: drop-shadow(0 0 6px rgba(var(--color-primary-rgb), 0.9));
   }
 }
 
@@ -453,9 +468,9 @@ html.lenis body {
 .impact-swiper .swiper-slide-active {
   filter: blur(0px);
   opacity: 1;
-  border-color: rgba(232, 192, 96, 0.45) !important;
+  border-color: rgba(var(--color-accent-rgb), 0.45) !important;
   box-shadow: 0 1.25rem 3.125rem rgba(0, 0, 0, 0.6),
-    0 0 2rem rgba(172, 122, 0, 0.2) !important;
+    0 0 2rem rgba(var(--color-dark-accent-rgb), 0.2) !important;
 }
 
 /* Pagination bullets styling - active gold and expanded, relative rem units */
@@ -469,9 +484,9 @@ html.lenis body {
 }
 
 .impact-swiper .swiper-pagination-bullet-active {
-  background: #e8c060 !important;
+  background: var(--color-accent) !important;
   width: 2rem !important;
-  box-shadow: 0 0 0.5rem rgba(232, 192, 96, 0.5) !important;
+  box-shadow: 0 0 0.5rem rgba(var(--color-accent-rgb), 0.5) !important;
 }
 
 /* Navigation Arrows styling override */
@@ -522,14 +537,14 @@ html.lenis body {
 
 /* Active card glow on hover */
 .exp-card:hover {
-  box-shadow: 0 0 30px rgba(172, 122, 0, 0.08),
+  box-shadow: 0 0 30px rgba(var(--color-dark-accent-rgb), 0.08),
     0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
 /* Timeline line glow */
 .exp-line-fill {
   will-change: height;
-  box-shadow: 0 0 8px rgba(232, 192, 96, 0.3);
+  box-shadow: 0 0 8px rgba(var(--color-accent-rgb), 0.3);
 }
 
 /* Dot active pulse animation */
@@ -537,11 +552,11 @@ html.lenis body {
 
   0%,
   100% {
-    box-shadow: 0 0 0 0 rgba(232, 192, 96, 0.4);
+    box-shadow: 0 0 0 0 rgba(var(--color-accent-rgb), 0.4);
   }
 
   50% {
-    box-shadow: 0 0 0 8px rgba(232, 192, 96, 0);
+    box-shadow: 0 0 0 8px rgba(var(--color-accent-rgb), 0);
   }
 }
 
@@ -556,9 +571,9 @@ html.lenis body {
 
 .exp-card:hover .w-10 {
   transform: translateY(-0.125rem) scale(1.1);
-  border-color: rgba(232, 192, 96, 0.6) !important;
-  background-color: rgba(172, 122, 0, 0.2) !important;
-  box-shadow: 0 0 0.9375rem rgba(232, 192, 96, 0.3);
+  border-color: rgba(var(--color-accent-rgb), 0.6) !important;
+  background-color: rgba(var(--color-dark-accent-rgb), 0.2) !important;
+  box-shadow: 0 0 0.9375rem rgba(var(--color-accent-rgb), 0.3);
 }
 
 /* 3D Floating Animation for Data Strategy Icon */
@@ -582,7 +597,7 @@ html.lenis body {
 /* Premium Strategy & Governance Cards */
 .premium-card {
   position: relative;
-  background: linear-gradient(135deg, rgba(15, 15, 22, 0.75) 0%, rgba(7, 7, 10, 0.85) 100%);
+  background: linear-gradient(135deg, rgba(var(--color-bg-surface-rgb), 0.75) 0%, rgba(var(--color-bg-base-rgb), 0.85) 100%);
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 1.25rem;
   padding: 2rem 1.5rem;
@@ -603,7 +618,7 @@ html.lenis body {
   inset: 0;
   border-radius: 1.25rem;
   padding: 1px;
-  background: linear-gradient(135deg, rgba(232, 192, 96, 0.2), transparent 40%, rgba(232, 192, 96, 0.05));
+  background: linear-gradient(135deg, rgba(var(--color-accent-rgb), 0.2), transparent 40%, rgba(var(--color-accent-rgb), 0.05));
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
@@ -613,15 +628,15 @@ html.lenis body {
 
 .premium-card:hover {
   transform: translateY(-8px) scale(1.02);
-  border-color: rgba(232, 192, 96, 0.3);
-  background: linear-gradient(135deg, rgba(25, 20, 15, 0.8) 0%, rgba(10, 7, 5, 0.9) 100%);
+  border-color: rgba(var(--color-accent-rgb), 0.3);
+  background: linear-gradient(135deg, rgba(var(--color-bg-hover-rgb), 0.8) 0%, rgba(var(--color-bg-base-rgb), 0.9) 100%);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.65),
-    0 0 30px rgba(172, 122, 0, 0.2),
-    inset 0 0 15px rgba(232, 192, 96, 0.05);
+    0 0 30px rgba(var(--color-dark-accent-rgb), 0.2),
+    inset 0 0 15px rgba(var(--color-accent-rgb), 0.05);
 }
 
 .premium-card:hover::before {
-  background: linear-gradient(135deg, rgba(232, 192, 96, 0.5), transparent 30%, rgba(232, 192, 96, 0.2));
+  background: linear-gradient(135deg, rgba(var(--color-accent-rgb), 0.5), transparent 30%, rgba(var(--color-accent-rgb), 0.2));
 }
 
 .premium-card .icon-wrapper {
@@ -630,22 +645,22 @@ html.lenis body {
   height: 6rem;
   margin-bottom: 1.5rem;
   border-radius: 1.25rem;
-  background: #000000;
-  border: 1px solid rgba(172, 122, 0, 0.15);
+  background: var(--color-bg-deep);
+  border: 1px solid rgba(var(--color-dark-accent-rgb), 0.15);
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: inset 0 0 10px rgba(172, 122, 0, 0.02);
+  box-shadow: inset 0 0 10px rgba(var(--color-dark-accent-rgb), 0.02);
   overflow: hidden;
 }
 
 .premium-card:hover .icon-wrapper {
   transform: scale(1.1);
-  background: #000000;
-  border-color: rgba(232, 192, 96, 0.45);
-  box-shadow: 0 0 20px rgba(172, 122, 0, 0.15),
-    inset 0 0 12px rgba(232, 192, 96, 0.1);
+  background: var(--color-bg-deep);
+  border-color: rgba(var(--color-accent-rgb), 0.45);
+  box-shadow: 0 0 20px rgba(var(--color-dark-accent-rgb), 0.15),
+    inset 0 0 12px rgba(var(--color-accent-rgb), 0.1);
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
@@ -654,15 +669,15 @@ html.lenis body {
 
 /* Active states for Desktop Sidebar Links */
 .nav-item.active .nav-icon-box {
-  border-color: rgba(172, 122, 0, 0.45) !important;
-  background-color: rgba(172, 122, 0, 0.15) !important;
-  color: #ffd700 !important;
+  border-color: rgba(var(--color-dark-accent-rgb), 0.45) !important;
+  background-color: rgba(var(--color-dark-accent-rgb), 0.15) !important;
+  color: var(--color-primary) !important;
   transform: scale(1.05);
-  box-shadow: 0 0 15px rgba(172, 122, 0, 0.15);
+  box-shadow: 0 0 15px rgba(var(--color-dark-accent-rgb), 0.15);
 }
 
 .nav-item.active span {
-  color: #ffd700 !important;
+  color: var(--color-primary) !important;
   opacity: 1 !important;
 }
 
@@ -684,7 +699,7 @@ html.lenis body {
 
 /* Mobile Nav Items Active State */
 .mobile-nav-item.active {
-  color: #ffd700 !important;
+  color: var(--color-primary) !important;
 }
 
 .mobile-nav-item::after {
@@ -694,7 +709,7 @@ html.lenis body {
   left: 2.5rem;
   width: 0;
   height: 2px;
-  background-color: #ffd700;
+  background-color: var(--color-primary);
   transition: width 0.3s ease;
 }
 
@@ -703,7 +718,7 @@ html.lenis body {
 }
 
 .mobile-nav-item.active svg {
-  color: #ffd700 !important;
+  color: var(--color-primary) !important;
 }
 
 /* Preloader Curtain Slide Reveal */

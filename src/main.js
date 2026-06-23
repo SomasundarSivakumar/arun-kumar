@@ -343,7 +343,7 @@ if (capabilitiesSection && timelineScrollLine) {
           if (currentHeight >= dotTop - 15) {
             activeIndex = index;
             dot.classList.remove('bg-[#121216]', 'border-white/10');
-            dot.classList.add('bg-[#ffd700]', 'border-[#ffd700]', 'shadow-[0_0_12px_#ffd700]');
+            dot.classList.add('bg-[#60a5fa]', 'border-[#60a5fa]', 'shadow-[0_0_12px_rgba(96,165,250,0.65)]');
             const innerDot = dot.querySelector('.inner-dot');
             if (innerDot) {
               innerDot.classList.remove('bg-white/20');
@@ -354,7 +354,7 @@ if (capabilitiesSection && timelineScrollLine) {
               timelineItems[index].classList.add('opacity-100', 'translate-x-0');
             }
           } else {
-            dot.classList.remove('bg-[#ffd700]', 'border-[#ffd700]', 'shadow-[0_0_12px_#ffd700]');
+            dot.classList.remove('bg-[#60a5fa]', 'border-[#60a5fa]', 'shadow-[0_0_12px_rgba(96,165,250,0.65)]');
             dot.classList.add('bg-[#121216]', 'border-white/10');
             const innerDot = dot.querySelector('.inner-dot');
             if (innerDot) {
