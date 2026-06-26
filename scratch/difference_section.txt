@@ -1,0 +1,177 @@
+<section id="the-difference" class="relative py-24 md:py-32 overflow-hidden w-full">
+      <!-- Background subtle glow -->
+      <div class="absolute top-1/4 right-1/4 w-[400px] h-[400px] rounded-full pointer-events-none z-0"
+        style="background: radial-gradient(circle, rgba(29, 78, 216,0.04) 0%, transparent 70%); filter: blur(80px);">
+      </div>
+
+      <div class="max-w-[90%] mx-auto px-6 md:px-12 relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+
+          <!-- Left Column: Header & Context -->
+          <div class="lg:col-span-5 difference-header flex flex-col gap-6">
+            <h2 class="text-xs md:text-sm font-semibold uppercase tracking-widest text-[#1d4ed8] font-inter">
+              THE DIFFERENCE
+            </h2>
+            <h3 class="text-3xl md:text-5xl font-serif font-extrabold tracking-tight text-white leading-tight">
+              Why Work With Me
+            </h3>
+            <p class="text-white/85 text-base md:text-lg leading-relaxed font-sans mt-2">
+              Many consultants focus on technology. <span class="text-[#3b82f6] font-semibold">I focus on business
+                outcomes.</span>
+            </p>
+            <p class="text-white/60 text-sm md:text-base leading-relaxed font-sans">
+              I bridge the gap between executive strategy, business operations, data platforms, and AI innovation —
+              delivering practical roadmaps that create measurable, lasting value.
+            </p>
+          </div>
+
+          <!-- Right Column: Staggered Value Cards -->
+          <div class="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            <!-- Card 1 -->
+            <div class="difference-item">
+              <div class="premium-card group w-full h-full">
+                <div class="flex items-start gap-4 w-full">
+                  <div
+                    class="flex-shrink-0 w-8 h-8 rounded-lg bg-[#1d4ed8]/10 border border-[#1d4ed8]/30 flex items-center justify-center text-[#3b82f6] group-hover:bg-[#1d4ed8]/20 group-hover:border-[#3b82f6]/50 transition-all duration-300">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                  </div>
+                  <div class="flex flex-col gap-2 text-left">
+                    <h4
+                      class="text-sm font-bold text-white font-sans tracking-wide transition-colors duration-300 group-hover:text-[#3b82f6]">
+                      Decision Quality & Speed
+                    </h4>
+                    <p class="text-xs text-white/50 leading-relaxed font-sans">
+                      Replace intuition with trusted, timely intelligence at every level of the organization.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="difference-item">
+              <div class="premium-card group w-full h-full">
+                <div class="flex items-start gap-4 w-full">
+                  <div
+                    class="flex-shrink-0 w-8 h-8 rounded-lg bg-[#1d4ed8]/10 border border-[#1d4ed8]/30 flex items-center justify-center text-[#3b82f6] group-hover:bg-[#1d4ed8]/20 group-hover:border-[#3b82f6]/50 transition-all duration-300">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                  </div>
+                  <div class="flex flex-col gap-2 text-left">
+                    <h4
+                      class="text-sm font-bold text-white font-sans tracking-wide transition-colors duration-300 group-hover:text-[#3b82f6]">
+                      Operational Efficiency
+                    </h4>
+                    <p class="text-xs text-white/50 leading-relaxed font-sans">
+                      Surface the data insights that drive process improvement, cost reduction, and performance gains.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="difference-item">
+              <div class="premium-card group w-full h-full">
+                <div class="flex items-start gap-4 w-full">
+                  <div
+                    class="flex-shrink-0 w-8 h-8 rounded-lg bg-[#1d4ed8]/10 border border-[#1d4ed8]/30 flex items-center justify-center text-[#3b82f6] group-hover:bg-[#1d4ed8]/20 group-hover:border-[#3b82f6]/50 transition-all duration-300">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                  </div>
+                  <div class="flex flex-col gap-2 text-left">
+                    <h4
+                      class="text-sm font-bold text-white font-sans tracking-wide transition-colors duration-300 group-hover:text-[#3b82f6]">
+                      AI Transformation
+                    </h4>
+                    <p class="text-xs text-white/50 leading-relaxed font-sans">
+                      Move from strategy to delivery with governance, prioritization, and programme leadership in place.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="difference-item">
+              <div class="premium-card group w-full h-full">
+                <div class="flex items-start gap-4 w-full">
+                  <div
+                    class="flex-shrink-0 w-8 h-8 rounded-lg bg-[#1d4ed8]/10 border border-[#1d4ed8]/30 flex items-center justify-center text-[#3b82f6] group-hover:bg-[#1d4ed8]/20 group-hover:border-[#3b82f6]/50 transition-all duration-300">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                  </div>
+                  <div class="flex flex-col gap-2 text-left">
+                    <h4
+                      class="text-sm font-bold text-white font-sans tracking-wide transition-colors duration-300 group-hover:text-[#3b82f6]">
+                      Data Foundations
+                    </h4>
+                    <p class="text-xs text-white/50 leading-relaxed font-sans">
+                      Build the quality, governance, and ownership structures that make data an organizational asset.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 5 -->
+            <div class="difference-item">
+              <div class="premium-card group w-full h-full">
+                <div class="flex items-start gap-4 w-full">
+                  <div
+                    class="flex-shrink-0 w-8 h-8 rounded-lg bg-[#1d4ed8]/10 border border-[#1d4ed8]/30 flex items-center justify-center text-[#3b82f6] group-hover:bg-[#1d4ed8]/20 group-hover:border-[#3b82f6]/50 transition-all duration-300">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                  </div>
+                  <div class="flex flex-col gap-2 text-left">
+                    <h4
+                      class="text-sm font-bold text-white font-sans tracking-wide transition-colors duration-300 group-hover:text-[#3b82f6]">
+                      Responsible AI Scale
+                    </h4>
+                    <p class="text-xs text-white/50 leading-relaxed font-sans">
+                      Design the frameworks, controls, and use-case roadmaps that turn AI potential into business value.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 6 -->
+            <div class="difference-item">
+              <div class="premium-card group w-full h-full">
+                <div class="flex items-start gap-4 w-full">
+                  <div
+                    class="flex-shrink-0 w-8 h-8 rounded-lg bg-[#1d4ed8]/10 border border-[#1d4ed8]/30 flex items-center justify-center text-[#3b82f6] group-hover:bg-[#1d4ed8]/20 group-hover:border-[#3b82f6]/50 transition-all duration-300">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                  </div>
+                  <div class="flex flex-col gap-2 text-left">
+                    <h4
+                      class="text-sm font-bold text-white font-sans tracking-wide transition-colors duration-300 group-hover:text-[#3b82f6]">
+                      Technology ROI
+                    </h4>
+                    <p class="text-xs text-white/50 leading-relaxed font-sans">
+                      Ensure your ERP, cloud, and analytics investments deliver the intelligence they were designed to
+                      provide.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    

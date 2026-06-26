@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@source "../index.php";
+@source "../admin/**/*.php";
 
 /* Design Tokens & Theme Configuration (Tailwind CSS v4 syntax) */
 @theme {
@@ -99,7 +101,7 @@ html.lenis body {
   content: "";
   position: absolute;
   inset: 0;
-  background-image: linear-gradient(to bottom, transparent 60%, var(--color-bg-base) 100%), url('/assets/images/hero.jpg');
+  background-image: linear-gradient(to bottom, transparent 60%, var(--color-bg-base) 100%), var(--hero-bg-url);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

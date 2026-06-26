@@ -1,0 +1,513 @@
+<section id="capabilities" class="relative pb-30 pt-10 overflow-hidden w-full select-none">
+      <div class="mx-auto max-w-[90%] relative z-10">
+
+        <div class="px-6 md:px-16 mb-20">
+          <h2 class="text-sm font-semibold uppercase tracking-widest text-[#1d4ed8] mb-2 font-inter">Capabilities</h2>
+          <p class="text-3xl md:text-5xl font-serif font-bold text-white">Professional Footprint</p>
+        </div>
+
+        <div class="relative w-full  flex flex-col lg:flex-row gap-12 lg:gap-16 items-center">
+
+          <!-- Left side: Timeline Track + Content Column -->
+          <div class="flex flex-row gap-8 md:gap-12 flex-grow w-full lg:max-w-[55%]">
+            <!-- SVG Line Column (Vertical track) -->
+            <div id="timeline-track-container" class="relative flex justify-center w-12 flex-shrink-0">
+              <!-- Background track line -->
+              <div class="absolute top-0 bottom-0 w-[2px] bg-white/5"></div>
+              <!-- Drawing line (controlled by GSAP) -->
+              <div id="timeline-scroll-line"
+                class="absolute top-0 w-[2px] bg-gradient-to-b from-[#3b82f6] to-[#1d4ed8] origin-top h-0"></div>
+
+              <!-- Dots aligned on the line -->
+              <div class="absolute top-0 bottom-0 w-full flex flex-col justify-between items-center py-6 h-[600px]"
+                id="timeline-dots-container">
+                <!-- Dot 1 -->
+                <div
+                  class="timeline-dot w-4.5 h-4.5 rounded-full bg-[#121216] border-2 border-white/10 flex items-center justify-center transition-all duration-300 z-10"
+                  data-index="0">
+                  <div class="w-1.5 h-1.5 rounded-full bg-white/20 transition-all duration-300 inner-dot"></div>
+                </div>
+                <!-- Dot 2 -->
+                <div
+                  class="timeline-dot w-4.5 h-4.5 rounded-full bg-[#121216] border-2 border-white/10 flex items-center justify-center transition-all duration-300 z-10"
+                  data-index="1">
+                  <div class="w-1.5 h-1.5 rounded-full bg-white/20 transition-all duration-300 inner-dot"></div>
+                </div>
+                <!-- Dot 3 -->
+                <div
+                  class="timeline-dot w-4.5 h-4.5 rounded-full bg-[#121216] border-2 border-white/10 flex items-center justify-center transition-all duration-300 z-10"
+                  data-index="2">
+                  <div class="w-1.5 h-1.5 rounded-full bg-white/20 transition-all duration-300 inner-dot"></div>
+                </div>
+                <!-- Dot 4 -->
+                <div
+                  class="timeline-dot w-4.5 h-4.5 rounded-full bg-[#121216] border-2 border-white/10 flex items-center justify-center transition-all duration-300 z-10"
+                  data-index="3">
+                  <div class="w-1.5 h-1.5 rounded-full bg-white/20 transition-all duration-300 inner-dot"></div>
+                </div>
+                <!-- Dot 5 -->
+                <div
+                  class="timeline-dot w-4.5 h-4.5 rounded-full bg-[#121216] border-2 border-white/10 flex items-center justify-center transition-all duration-300 z-10"
+                  data-index="4">
+                  <div class="w-1.5 h-1.5 rounded-full bg-white/20 transition-all duration-300 inner-dot"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Content Column -->
+            <div class="flex flex-col justify-between py-2 h-[600px] flex-grow" id="timeline-content-container">
+
+              <!-- Item 1: Experience -->
+              <div class="timeline-item opacity-25 translate-x-4 transition-all duration-500" data-index="0">
+                <h3 class="text-[#3b82f6] font-sans font-bold text-sm uppercase tracking-wider mb-2">Experience</h3>
+                <p class="text-white text-lg md:text-2xl font-serif font-medium leading-snug">
+                  14+ years across data strategy, ERP, AI, and enterprise delivery
+                </p>
+              </div>
+
+              <!-- Item 2: Industries Served -->
+              <div class="timeline-item opacity-25 translate-x-4 transition-all duration-500" data-index="1">
+                <h3 class="text-[#3b82f6] font-sans font-bold text-sm uppercase tracking-wider mb-2">Industries Served
+                </h3>
+                <p class="text-white text-lg md:text-2xl font-serif font-medium leading-snug">
+                  Manufacturing, Supply Chain, Logistics, Transportation, SaaS, Public Sector, Enterprise Technology
+                </p>
+              </div>
+
+              <!-- Item 3: Global Footprint -->
+              <div class="timeline-item opacity-25 translate-x-4 transition-all duration-500" data-index="2">
+                <h3 class="text-[#3b82f6] font-sans font-bold text-sm uppercase tracking-wider mb-2">Global Footprint
+                </h3>
+                <div class="flex flex-wrap gap-2.5 mt-1">
+                  <span
+                    class="px-4 py-1.5 rounded-full text-xs md:text-sm bg-white/5 border border-white/10 text-white font-medium">UAE</span>
+                  <span
+                    class="px-4 py-1.5 rounded-full text-xs md:text-sm bg-white/5 border border-white/10 text-white font-medium">Netherlands</span>
+                  <span
+                    class="px-4 py-1.5 rounded-full text-xs md:text-sm bg-white/5 border border-white/10 text-white font-medium">Germany</span>
+                  <span
+                    class="px-4 py-1.5 rounded-full text-xs md:text-sm bg-white/5 border border-white/10 text-white font-medium">Canada</span>
+                  <span
+                    class="px-4 py-1.5 rounded-full text-xs md:text-sm bg-white/5 border border-white/10 text-white font-medium">India</span>
+                </div>
+              </div>
+
+              <!-- Item 4: Engagement Model -->
+              <div class="timeline-item opacity-25 translate-x-4 transition-all duration-500" data-index="3">
+                <h3 class="text-[#3b82f6] font-sans font-bold text-sm uppercase tracking-wider mb-2">Engagement Model
+                </h3>
+                <div class="flex flex-wrap gap-3 mt-1">
+                  <span
+                    class="px-4 py-1.5 rounded-full text-xs md:text-sm bg-[#1d4ed8]/10 border border-[#1d4ed8]/30 text-[#3b82f6] font-medium">Fractional
+                    CDO</span>
+                  <span
+                    class="px-4 py-1.5 rounded-full text-xs md:text-sm bg-[#1d4ed8]/10 border border-[#1d4ed8]/30 text-[#3b82f6] font-medium">Advisory
+                    Retainer</span>
+                  <span
+                    class="px-4 py-1.5 rounded-full text-xs md:text-sm bg-[#1d4ed8]/10 border border-[#1d4ed8]/30 text-[#3b82f6] font-medium">Project-Based
+                    Consulting</span>
+                </div>
+              </div>
+
+              <!-- Item 5: Core Disciplines -->
+              <div class="timeline-item opacity-25 translate-x-4 transition-all duration-500" data-index="4">
+                <h3 class="text-[#3b82f6] font-sans font-bold text-sm uppercase tracking-wider mb-2">Core Disciplines
+                </h3>
+                <p class="text-white text-lg md:text-2xl font-serif font-medium leading-snug">
+                  Data Strategy • AI Advisory • Business Intelligence • ERP Governance • Cloud Platforms
+                </p>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Right side: Visual Column (Sticky/pinned on desktop) -->
+          <div id="timeline-visual-container"
+            class="w-full lg:w-[25rem] xl:w-[28.125rem] h-[23.75rem] lg:h-[31.25rem] flex-shrink-0 relative overflow-hidden rounded-3xl border border-white/5 bg-[#0d0d12]/45 backdrop-blur-md p-6 flex items-center justify-center shadow-[0_1.25rem_3.125rem_rgba(0,0,0,0.5)]">
+            <!-- Grid Background inside the visual container for tech aesthetic -->
+            <div
+              class="absolute inset-0 bg-[radial-gradient(#1d4ed8_0.0625rem,transparent_0.0625rem)] [background-size:1rem_1rem] opacity-15 pointer-events-none">
+            </div>
+            <!-- Glow background overlays -->
+            <div
+              class="absolute -top-12 -left-12 w-48 h-48 rounded-full bg-[#1d4ed8]/10 blur-[3.75rem] pointer-events-none">
+            </div>
+            <div
+              class="absolute -bottom-12 -right-12 w-48 h-48 rounded-full bg-[#3b82f6]/5 blur-[3.75rem] pointer-events-none">
+            </div>
+
+            <!-- SVG 1: Experience (Gauge/Radar Pointer) -->
+            <div class="timeline-visual active" data-index="0">
+              <svg class="w-[85%] h-[85%] overflow-visible" viewBox="0 0 200 200" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <!-- Circular shadow ring -->
+                <circle cx="100" cy="100" r="85" stroke="#ffffff" stroke-opacity="0.03" stroke-width="8" />
+                <circle cx="100" cy="100" r="75" stroke="url(#experience-grad-1)" stroke-opacity="0.1" stroke-width="2"
+                  stroke-dasharray="4 6" class="animate-spin-slow" />
+                <circle cx="100" cy="100" r="65" stroke="url(#experience-grad-2)" stroke-opacity="0.2"
+                  stroke-width="1" />
+
+                <!-- Dial ticks -->
+                <g class="opacity-40">
+                  <line x1="100" y1="20" x2="100" y2="28" stroke="#3b82f6" stroke-width="2" />
+                  <line x1="100" y1="172" x2="100" y2="180" stroke="#3b82f6" stroke-width="2" />
+                  <line x1="20" y1="100" x2="28" y2="100" stroke="#3b82f6" stroke-width="2" />
+                  <line x1="172" y1="100" x2="180" y2="100" stroke="#3b82f6" stroke-width="2" />
+                  <line x1="43.4" y1="43.4" x2="49.1" y2="49.1" stroke="#3b82f6" stroke-width="1.5" />
+                  <line x1="156.6" y1="43.4" x2="150.9" y2="49.1" stroke="#3b82f6" stroke-width="1.5" />
+                  <line x1="43.4" y1="156.6" x2="49.1" y2="150.9" stroke="#3b82f6" stroke-width="1.5" />
+                  <line x1="156.6" y1="156.6" x2="150.9" y2="150.9" stroke="#3b82f6" stroke-width="1.5" />
+                </g>
+
+                <!-- Gauge Progress Arc -->
+                <path d="M 43.4 156.6 A 80 80 0 1 1 156.6 156.6" stroke="url(#experience-grad-active)" stroke-width="4"
+                  stroke-linecap="round" stroke-dasharray="300" stroke-dashoffset="80" />
+
+                <!-- Rotating Pointer Needle -->
+                <g class="animate-spin-slow" style="transform-origin: 100px 100px; animation-duration: 8s;">
+                  <line x1="100" y1="100" x2="100" y2="35" stroke="url(#needle-grad)" stroke-width="3"
+                    stroke-linecap="round" />
+                  <polygon points="100,28 96,38 104,38" fill="#3b82f6" />
+                  <circle cx="100" cy="100" r="8" fill="#121216" stroke="#3b82f6" stroke-width="2" />
+                  <circle cx="100" cy="100" r="3" fill="#3b82f6" />
+                </g>
+
+                <!-- Center Text Readout -->
+                <text x="100" y="125" text-anchor="middle" fill="#ffffff" font-family="Montserrat" font-size="24"
+                  font-weight="800">14+</text>
+                <text x="100" y="142" text-anchor="middle" fill="#1d4ed8" font-family="Inter" font-size="10"
+                  font-weight="600" letter-spacing="1.5">YEARS XP</text>
+
+                <!-- Gradients definitions -->
+                <defs>
+                  <linearGradient id="experience-grad-1" x1="0" y1="0" x2="200" y2="200" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#1d4ed8" />
+                    <stop offset="100%" stop-color="#3b82f6" />
+                  </linearGradient>
+                  <linearGradient id="experience-grad-2" x1="200" y1="0" x2="0" y2="200" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.8" />
+                    <stop offset="100%" stop-color="#000000" stop-opacity="0" />
+                  </linearGradient>
+                  <linearGradient id="experience-grad-active" x1="0" y1="200" x2="200" y2="0"
+                    gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#1d4ed8" />
+                    <stop offset="60%" stop-color="#3b82f6" />
+                    <stop offset="100%" stop-color="#ffffff" />
+                  </linearGradient>
+                  <linearGradient id="needle-grad" x1="100" y1="100" x2="100" y2="35" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#1d4ed8" />
+                    <stop offset="100%" stop-color="#ffffff" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+
+            <!-- SVG 2: Industries Served (Network Mesh/Prism) -->
+            <div class="timeline-visual" data-index="1">
+              <svg class="w-[85%] h-[85%] overflow-visible animate-globe-float" viewBox="0 0 200 200" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <!-- Inner rotating node cluster -->
+                <g class="animate-spin-slow" style="transform-origin: 100px 100px; animation-duration: 25s;">
+                  <!-- Outer bounding circle -->
+                  <circle cx="100" cy="100" r="70" stroke="url(#ind-grad-1)" stroke-opacity="0.1"
+                    stroke-dasharray="3 7" />
+
+                  <!-- Connective Edges / Web -->
+                  <!-- Core Pentagon structure -->
+                  <polygon points="100,40 160,80 140,150 60,150 40,80" stroke="#1d4ed8" stroke-opacity="0.3"
+                    stroke-width="1" />
+                  <polygon points="100,55 145,85 130,135 70,135 55,85" stroke="#3b82f6" stroke-opacity="0.25"
+                    stroke-width="1.5" />
+
+                  <!-- Cross linkages -->
+                  <line x1="100" y1="40" x2="140" y2="150" stroke="#1d4ed8" stroke-opacity="0.2" stroke-width="1"
+                    class="animate-dash" />
+                  <line x1="160" y1="80" x2="60" y2="150" stroke="#1d4ed8" stroke-opacity="0.2" stroke-width="1"
+                    class="animate-dash" />
+                  <line x1="40" y1="80" x2="140" y2="150" stroke="#1d4ed8" stroke-opacity="0.2" stroke-width="1"
+                    class="animate-dash" />
+                  <line x1="100" y1="40" x2="60" y2="150" stroke="#1d4ed8" stroke-opacity="0.2" stroke-width="1" />
+                  <line x1="40" y1="80" x2="160" y2="80" stroke="#1d4ed8" stroke-opacity="0.15" stroke-width="1" />
+
+                  <!-- Nodes (Vertices) -->
+                  <circle cx="100" cy="40" r="6" fill="#3b82f6" stroke="#121216" stroke-width="2"
+                    class="animate-pulse-glow" />
+                  <circle cx="160" cy="80" r="6" fill="#1d4ed8" stroke="#121216" stroke-width="2" />
+                  <circle cx="140" cy="150" r="6" fill="#3b82f6" stroke="#121216" stroke-width="2" />
+                  <circle cx="60" cy="150" r="6" fill="#1d4ed8" stroke="#121216" stroke-width="2" />
+                  <circle cx="40" cy="80" r="6" fill="#3b82f6" stroke="#121216" stroke-width="2" />
+
+                  <circle cx="100" cy="55" r="4" fill="#ffffff" />
+                  <circle cx="145" cy="85" r="4" fill="#ffffff" />
+                  <circle cx="130" cy="135" r="4" fill="#ffffff" />
+                  <circle cx="70" cy="135" r="4" fill="#ffffff" />
+                  <circle cx="55" cy="85" r="4" fill="#ffffff" />
+
+                  <!-- Center Node -->
+                  <circle cx="100" cy="100" r="10" fill="url(#ind-grad-2)" stroke="#60a5fa" stroke-opacity="0.5"
+                    stroke-width="1.5" class="animate-pulse-core" />
+                </g>
+
+                <defs>
+                  <linearGradient id="ind-grad-1" x1="0" y1="0" x2="200" y2="200" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#60a5fa" />
+                    <stop offset="100%" stop-color="#1d4ed8" />
+                  </linearGradient>
+                  <linearGradient id="ind-grad-2" x1="90" y1="90" x2="110" y2="110" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#ffffff" />
+                    <stop offset="100%" stop-color="#1d4ed8" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+
+            <!-- SVG 3: Global Footprint (High-tech Globe) -->
+            <div class="timeline-visual" data-index="2">
+              <svg class="w-[85%] h-[85%] overflow-visible animate-globe-float" viewBox="0 0 200 200" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <!-- Base Grid Ring -->
+                <circle cx="100" cy="100" r="75" stroke="#ffffff" stroke-opacity="0.04" stroke-width="1.5" />
+                <circle cx="100" cy="100" r="65" stroke="#1d4ed8" stroke-opacity="0.1" stroke-width="1" />
+
+                <!-- Globe meridians (ellipses to simulate 3D spheres) -->
+                <ellipse cx="100" cy="100" rx="75" ry="30" stroke="#1d4ed8" stroke-opacity="0.15" stroke-width="1"
+                  class="animate-spin-slow" style="animation-duration: 24s;" />
+                <ellipse cx="100" cy="100" rx="30" ry="75" stroke="#1d4ed8" stroke-opacity="0.15" stroke-width="1"
+                  class="animate-spin-slow" style="animation-duration: 24s;" />
+                <ellipse cx="100" cy="100" rx="75" ry="50" stroke="#3b82f6" stroke-opacity="0.08" stroke-width="1" />
+
+                <!-- Rotating Dotted World Grid Overlay -->
+                <g class="animate-spin-slow" style="transform-origin: 100px 100px; animation-duration: 35s;">
+                  <!-- Mocking world dot mesh clusters -->
+                  <!-- NA/EU/Asia/ME markers -->
+                  <circle cx="60" cy="80" r="2.5" fill="#3b82f6" opacity="0.75" />
+                  <circle cx="65" cy="78" r="1.5" fill="#3b82f6" opacity="0.6" />
+                  <circle cx="70" cy="82" r="2" fill="#3b82f6" opacity="0.6" />
+
+                  <circle cx="100" cy="70" r="3" fill="#3b82f6" opacity="0.9" class="animate-pulse-glow" />
+                  <circle cx="95" cy="68" r="2" fill="#3b82f6" opacity="0.6" />
+                  <circle cx="105" cy="72" r="1.5" fill="#3b82f6" opacity="0.6" />
+
+                  <circle cx="135" cy="85" r="3" fill="#3b82f6" opacity="0.9" />
+                  <circle cx="140" cy="88" r="2" fill="#3b82f6" opacity="0.6" />
+                  <circle cx="130" cy="82" r="1.5" fill="#3b82f6" opacity="0.6" />
+
+                  <circle cx="125" cy="95" r="3.5" fill="#ffffff" class="animate-pulse-glow" />
+                  <circle cx="120" cy="98" r="2" fill="#3b82f6" opacity="0.7" />
+                  <circle cx="130" cy="92" r="1.5" fill="#3b82f6" opacity="0.5" />
+                </g>
+
+                <!-- Curved Connection Arcs (Data highways) -->
+                <!-- Arc from India to Germany -->
+                <path d="M 125 95 Q 112 60 100 70" stroke="url(#arc-grad-1)" stroke-width="1.5" stroke-linecap="round"
+                  class="animate-dash" />
+                <!-- Arc from India to UAE -->
+                <path d="M 125 95 Q 120 115 135 85" stroke="url(#arc-grad-2)" stroke-width="1.5" stroke-linecap="round"
+                  class="animate-dash" />
+                <!-- Arc from Germany to Canada -->
+                <path d="M 100 70 Q 75 55 60 80" stroke="url(#arc-grad-1)" stroke-width="1.5" stroke-linecap="round"
+                  class="animate-dash-slow" />
+                <!-- Arc from India to Netherlands -->
+                <path d="M 125 95 Q 100 50 105 72" stroke="url(#arc-grad-2)" stroke-width="1" stroke-linecap="round" />
+
+                <!-- Location radar rings on major footprint hubs -->
+                <circle cx="125" cy="95" r="6" stroke="#ffffff" stroke-opacity="0.5" stroke-width="1"
+                  class="animate-pulse-core" />
+                <circle cx="100" cy="70" r="5" stroke="#3b82f6" stroke-opacity="0.5" stroke-width="1"
+                  class="animate-pulse-core" style="animation-delay: 0.8s;" />
+                <circle cx="60" cy="80" r="5" stroke="#3b82f6" stroke-opacity="0.5" stroke-width="1"
+                  class="animate-pulse-core" style="animation-delay: 1.5s;" />
+
+                <defs>
+                  <linearGradient id="arc-grad-1" x1="125" y1="95" x2="60" y2="80" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#3b82f6" />
+                    <stop offset="50%" stop-color="#ffffff" />
+                    <stop offset="100%" stop-color="#1d4ed8" />
+                  </linearGradient>
+                  <linearGradient id="arc-grad-2" x1="125" y1="95" x2="135" y2="85" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#60a5fa" />
+                    <stop offset="100%" stop-color="#1d4ed8" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+
+            <!-- SVG 4: Engagement Model (Isometric Stacked Slabs) -->
+            <div class="timeline-visual" data-index="3">
+              <svg class="w-[85%] h-[85%] overflow-visible" viewBox="0 0 200 200" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <!-- Drop shadow projection on bottom -->
+                <ellipse cx="100" cy="175" rx="55" ry="12" fill="url(#slab-shadow)" opacity="0.5" />
+
+                <!-- Isometric Stack Layer 3: Bottom Slab (Project-Based Consulting) -->
+                <g class="animate-float-slab-3" style="transform-origin: 100px 140px;">
+                  <!-- Isometric rhombus (width: 120, height: 60) centered -->
+                  <polygon points="100,110 160,140 100,170 40,140" fill="url(#slab-grad-bottom)"
+                    stroke="url(#slab-border-blue)" stroke-width="1.5" />
+                  <!-- Side extrusions for 3D slab thickness -->
+                  <polygon points="40,140 100,170 100,174 40,144" fill="#0f172a" />
+                  <polygon points="160,140 100,170 100,174 160,144" fill="#1e293b" />
+                  <text x="100" y="145" text-anchor="middle" fill="#ffffff" font-family="Montserrat" font-size="8"
+                    font-weight="700" letter-spacing="0.5">PROJECT-BASED</text>
+                </g>
+
+                <!-- Isometric Stack Layer 2: Middle Slab (Advisory Retainer) -->
+                <g class="animate-float-slab-2" style="transform-origin: 100px 100px;">
+                  <polygon points="100,70 160,100 100,130 40,100" fill="url(#slab-grad-mid)"
+                    stroke="url(#slab-border-blue)" stroke-width="1.5" />
+                  <polygon points="40,100 100,130 100,134 40,104" fill="#1e293b" />
+                  <polygon points="160,100 100,130 100,134 160,104" fill="#334155" />
+                  <text x="100" y="105" text-anchor="middle" fill="#3b82f6" font-family="Montserrat" font-size="8"
+                    font-weight="700" letter-spacing="0.5">ADVISORY RETAINER</text>
+                </g>
+
+                <!-- Isometric Stack Layer 1: Top Slab (Fractional CDO) -->
+                <g class="animate-float-slab-1" style="transform-origin: 100px 60px;">
+                  <polygon points="100,30 160,60 100,90 40,60" fill="url(#slab-grad-top)"
+                    stroke="url(#slab-border-white)" stroke-width="2" />
+                  <polygon points="40,60 100,90 100,94 40,64" fill="#1d4ed8" />
+                  <polygon points="160,60 100,90 100,94 160,64" fill="#3b82f6" />
+                  <text x="100" y="65" text-anchor="middle" fill="#ffffff" font-family="Montserrat" font-size="9"
+                    font-weight="800" letter-spacing="0.5" class="animate-pulse-glow">FRACTIONAL CDO</text>
+                  <!-- Glowing core indicator on top slab -->
+                  <circle cx="100" cy="50" r="4" fill="#60a5fa" class="animate-pulse-core" />
+                </g>
+
+                <defs>
+                  <radialGradient id="slab-shadow" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#1d4ed8" stop-opacity="0.6" />
+                    <stop offset="100%" stop-color="#000000" stop-opacity="0" />
+                  </radialGradient>
+                  <linearGradient id="slab-grad-top" x1="40" y1="60" x2="160" y2="60" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="rgba(59,130,246,0.45)" />
+                    <stop offset="100%" stop-color="rgba(29,78,216,0.15)" />
+                  </linearGradient>
+                  <linearGradient id="slab-grad-mid" x1="40" y1="100" x2="160" y2="100" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="rgba(29, 78, 216, 0.4)" />
+                    <stop offset="100%" stop-color="rgba(20, 20, 25, 0.7)" />
+                  </linearGradient>
+                  <linearGradient id="slab-grad-bottom" x1="40" y1="140" x2="160" y2="140"
+                    gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="rgba(12, 12, 16, 0.9)" />
+                    <stop offset="100%" stop-color="rgba(29, 78, 216, 0.25)" />
+                  </linearGradient>
+                  <linearGradient id="slab-border-blue" x1="40" y1="140" x2="160" y2="140"
+                    gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#1d4ed8" stop-opacity="0.6" />
+                    <stop offset="100%" stop-color="#3b82f6" stop-opacity="0.2" />
+                  </linearGradient>
+                  <linearGradient id="slab-border-white" x1="40" y1="60" x2="160" y2="60"
+                    gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#ffffff" stop-opacity="0.8" />
+                    <stop offset="50%" stop-color="#3b82f6" stop-opacity="0.5" />
+                    <stop offset="100%" stop-color="#1d4ed8" stop-opacity="0.2" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+
+            <!-- SVG 5: Core Disciplines (Pulsing CPU Core) -->
+            <div class="timeline-visual" data-index="4">
+              <svg class="w-[85%] h-[85%] overflow-visible" viewBox="0 0 200 200" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <!-- Concentric Outer Tech Rings -->
+                <circle cx="100" cy="100" r="82" stroke="#1d4ed8" stroke-opacity="0.1" stroke-width="1.5" />
+                <circle cx="100" cy="100" r="72" stroke="#3b82f6" stroke-opacity="0.15" stroke-width="2"
+                  stroke-dasharray="12 8 4 8" class="animate-spin-slow" />
+                <circle cx="100" cy="100" r="62" stroke="#1d4ed8" stroke-opacity="0.25" stroke-width="1.5"
+                  stroke-dasharray="2 4" class="animate-spin-counter" />
+
+                <!-- Circuit Connection Lines running from core -->
+                <g stroke="#1d4ed8" stroke-opacity="0.4" stroke-width="1.5" fill="none">
+                  <!-- North line -->
+                  <path d="M 100 58 L 100 35 M 100 35 L 85 20" />
+                  <!-- East line -->
+                  <path d="M 142 100 L 165 100 M 165 100 L 180 85" class="animate-dash" />
+                  <!-- South line -->
+                  <path d="M 100 142 L 100 165 M 100 165 L 115 180" />
+                  <!-- West line -->
+                  <path d="M 58 100 L 35 100 M 35 100 L 20 115" class="animate-dash" />
+
+                  <!-- Diagonal lines -->
+                  <path d="M 70 70 L 48 48" />
+                  <path d="M 130 70 L 152 48" />
+                  <path d="M 130 130 L 152 152" />
+                  <path d="M 70 130 L 48 152" />
+                </g>
+
+                <!-- Terminating circuit node circles -->
+                <circle cx="85" cy="20" r="3" fill="#3b82f6" />
+                <circle cx="180" cy="85" r="3.5" fill="#ffffff" class="animate-pulse-glow" />
+                <circle cx="115" cy="180" r="3" fill="#3b82f6" />
+                <circle cx="20" cy="115" r="3.5" fill="#ffffff" class="animate-pulse-glow" />
+
+                <circle cx="48" cy="48" r="3" fill="#1d4ed8" />
+                <circle cx="152" cy="48" r="3" fill="#3b82f6" />
+                <circle cx="152" cy="152" r="3" fill="#1d4ed8" />
+                <circle cx="48" cy="152" r="3" fill="#3b82f6" />
+
+                <!-- Central CPU Chip Body -->
+                <!-- Shadow backdrop -->
+                <rect x="62" y="62" width="76" height="76" rx="10" fill="#08080c" stroke="url(#cpu-border)"
+                  stroke-width="1.5" class="animate-pulse-glow" />
+                <rect x="70" y="70" width="60" height="60" rx="8" fill="url(#cpu-body)" stroke="#1d4ed8"
+                  stroke-opacity="0.3" stroke-width="1" />
+
+                <!-- CPU Core (Central glow crystal) -->
+                <circle cx="100" cy="100" r="14" fill="url(#cpu-core-glow)" class="animate-pulse-core" />
+                <rect x="94" y="94" width="12" height="12" rx="2" fill="#ffffff" opacity="0.9" />
+
+                <!-- Gold Pins / Contact Pads on CPU edge -->
+                <g fill="#3b82f6" opacity="0.8">
+                  <!-- Top pins -->
+                  <rect x="76" y="65" width="4" height="2" />
+                  <rect x="86" y="65" width="4" height="2" />
+                  <rect x="96" y="65" width="4" height="2" />
+                  <rect x="106" y="65" width="4" height="2" />
+                  <rect x="116" y="65" width="4" height="2" />
+                  <!-- Bottom pins -->
+                  <rect x="76" y="133" width="4" height="2" />
+                  <rect x="86" y="133" width="4" height="2" />
+                  <rect x="96" y="133" width="4" height="2" />
+                  <rect x="106" y="133" width="4" height="2" />
+                  <rect x="116" y="133" width="4" height="2" />
+                  <!-- Left pins -->
+                  <rect x="65" y="76" width="2" height="4" />
+                  <rect x="65" y="86" width="2" height="4" />
+                  <rect x="65" y="96" width="2" height="4" />
+                  <rect x="65" y="106" width="2" height="4" />
+                  <rect x="65" y="116" width="2" height="4" />
+                  <!-- Right pins -->
+                  <rect x="133" y="76" width="2" height="4" />
+                  <rect x="133" y="86" width="2" height="4" />
+                  <rect x="133" y="96" width="2" height="4" />
+                  <rect x="133" y="106" width="2" height="4" />
+                  <rect x="133" y="116" width="2" height="4" />
+                </g>
+
+                <defs>
+                  <linearGradient id="cpu-border" x1="62" y1="62" x2="138" y2="138" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#ffffff" />
+                    <stop offset="50%" stop-color="#3b82f6" />
+                    <stop offset="100%" stop-color="#1d4ed8" />
+                  </linearGradient>
+                  <linearGradient id="cpu-body" x1="70" y1="70" x2="130" y2="130" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#121216" />
+                    <stop offset="100%" stop-color="#050508" />
+                  </linearGradient>
+                  <radialGradient id="cpu-core-glow" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#ffffff" />
+                    <stop offset="40%" stop-color="#3b82f6" />
+                    <stop offset="100%" stop-color="#1d4ed8" stop-opacity="0" />
+                  </radialGradient>
+                </defs>
+              </svg>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Services Section -->
+    

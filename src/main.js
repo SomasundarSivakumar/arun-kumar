@@ -1,3 +1,4 @@
+import './style.css';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
@@ -115,7 +116,10 @@ function revealSection(trigger, targets, options = {}) {
 // ─────────────────────────────────────────────────────────────────────────────
 // UTILITY: Hero typing effect
 // ─────────────────────────────────────────────────────────────────────────────
-const HERO_ROLE_TEXT = 'Fractional Chief Data Officer';
+// Dynamic hero title — set by index.php from the database
+const HERO_ROLE_TEXT = (typeof window.HERO_TITLE === 'string' && window.HERO_TITLE.trim())
+  ? window.HERO_TITLE
+  : 'Fractional Chief Data Officer';
 
 function typeText(element, text, speed) {
   if (element.typingTimeout) clearTimeout(element.typingTimeout);

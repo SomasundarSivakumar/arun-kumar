@@ -1,0 +1,857 @@
+<section id="impact" class="relative py-32 border-t border-white/5 overflow-hidden w-full select-none">
+      <!-- Glow ambient background -->
+      <div
+        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-[#1d4ed8]/5 blur-[150px] pointer-events-none">
+      </div>
+
+      <div class="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+        <!-- Section Header -->
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <h2 class="text-xs md:text-sm font-semibold uppercase tracking-widest text-[#1d4ed8] mb-2 font-inter">Impact
+          </h2>
+          <h3 class="text-3xl md:text-5xl font-serif font-extrabold tracking-tight text-white mb-6">Delivered Results —
+            Across Industries</h3>
+          <p class="text-white/60 text-sm md:text-base leading-relaxed font-inter">
+            The measure of successful data leadership is not the sophistication of the technology deployed. It is the
+            quality of decisions made, the speed of business response, and the competitive advantage unlocked.
+          </p>
+        </div>
+
+        <!-- Swiper Container -->
+        <div class="swiper impact-swiper relative py-12">
+          <div class="swiper-wrapper">
+
+            <!-- Slide 1: Enterprise Data Governance -->
+            <div
+              class="swiper-slide w-[28rem] h-[22rem] flex-shrink-0 glassmorphism rounded-3xl p-8 border border-[#1d4ed8]/15 flex flex-col justify-between relative shadow-xl transform-gpu">
+              <div class="flex justify-between items-start">
+                <div
+                  class="w-[3.5rem] h-[3.5rem] rounded-2xl bg-[#1d4ed8]/10 flex items-center justify-center border border-[#1d4ed8]/30 text-[#3b82f6]">
+                  <svg class="w-[1.75rem] h-[1.75rem]" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="1.5">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                </div>
+                <span class="font-serif text-5xl font-extrabold text-white/5">01</span>
+              </div>
+              <div>
+                <h4 class="text-xl font-bold font-sans text-white mb-3">Enterprise Data Governance</h4>
+                <p class="text-white/60 text-sm leading-relaxed font-inter">
+                  Designed and implemented governance frameworks that materially improved data consistency, regulatory
+                  compliance, and reporting reliability — enabling leadership teams to act with confidence.
+                </p>
+              </div>
+            </div>
+
+            <!-- Slide 2: Analytics Transformation -->
+            <div
+              class="swiper-slide w-[28rem] h-[22rem] flex-shrink-0 glassmorphism rounded-3xl p-8 border border-[#1d4ed8]/15 flex flex-col justify-between relative shadow-xl transform-gpu">
+              <div class="flex justify-between items-start">
+                <div
+                  class="w-[3.5rem] h-[3.5rem] rounded-2xl bg-[#1d4ed8]/10 flex items-center justify-center border border-[#1d4ed8]/30 text-[#3b82f6]">
+                  <svg class="w-[1.75rem] h-[1.75rem]" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="1.5">
+                    <path d="M3 3v18h18M18 9l-5 5-3-3-4 4" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </div>
+                <span class="font-serif text-5xl font-extrabold text-white/5">02</span>
+              </div>
+              <div>
+                <h4 class="text-xl font-bold font-sans text-white mb-3">Analytics Transformation</h4>
+                <p class="text-white/60 text-sm leading-relaxed font-inter">
+                  Rebuilt reporting and analytics ecosystems for executive audiences, reducing decision-making latency
+                  and establishing single sources of truth for operational and strategic KPIs.
+                </p>
+              </div>
+            </div>
+
+            <!-- Slide 3: AI Strategy Development -->
+            <div
+              class="swiper-slide w-[28rem] h-[22rem] flex-shrink-0 glassmorphism rounded-3xl p-8 border border-[#1d4ed8]/15 flex flex-col justify-between relative shadow-xl transform-gpu">
+              <div class="flex justify-between items-start">
+                <div
+                  class="w-[3.5rem] h-[3.5rem] rounded-2xl bg-[#1d4ed8]/10 flex items-center justify-center border border-[#1d4ed8]/30 text-[#3b82f6]">
+                  <svg class="w-[1.75rem] h-[1.75rem]" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="1.5">
+                    <rect x="5" y="5" width="14" height="14" rx="2" />
+                    <path d="M9 5V2M15 5V2M9 19v3M15 19v3M5 9H2M5 15H2M19 9h3M19 15h3" />
+                  </svg>
+                </div>
+                <span class="font-serif text-5xl font-extrabold text-white/5">03</span>
+              </div>
+              <div>
+                <h4 class="text-xl font-bold font-sans text-white mb-3">AI Strategy Development</h4>
+                <p class="text-white/60 text-sm leading-relaxed font-inter">
+                  Partnered with business leaders to assess AI maturity, identify high-value use cases, and build the
+                  governance and delivery structures required to move from proof-of-concept to production.
+                </p>
+              </div>
+            </div>
+
+            <!-- Slide 4: Cloud Data Platform Architecture -->
+            <div
+              class="swiper-slide w-[28rem] h-[22rem] flex-shrink-0 glassmorphism rounded-3xl p-8 border border-[#1d4ed8]/15 flex flex-col justify-between relative shadow-xl transform-gpu">
+              <div class="flex justify-between items-start">
+                <div
+                  class="w-[3.5rem] h-[3.5rem] rounded-2xl bg-[#1d4ed8]/10 flex items-center justify-center border border-[#1d4ed8]/30 text-[#3b82f6]">
+                  <svg class="w-[1.75rem] h-[1.75rem]" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="1.5">
+                    <path d="M18 10h-.7a7 7 0 00-13.8 2.1 4 4 0 00.5 7.9H18a5 5 0 000-10z" />
+                  </svg>
+                </div>
+                <span class="font-serif text-5xl font-extrabold text-white/5">04</span>
+              </div>
+              <div>
+                <h4 class="text-xl font-bold font-sans text-white mb-3">Cloud Data Platform Architecture</h4>
+                <p class="text-white/60 text-sm leading-relaxed font-inter">
+                  Designed modern, scalable cloud data environments on AWS and Azure — replacing fragmented legacy
+                  architectures with governed, analytics-ready data ecosystems.
+                </p>
+              </div>
+            </div>
+
+            <!-- Slide 5: ERP Data Optimization -->
+            <div
+              class="swiper-slide w-[28rem] h-[22rem] flex-shrink-0 glassmorphism rounded-3xl p-8 border border-[#1d4ed8]/15 flex flex-col justify-between relative shadow-xl transform-gpu">
+              <div class="flex justify-between items-start">
+                <div
+                  class="w-[3.5rem] h-[3.5rem] rounded-2xl bg-[#1d4ed8]/10 flex items-center justify-center border border-[#1d4ed8]/30 text-[#3b82f6]">
+                  <svg class="w-[1.75rem] h-[1.75rem]" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="1.5">
+                    <ellipse cx="12" cy="5" rx="9" ry="3" />
+                    <path d="M3 5v6c0 1.66 4 3 9 3s9-1.34 9-3V5M3 11v6c0 1.66 4 3 9 3s9-1.34 9-3v-6" />
+                  </svg>
+                </div>
+                <span class="font-serif text-5xl font-extrabold text-white/5">05</span>
+              </div>
+              <div>
+                <h4 class="text-xl font-bold font-sans text-white mb-3">ERP Data Optimization</h4>
+                <p class="text-white/60 text-sm leading-relaxed font-inter">
+                  Enabled organizations to extract strategic intelligence from their ERP investments — improving
+                  visibility across supply chain, procurement, inventory, and financial operations.
+                </p>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Swiper Navigation Arrows -->
+          <div
+            class="swiper-button-prev !text-[#3b82f6] !w-12 !h-12 !rounded-full !bg-white/5 !border !border-white/10 hover:!border-[#60a5fa] hover:!bg-[#1d4ed8]/10 !left-4 md:!left-12 flex items-center justify-center after:!text-sm transition-all">
+          </div>
+          <div
+            class="swiper-button-next !text-[#3b82f6] !w-12 !h-12 !rounded-full !bg-white/5 !border !border-white/10 hover:!border-[#60a5fa] hover:!bg-[#1d4ed8]/10 !right-4 md:!right-12 flex items-center justify-center after:!text-sm transition-all">
+          </div>
+
+          <!-- Swiper Pagination dots -->
+          <div class="swiper-pagination !bottom-[-2rem]"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="relative py-32  overflow-hidden w-full select-none">
+      <!-- Ambient glow -->
+      <div
+        class="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-[#1d4ed8]/5 blur-[180px] pointer-events-none">
+      </div>
+
+      <div class="max-w-5xl mx-auto px-6 md:px-12 relative z-10">
+        <!-- Section Header -->
+        <div class="text-center max-w-3xl mx-auto mb-20 exp-header">
+          <h2 class="text-xs md:text-sm font-semibold uppercase tracking-widest text-[#1d4ed8] mb-2 font-inter">
+            Experience</h2>
+          <h3 class="text-3xl md:text-5xl font-serif font-extrabold tracking-tight text-white mb-6">Career Highlights
+          </h3>
+        </div>
+
+        <!-- Timeline Container -->
+        <div class="exp-timeline relative">
+          <!-- Vertical timeline line (animated fill) -->
+          <div class="absolute left-[1.75rem] md:left-1/2 top-0 bottom-0 w-[2px] bg-white/5 -translate-x-1/2">
+            <div
+              class="exp-line-fill absolute top-0 left-0 w-full bg-gradient-to-b from-[#3b82f6] via-[#1d4ed8] to-[#3b82f6]/20"
+              style="height: 0%;"></div>
+          </div>
+
+          <!-- Timeline Item 1 -->
+          <div class="exp-item relative flex flex-col md:flex-row md:items-start mb-16 md:mb-20 group">
+            <!-- Dot -->
+            <div
+              class="exp-dot absolute left-[1.75rem] md:left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-[#0a0a0a] border-2 border-white/15 z-10 transition-all duration-500 group-[.is-active]:border-[#3b82f6] group-[.is-active]:bg-[#3b82f6] group-[.is-active]:shadow-[0_0_12px_rgba(59,130,246,0.6)]">
+              <div
+                class="absolute inset-0 rounded-full bg-[#3b82f6]/30 scale-0 group-[.is-active]:scale-[2.5] transition-transform duration-700">
+              </div>
+            </div>
+            <!-- Content Card (Right side on desktop, full width on mobile) -->
+            <div class="ml-16 md:ml-0 md:w-[calc(50%-2rem)] md:ml-[calc(50%+2rem)]">
+              <div
+                class="exp-card glassmorphism rounded-2xl p-6 md:p-8 border border-white/8 hover:border-[#1d4ed8]/30 transition-all duration-500">
+                <div class="flex items-center gap-3 mb-4">
+                  <div
+                    class="w-10 h-10 rounded-xl bg-[#1d4ed8]/10 flex items-center justify-center border border-[#1d4ed8]/25 text-[#3b82f6]">
+                    <svg class="w-5 h-5" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <defs>
+                        <linearGradient id="bolt-front" x1="16" y1="4" x2="16" y2="24" gradientUnits="userSpaceOnUse">
+                          <stop offset="0%" stop-color="#ffffff" />
+                          <stop offset="30%" stop-color="#60a5fa" />
+                          <stop offset="100%" stop-color="#1d4ed8" />
+                        </linearGradient>
+                        <linearGradient id="bolt-side" x1="16" y1="4" x2="20" y2="25" gradientUnits="userSpaceOnUse">
+                          <stop offset="0%" stop-color="#a87500" />
+                          <stop offset="100%" stop-color="#473000" />
+                        </linearGradient>
+                        <filter id="bolt-shadow" x="-20%" y="-20%" width="140%" height="140%">
+                          <feDropShadow dx="1" dy="2" stdDeviation="1.5" flood-color="#60a5fa" flood-opacity="0.3" />
+                        </filter>
+                      </defs>
+                      <g filter="url(#bolt-shadow)">
+                        <!-- Top slant side -->
+                        <path d="M17 4 L18.5 5.5 L17.5 14.5 L16 13 Z" fill="url(#bolt-side)" />
+                        <!-- Horizontal middle side -->
+                        <path d="M16 13 L17.5 14.5 L22.5 14.5 L21 13 Z" fill="url(#bolt-side)" />
+                        <!-- Lower slant side -->
+                        <path d="M21 13 L22.5 14.5 L15.5 25.5 L14 24 Z" fill="url(#bolt-side)" />
+                        <!-- Front Face -->
+                        <path d="M17 4 L11 13 H16 L14 24 L21 13 H16 Z" fill="url(#bolt-front)" />
+                      </g>
+                    </svg>
+                  </div>
+                  <span
+                    class="text-[#3b82f6]/60 text-xs font-semibold font-inter uppercase tracking-widest">Current</span>
+                </div>
+                <h4 class="text-lg md:text-xl font-bold text-white mb-1 font-sans">Technical Project Manager</h4>
+                <p class="text-[#3b82f6] text-sm font-semibold mb-3 font-inter">Estrel AI <span
+                    class="text-white/30 mx-2">•</span> <span class="text-white/40 font-normal">Dubai, UAE</span></p>
+                <p class="text-white/55 text-sm leading-relaxed font-inter">Leading AI-driven public transportation
+                  initiatives and enterprise delivery programs. Overseeing end-to-end programme governance for
+                  intelligent transit solutions deployed at scale.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Timeline Item 2 -->
+          <div class="exp-item relative flex flex-col md:flex-row md:items-start mb-16 md:mb-20 group">
+            <div
+              class="exp-dot absolute left-[1.75rem] md:left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-[#0a0a0a] border-2 border-white/15 z-10 transition-all duration-500 group-[.is-active]:border-[#3b82f6] group-[.is-active]:bg-[#3b82f6] group-[.is-active]:shadow-[0_0_12px_rgba(59,130,246,0.6)]">
+              <div
+                class="absolute inset-0 rounded-full bg-[#3b82f6]/30 scale-0 group-[.is-active]:scale-[2.5] transition-transform duration-700">
+              </div>
+            </div>
+            <!-- Left side on desktop -->
+            <div class="ml-16 md:ml-0 md:w-[calc(50%-2rem)] md:text-right">
+              <div
+                class="exp-card glassmorphism rounded-2xl p-6 md:p-8 border border-white/8 hover:border-[#1d4ed8]/30 transition-all duration-500">
+                <div class="flex items-center gap-3 mb-4 md:flex-row-reverse">
+                  <div
+                    class="w-10 h-10 rounded-xl bg-[#1d4ed8]/10 flex items-center justify-center border border-[#1d4ed8]/25 text-[#3b82f6]">
+                    <svg class="w-5 h-5" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <defs>
+                        <linearGradient id="col-top" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stop-color="#ffffff" />
+                          <stop offset="100%" stop-color="#60a5fa" />
+                        </linearGradient>
+                        <linearGradient id="col-right" x1="0" y1="0" x2="1" y2="0">
+                          <stop offset="0%" stop-color="#3b82f6" />
+                          <stop offset="100%" stop-color="#1d4ed8" />
+                        </linearGradient>
+                        <linearGradient id="col-left" x1="0" y1="0" x2="1" y2="0">
+                          <stop offset="0%" stop-color="#1d4ed8" />
+                          <stop offset="100%" stop-color="#543c00" />
+                        </linearGradient>
+                        <filter id="shadow-3d" x="-20%" y="-20%" width="140%" height="140%">
+                          <feDropShadow dx="1" dy="2" stdDeviation="1" flood-color="#000000" flood-opacity="0.5" />
+                        </filter>
+                      </defs>
+                      <g filter="url(#shadow-3d)">
+                        <!-- Column 3 (Back) -->
+                        <path d="M19 8 L24 5.5 L29 8 L24 10.5 Z" fill="url(#col-top)" />
+                        <path d="M19 8 L24 10.5 L24 21 L19 18.5 Z" fill="url(#col-left)" />
+                        <path d="M24 10.5 L29 8 L29 18.5 L24 21 Z" fill="url(#col-right)" />
+
+                        <!-- Column 2 (Middle) -->
+                        <path d="M12 14 L17 11.5 L22 14 L17 16.5 Z" fill="url(#col-top)" />
+                        <path d="M12 14 L17 16.5 L17 24 L12 21.5 Z" fill="url(#col-left)" />
+                        <path d="M17 16.5 L22 14 L22 21.5 L17 24 Z" fill="url(#col-right)" />
+
+                        <!-- Column 1 (Front) -->
+                        <path d="M5 20 L10 17.5 L15 20 L10 22.5 Z" fill="url(#col-top)" />
+                        <path d="M5 20 L10 22.5 L10 27 L5 24.5 Z" fill="url(#col-left)" />
+                        <path d="M10 22.5 L15 20 L15 24.5 L10 27 Z" fill="url(#col-right)" />
+
+                        <!-- Floating Trend Arrow (3D styled) -->
+                        <path d="M4 22 L11 15 L17 16.5 L26 7.5" stroke="#ffffff" stroke-width="1.5"
+                          stroke-linecap="round" stroke-linejoin="round"
+                          style="filter: drop-shadow(0 0.125rem 0.25rem rgba(96, 165, 250,0.4));" />
+                        <path d="M21 7.5 H 26 V 12.5" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"
+                          stroke-linejoin="round"
+                          style="filter: drop-shadow(0 0.125rem 0.25rem rgba(96, 165, 250,0.4));" />
+                        <circle cx="26" cy="7.5" r="2" fill="#ffffff" class="pulse-node" />
+                      </g>
+                    </svg>
+                  </div>
+                  <span class="text-white/30 text-xs font-semibold font-inter uppercase tracking-widest">Strategy</span>
+                </div>
+                <h4 class="text-lg md:text-xl font-bold text-white mb-1 font-sans">Director — Strategy & Business
+                  Development</h4>
+                <p class="text-[#3b82f6] text-sm font-semibold mb-3 font-inter">Iterative Research <span
+                    class="text-white/30 mx-2">•</span> <span class="text-white/40 font-normal">Dubai, UAE</span></p>
+                <p class="text-white/55 text-sm leading-relaxed font-inter">Drove AI adoption strategy, data capability
+                  development, and SaaS growth initiatives. Responsible for client advisory across data strategy and
+                  enterprise digital transformation.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Timeline Item 3 -->
+          <div class="exp-item relative flex flex-col md:flex-row md:items-start mb-16 md:mb-20 group">
+            <div
+              class="exp-dot absolute left-[1.75rem] md:left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-[#0a0a0a] border-2 border-white/15 z-10 transition-all duration-500 group-[.is-active]:border-[#3b82f6] group-[.is-active]:bg-[#3b82f6] group-[.is-active]:shadow-[0_0_12px_rgba(59,130,246,0.6)]">
+              <div
+                class="absolute inset-0 rounded-full bg-[#3b82f6]/30 scale-0 group-[.is-active]:scale-[2.5] transition-transform duration-700">
+              </div>
+            </div>
+            <div class="ml-16 md:ml-0 md:w-[calc(50%-2rem)] md:ml-[calc(50%+2rem)]">
+              <div
+                class="exp-card glassmorphism rounded-2xl p-6 md:p-8 border border-white/8 hover:border-[#1d4ed8]/30 transition-all duration-500">
+                <div class="flex items-center gap-3 mb-4">
+                  <div
+                    class="w-10 h-10 rounded-xl bg-[#1d4ed8]/10 flex items-center justify-center border border-[#1d4ed8]/25 text-[#3b82f6]">
+                    <svg class="w-5 h-5" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <defs>
+                        <radialGradient id="globe-sphere" cx="35%" cy="35%" r="65%">
+                          <stop offset="0%" stop-color="#ffffff" />
+                          <stop offset="40%" stop-color="#60a5fa" />
+                          <stop offset="85%" stop-color="#1d4ed8" />
+                          <stop offset="100%" stop-color="#422e00" />
+                        </radialGradient>
+                        <linearGradient id="ring-grad" x1="0" y1="0" x2="1" y2="1">
+                          <stop offset="0%" stop-color="#ffffff" stop-opacity="0.8" />
+                          <stop offset="50%" stop-color="#60a5fa" stop-opacity="0.5" />
+                          <stop offset="100%" stop-color="#1d4ed8" stop-opacity="0.1" />
+                        </linearGradient>
+                      </defs>
+                      <!-- Back half of the ring -->
+                      <path d="M 6 20 C 7 13, 23 10, 27 15" stroke="url(#ring-grad)" stroke-width="1.5"
+                        stroke-linecap="round" />
+
+                      <!-- Globe Sphere -->
+                      <circle cx="16" cy="16" r="9.5" fill="url(#globe-sphere)"
+                        style="filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));" />
+
+                      <!-- Grid Lines -->
+                      <path d="M 7.5 12 A 9.5 4.5 0 0 0 24.5 12" stroke="#ffffff" stroke-width="0.75"
+                        stroke-opacity="0.3" />
+                      <path d="M 6.5 16 A 9.5 5.5 0 0 0 25.5 16" stroke="#ffffff" stroke-width="0.75"
+                        stroke-opacity="0.4" />
+                      <path d="M 7.5 20 A 9.5 4.5 0 0 0 24.5 20" stroke="#ffffff" stroke-width="0.75"
+                        stroke-opacity="0.3" />
+
+                      <path d="M 12 6.5 A 5.5 9.5 0 0 0 12 25.5" stroke="#ffffff" stroke-width="0.75"
+                        stroke-opacity="0.3" />
+                      <path d="M 16 6.5 A 1 9.5 0 0 0 16 25.5" stroke="#ffffff" stroke-width="0.75"
+                        stroke-opacity="0.4" />
+                      <path d="M 20 6.5 A 5.5 9.5 0 0 0 20 25.5" stroke="#ffffff" stroke-width="0.75"
+                        stroke-opacity="0.3" />
+
+                      <!-- Front half of the ring -->
+                      <path d="M 27 15 C 26 21, 10 23, 6 20" stroke="url(#ring-grad)" stroke-width="1.5"
+                        stroke-linecap="round" />
+
+                      <!-- Pulse nodes -->
+                      <circle cx="12" cy="12" r="1.5" fill="#ffffff" class="pulse-node" />
+                      <circle cx="20" cy="16" r="1.5" fill="#ffffff" class="pulse-node" />
+                      <circle cx="16" cy="20" r="1.5" fill="#ffffff" class="pulse-node" />
+                    </svg>
+                  </div>
+                  <span
+                    class="text-white/30 text-xs font-semibold font-inter uppercase tracking-widest">Consulting</span>
+                </div>
+                <h4 class="text-lg md:text-xl font-bold text-white mb-1 font-sans">Senior Consultant</h4>
+                <p class="text-[#3b82f6] text-sm font-semibold mb-3 font-inter">Blue Brain Strategy <span
+                    class="text-white/30 mx-2">•</span> <span class="text-white/40 font-normal">International</span></p>
+                <p class="text-white/55 text-sm leading-relaxed font-inter">Delivered data governance programmes,
+                  analytics transformation projects, and cloud-based business intelligence solutions for enterprise
+                  clients across multiple sectors.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Timeline Item 4 -->
+          <div class="exp-item relative flex flex-col md:flex-row md:items-start mb-16 md:mb-20 group">
+            <div
+              class="exp-dot absolute left-[1.75rem] md:left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-[#0a0a0a] border-2 border-white/15 z-10 transition-all duration-500 group-[.is-active]:border-[#3b82f6] group-[.is-active]:bg-[#3b82f6] group-[.is-active]:shadow-[0_0_12px_rgba(59,130,246,0.6)]">
+              <div
+                class="absolute inset-0 rounded-full bg-[#3b82f6]/30 scale-0 group-[.is-active]:scale-[2.5] transition-transform duration-700">
+              </div>
+            </div>
+            <div class="ml-16 md:ml-0 md:w-[calc(50%-2rem)] md:text-right">
+              <div
+                class="exp-card glassmorphism rounded-2xl p-6 md:p-8 border border-white/8 hover:border-[#1d4ed8]/30 transition-all duration-500">
+                <div class="flex items-center gap-3 mb-4 md:flex-row-reverse">
+                  <div
+                    class="w-10 h-10 rounded-xl bg-[#1d4ed8]/10 flex items-center justify-center border border-[#1d4ed8]/25 text-[#3b82f6]">
+                    <svg class="w-5 h-5" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <defs>
+                        <linearGradient id="case-top" x1="16" y1="4" x2="16" y2="11" gradientUnits="userSpaceOnUse">
+                          <stop offset="0%" stop-color="#ffffff" />
+                          <stop offset="100%" stop-color="#60a5fa" />
+                        </linearGradient>
+                        <linearGradient id="case-right" x1="16" y1="11" x2="24" y2="18.5"
+                          gradientUnits="userSpaceOnUse">
+                          <stop offset="0%" stop-color="#60a5fa" />
+                          <stop offset="100%" stop-color="#1d4ed8" />
+                        </linearGradient>
+                        <linearGradient id="case-left" x1="8" y1="7.5" x2="16" y2="22" gradientUnits="userSpaceOnUse">
+                          <stop offset="0%" stop-color="#1d4ed8" />
+                          <stop offset="100%" stop-color="#3d2b00" />
+                        </linearGradient>
+                        <linearGradient id="case-handle" x1="13" y1="2" x2="19" y2="6.5" gradientUnits="userSpaceOnUse">
+                          <stop offset="0%" stop-color="#ffffff" />
+                          <stop offset="100%" stop-color="#1d4ed8" />
+                        </linearGradient>
+                      </defs>
+                      <path d="M 12.5 6 L 12.5 3.5 C 12.5 2.5, 19.5 2.5, 19.5 3.5 L 19.5 6" stroke="url(#case-handle)"
+                        stroke-width="1.5" stroke-linecap="round" fill="none" />
+                      <path d="M 8 7.5 L 16 11.2 L 16 22 L 8 18.2 Z" fill="url(#case-left)" />
+                      <path d="M 16 11.2 L 24 7.5 L 24 18.2 L 16 22 Z" fill="url(#case-right)" />
+                      <path d="M 16 11.2 L 24 7.5 L 16 3.8 L 8 7.5 Z" fill="url(#case-top)" />
+                      <path d="M 11.5 11 L 12.5 11.5 L 12.5 15.5 L 11.5 15 Z" fill="#ffffff" opacity="0.9"
+                        style="filter: drop-shadow(0 0.0625rem 0.125rem rgba(0,0,0,0.5));" />
+                      <circle cx="12" cy="14.5" r="0.75" fill="#1d4ed8" />
+                      <path d="M 19.5 11.5 L 20.5 11 L 20.5 15 L 19.5 15.5 Z" fill="#ffffff" opacity="0.9"
+                        style="filter: drop-shadow(0 0.0625rem 0.125rem rgba(0,0,0,0.5));" />
+                      <circle cx="20" cy="14.5" r="0.75" fill="#1d4ed8" />
+                      <path d="M 8 16 L 8 18.2 L 10 19.2 L 10 17 Z" fill="#60a5fa" opacity="0.8" />
+                      <path d="M 24 16 L 24 18.2 L 22 19.2 L 22 17 Z" fill="#60a5fa" opacity="0.8" />
+                    </svg>
+                  </div>
+                  <span
+                    class="text-white/30 text-xs font-semibold font-inter uppercase tracking-widest">Enterprise</span>
+                </div>
+                <h4 class="text-lg md:text-xl font-bold text-white mb-1 font-sans">Oracle Techno-Functional Lead
+                  Consultant</h4>
+                <p class="text-[#3b82f6] text-sm font-semibold mb-3 font-inter">Tata Consultancy Services <span
+                    class="text-white/30 mx-2">•</span> <span class="text-white/40 font-normal">EMEA</span></p>
+                <p class="text-white/55 text-sm leading-relaxed font-inter">Led enterprise ERP implementations across
+                  the EMEA region, with responsibility for functional design, data migration strategy, and analytics
+                  integration on Oracle platforms.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Timeline Item 5 -->
+          <div class="exp-item relative flex flex-col md:flex-row md:items-start group">
+            <div
+              class="exp-dot absolute left-[1.75rem] md:left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-[#0a0a0a] border-2 border-white/15 z-10 transition-all duration-500 group-[.is-active]:border-[#3b82f6] group-[.is-active]:bg-[#3b82f6] group-[.is-active]:shadow-[0_0_12px_rgba(59,130,246,0.6)]">
+              <div
+                class="absolute inset-0 rounded-full bg-[#3b82f6]/30 scale-0 group-[.is-active]:scale-[2.5] transition-transform duration-700">
+              </div>
+            </div>
+            <div class="ml-16 md:ml-0 md:w-[calc(50%-2rem)] md:ml-[calc(50%+2rem)]">
+              <div
+                class="exp-card glassmorphism rounded-2xl p-6 md:p-8 border border-white/8 hover:border-[#1d4ed8]/30 transition-all duration-500">
+                <div class="flex items-center gap-3 mb-4">
+                  <div
+                    class="w-10 h-10 rounded-xl bg-[#1d4ed8]/10 flex items-center justify-center border border-[#1d4ed8]/25 text-[#3b82f6]">
+                    <svg class="w-5 h-5" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <defs>
+                        <linearGradient id="db-top" x1="8" y1="5" x2="24" y2="11" gradientUnits="userSpaceOnUse">
+                          <stop offset="0%" stop-color="#ffffff" />
+                          <stop offset="100%" stop-color="#60a5fa" />
+                        </linearGradient>
+                        <linearGradient id="db-body" x1="8" y1="0" x2="24" y2="0" gradientUnits="userSpaceOnUse">
+                          <stop offset="0%" stop-color="#543a00" />
+                          <stop offset="25%" stop-color="#60a5fa" />
+                          <stop offset="65%" stop-color="#1d4ed8" />
+                          <stop offset="100%" stop-color="#302000" />
+                        </linearGradient>
+                      </defs>
+                      <path d="M 8 22 A 8 3 0 0 0 24 22 L 24 27 A 8 3 0 0 1 8 27 Z" fill="url(#db-body)" />
+                      <ellipse cx="16" cy="22" rx="8" ry="3" fill="url(#db-top)" />
+                      <path d="M 10 24.5 H 14" stroke="#ffffff" stroke-width="0.5" opacity="0.7" />
+                      <circle cx="21" cy="24.5" r="0.75" fill="#ffffff" class="pulse-node" />
+
+                      <path d="M 8 15 A 8 3 0 0 0 24 15 L 24 20 A 8 3 0 0 1 8 20 Z" fill="url(#db-body)" />
+                      <ellipse cx="16" cy="15" rx="8" ry="3" fill="url(#db-top)" />
+                      <path d="M 10 17.5 H 14" stroke="#ffffff" stroke-width="0.5" opacity="0.7" />
+                      <circle cx="21" cy="17.5" r="0.75" fill="#ffffff" class="pulse-node" />
+
+                      <path d="M 8 8 A 8 3 0 0 0 24 8 L 24 13 A 8 3 0 0 1 8 13 Z" fill="url(#db-body)" />
+                      <ellipse cx="16" cy="8" rx="8" ry="3" fill="url(#db-top)" />
+                      <path d="M 10 10.5 H 14" stroke="#ffffff" stroke-width="0.5" opacity="0.7" />
+                      <circle cx="21" cy="10.5" r="0.75" fill="#ffffff" class="pulse-node" />
+                    </svg>
+                  </div>
+                  <span
+                    class="text-white/30 text-xs font-semibold font-inter uppercase tracking-widest">Foundation</span>
+                </div>
+                <h4 class="text-lg md:text-xl font-bold text-white mb-1 font-sans">Oracle ERP Functional Analyst</h4>
+                <p class="text-[#3b82f6] text-sm font-semibold mb-3 font-inter">Accenture <span
+                    class="text-white/30 mx-2">•</span> <span class="text-white/40 font-normal">Global</span></p>
+                <p class="text-white/55 text-sm leading-relaxed font-inter">Delivered global ERP transformation
+                  engagements with a focus on business process optimization, operational data design, and
+                  cross-functional stakeholder alignment.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Technology Expertise Section -->
+    <section id="technology" class="relative pb-30 pt-10 overflow-hidden w-full">
+
+
+      <div class="max-w-[90%] mx-auto px-6 md:px-12 relative z-10">
+        <!-- Section Header -->
+        <div class="text-center mx-auto">
+          <h2 class="text-xs md:text-sm font-semibold uppercase tracking-widest text-[#1d4ed8] mb-2 font-inter">
+            TECHNOLOGY EXPERTISE
+          </h2>
+          <h3 class="text-3xl md:text-5xl font-serif font-extrabold tracking-tight text-white mb-6">
+            Platforms & Technologies
+          </h3>
+          <p class="text-white/60 w-1/2 mx-auto text-base md:text-lg leading-relaxed font-inter">
+            I bring hands-on proficiency across the full data and analytics stack — from strategy and governance through
+            to platform architecture and delivery execution.
+          </p>
+        </div>
+
+        <div class="max-w-[80%] mx-auto">
+          <div class="flex flex-col pt-20 w-full items-center justify-center">
+            <div class="text-2xl font-semibold">
+              Strategy & Governance
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 w-full gap-6 pt-10">
+              <!-- Card 1: Data Strategy -->
+              <div class="premium-card group">
+                <div class="icon-wrapper">
+                  <img src="/assets/images/strat_3d_icon.png" class="w-full h-full object-contain" alt="Data Strategy">
+                </div>
+                <h4
+                  class="text-xs font-bold text-gray-300 group-hover:text-[#3b82f6] transition-colors duration-300 font-sans tracking-widest uppercase mt-2">
+                  Data Strategy</h4>
+              </div>
+
+              <!-- Card 2: Data Governance -->
+              <div class="premium-card group">
+                <div class="icon-wrapper">
+                  <img src="/assets/images/gov_3d_icon.png" class="w-full h-full object-contain" alt="Data Governance">
+                </div>
+                <h4
+                  class="text-xs font-bold text-gray-300 group-hover:text-[#3b82f6] transition-colors duration-300 font-sans tracking-widest uppercase mt-2">
+                  Data Governance</h4>
+              </div>
+
+              <!-- Card 3: Master Data Management -->
+              <div class="premium-card group">
+                <div class="icon-wrapper">
+                  <img src="/assets/images/mdm_3d_icon.png" class="w-full h-full object-contain"
+                    alt="Master Data Management">
+                </div>
+                <h4
+                  class="text-xs font-bold text-gray-300 group-hover:text-[#3b82f6] transition-colors duration-300 font-sans tracking-widest uppercase mt-2 text-center">
+                  Master Data<br class="hidden lg:block" /> Management</h4>
+              </div>
+
+              <!-- Card 4: AI Strategy -->
+              <div class="premium-card group">
+                <div class="icon-wrapper">
+                  <img src="/assets/images/ai_3d_icon.png" class="w-full h-full object-contain" alt="AI Strategy">
+                </div>
+                <h4
+                  class="text-xs font-bold text-gray-300 group-hover:text-[#3b82f6] transition-colors duration-300 font-sans tracking-widest uppercase mt-2">
+                  AI Strategy</h4>
+              </div>
+
+              <!-- Card 5: AI Governance -->
+              <div class="premium-card group">
+                <div class="icon-wrapper">
+                  <img src="/assets/images/aig_3d_icon.png" class="w-full h-full object-contain" alt="AI Governance">
+                </div>
+                <h4
+                  class="text-xs font-bold text-gray-300 group-hover:text-[#3b82f6] transition-colors duration-300 font-sans tracking-widest uppercase mt-2">
+                  AI Governance</h4>
+              </div>
+            </div>
+          </div>
+          <div class="flex flex-col pt-20 w-full items-center justify-center">
+            <div class="text-2xl font-semibold">
+              Analytics & BI
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 w-full gap-6 pt-10">
+              <!-- Card 1: Power BI -->
+              <div class="premium-card group">
+                <div class="icon-wrapper">
+                  <img src="/assets/images/powerbi_3d_icon.png" class="w-full h-full object-contain" alt="Power BI">
+                </div>
+                <h4
+                  class="text-xs font-bold text-gray-300 group-hover:text-[#3b82f6] transition-colors duration-300 font-sans tracking-widest uppercase mt-2">
+                  Power BI</h4>
+              </div>
+
+              <!-- Card 2: Tableau -->
+              <div class="premium-card group">
+                <div class="icon-wrapper">
+                  <img src="/assets/images/tableau_3d_icon.png" class="w-full h-full object-contain" alt="Tableau">
+                </div>
+                <h4
+                  class="text-xs font-bold text-gray-300 group-hover:text-[#3b82f6] transition-colors duration-300 font-sans tracking-widest uppercase mt-2">
+                  Tableau</h4>
+              </div>
+
+              <!-- Card 3: Executive Dashboards -->
+              <div class="premium-card group">
+                <div class="icon-wrapper">
+                  <img src="/assets/images/dashboard_3d_icon.png" class="w-full h-full object-contain"
+                    alt="Executive Dashboards">
+                </div>
+                <h4
+                  class="text-xs font-bold text-gray-300 group-hover:text-[#3b82f6] transition-colors duration-300 font-sans tracking-widest uppercase mt-2 text-center">
+                  Executive<br class="hidden lg:block" /> Dashboards</h4>
+              </div>
+
+              <!-- Card 4: KPI Frameworks -->
+              <div class="premium-card group">
+                <div class="icon-wrapper">
+                  <img src="/assets/images/kpi_3d_icon.png" class="w-full h-full object-contain" alt="KPI Frameworks">
+                </div>
+                <h4
+                  class="text-xs font-bold text-gray-300 group-hover:text-[#3b82f6] transition-colors duration-300 font-sans tracking-widest uppercase mt-2">
+                  KPI Frameworks</h4>
+              </div>
+
+              <!-- Card 5: Enterprise Reporting -->
+              <div class="premium-card group">
+                <div class="icon-wrapper">
+                  <img src="/assets/images/reporting_3d_icon.png" class="w-full h-full object-contain"
+                    alt="Enterprise Reporting">
+                </div>
+                <h4
+                  class="text-xs font-bold text-gray-300 group-hover:text-[#3b82f6] transition-colors duration-300 font-sans tracking-widest uppercase mt-2">
+                  Enterprise Reporting</h4>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cloud Platforms Section -->
+          <div class="flex flex-col pt-20 w-full items-center justify-center">
+            <div class="text-2xl font-semibold">
+              Cloud Platforms
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 w-full gap-6 pt-10">
+              <!-- Card 1: Amazon Web Services (AWS) -->
+              <div class="premium-card group">
+                <div class="icon-wrapper">
+                  <img src="/assets/images/aws_3d_icon.png" class="w-full h-full object-contain"
+                    alt="Amazon Web Services (AWS)">
+                </div>
+                <h4
+                  class="text-xs font-bold text-gray-300 group-hover:text-[#3b82f6] transition-colors duration-300 font-sans tracking-widest uppercase mt-2 text-center">
+                  Amazon Web Services<br class="hidden lg:block" /> (AWS)</h4>
+              </div>
+
+              <!-- Card 2: Microsoft Azure -->
+              <div class="premium-card group">
+                <div class="icon-wrapper">
+                  <img src="/assets/images/azure_3d_icon.png" class="w-full h-full object-contain"
+                    alt="Microsoft Azure">
+                </div>
+                <h4
+                  class="text-xs font-bold text-gray-300 group-hover:text-[#3b82f6] transition-colors duration-300 font-sans tracking-widest uppercase mt-2 text-center">
+                  Microsoft Azure</h4>
+              </div>
+
+              <!-- Card 3: Snowflake -->
+              <div class="premium-card group">
+                <div class="icon-wrapper">
+                  <img src="/assets/images/snowflake_3d_icon.png" class="w-full h-full object-contain" alt="Snowflake">
+                </div>
+                <h4
+                  class="text-xs font-bold text-gray-300 group-hover:text-[#3b82f6] transition-colors duration-300 font-sans tracking-widest uppercase mt-2 text-center">
+                  Snowflake</h4>
+              </div>
+
+              <!-- Card 4: Data Lakes -->
+              <div class="premium-card group">
+                <div class="icon-wrapper">
+                  <img src="/assets/images/datalake_3d_icon.png" class="w-full h-full object-contain" alt="Data Lakes">
+                </div>
+                <h4
+                  class="text-xs font-bold text-gray-300 group-hover:text-[#3b82f6] transition-colors duration-300 font-sans tracking-widest uppercase mt-2 text-center">
+                  Data Lakes</h4>
+              </div>
+
+              <!-- Card 5: Data Warehouses -->
+              <div class="premium-card group">
+                <div class="icon-wrapper">
+                  <img src="/assets/images/datawarehouse_3d_icon.png" class="w-full h-full object-contain"
+                    alt="Data Warehouses">
+                </div>
+                <h4
+                  class="text-xs font-bold text-gray-300 group-hover:text-[#3b82f6] transition-colors duration-300 font-sans tracking-widest uppercase mt-2 text-center">
+                  Data Warehouses</h4>
+              </div>
+            </div>
+          </div>
+
+          <!-- ERP Systems Section -->
+          <div class="flex flex-col pt-20 w-full items-center justify-center">
+            <div class="text-2xl font-semibold">
+              ERP Systems
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 max-w-[60%] mx-auto w-full gap-6 pt-10">
+              <!-- Card 1: Oracle ERP -->
+              <div class="premium-card group">
+                <div class="icon-wrapper">
+                  <img src="/assets/images/oracle_erp_3d_icon.png" class="w-full h-full object-contain"
+                    alt="Oracle ERP">
+                </div>
+                <h4
+                  class="text-xs font-bold text-gray-300 group-hover:text-[#3b82f6] transition-colors duration-300 font-sans tracking-widest uppercase mt-2 text-center">
+                  Oracle ERP</h4>
+              </div>
+
+              <!-- Card 2: Oracle Fusion -->
+              <div class="premium-card group">
+                <div class="icon-wrapper">
+                  <img src="/assets/images/oracle_fusion_3d_icon.png" class="w-full h-full object-contain"
+                    alt="Oracle Fusion">
+                </div>
+                <h4
+                  class="text-xs font-bold text-gray-300 group-hover:text-[#3b82f6] transition-colors duration-300 font-sans tracking-widest uppercase mt-2 text-center">
+                  Oracle Fusion</h4>
+              </div>
+
+              <!-- Card 3: Functional & Technical ERP Delivery -->
+              <div class="premium-card group">
+                <div class="icon-wrapper">
+                  <img src="/assets/images/mdm_3d_icon.png" class="w-full h-full object-contain"
+                    alt="Functional & Technical ERP Delivery">
+                </div>
+                <h4
+                  class="text-xs font-bold text-gray-300 group-hover:text-[#3b82f6] transition-colors duration-300 font-sans tracking-widest uppercase mt-2 text-center">
+                  Functional & Technical<br class="hidden lg:block" /> ERP Delivery</h4>
+              </div>
+            </div>
+          </div>
+
+          <!-- AI & Machine Learning Section -->
+          <div class="flex flex-col pt-20 w-full items-center justify-center">
+            <div class="text-2xl font-semibold">
+              AI & Machine Learning
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 max-w-[80%] mx-auto w-full gap-6 pt-10">
+              <!-- Card 1: Generative AI -->
+              <div class="premium-card group">
+                <div class="icon-wrapper">
+                  <img src="/assets/images/ai_3d_icon.png" class="w-full h-full object-contain" alt="Generative AI">
+                </div>
+                <h4
+                  class="text-xs font-bold text-gray-300 group-hover:text-[#3b82f6] transition-colors duration-300 font-sans tracking-widest uppercase mt-2 text-center">
+                  Generative AI</h4>
+              </div>
+
+              <!-- Card 2: Machine Learning -->
+              <div class="premium-card group">
+                <div class="icon-wrapper">
+                  <img src="/assets/images/kpi_3d_icon.png" class="w-full h-full object-contain" alt="Machine Learning">
+                </div>
+                <h4
+                  class="text-xs font-bold text-gray-300 group-hover:text-[#3b82f6] transition-colors duration-300 font-sans tracking-widest uppercase mt-2 text-center">
+                  Machine Learning</h4>
+              </div>
+
+              <!-- Card 3: AI Use Case Design -->
+              <div class="premium-card group">
+                <div class="icon-wrapper">
+                  <img src="/assets/images/strat_3d_icon.png" class="w-full h-full object-contain"
+                    alt="AI Use Case Design">
+                </div>
+                <h4
+                  class="text-xs font-bold text-gray-300 group-hover:text-[#3b82f6] transition-colors duration-300 font-sans tracking-widest uppercase mt-2 text-center">
+                  AI Use Case Design</h4>
+              </div>
+
+              <!-- Card 4: AI Governance Frameworks -->
+              <div class="premium-card group">
+                <div class="icon-wrapper">
+                  <img src="/assets/images/aig_3d_icon.png" class="w-full h-full object-contain"
+                    alt="AI Governance Frameworks">
+                </div>
+                <h4
+                  class="text-xs font-bold text-gray-300 group-hover:text-[#3b82f6] transition-colors duration-300 font-sans tracking-widest uppercase mt-2 text-center">
+                  AI Governance Frameworks</h4>
+              </div>
+            </div>
+          </div>
+
+          <!-- Data Engineering Section -->
+          <div class="flex flex-col pt-20 w-full items-center justify-center">
+            <div class="text-2xl font-semibold">
+              Data Engineering
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 w-full gap-6 pt-10">
+              <!-- Card 1: SQL -->
+              <div class="premium-card group">
+                <div class="icon-wrapper">
+                  <img src="/assets/images/reporting_3d_icon.png" class="w-full h-full object-contain" alt="SQL">
+                </div>
+                <h4
+                  class="text-xs font-bold text-gray-300 group-hover:text-[#3b82f6] transition-colors duration-300 font-sans tracking-widest uppercase mt-2 text-center">
+                  SQL</h4>
+              </div>
+
+              <!-- Card 2: Python -->
+              <div class="premium-card group">
+                <div class="icon-wrapper">
+                  <img src="/assets/images/gov_3d_icon.png" class="w-full h-full object-contain" alt="Python">
+                </div>
+                <h4
+                  class="text-xs font-bold text-gray-300 group-hover:text-[#3b82f6] transition-colors duration-300 font-sans tracking-widest uppercase mt-2 text-center">
+                  Python</h4>
+              </div>
+
+              <!-- Card 3: Data Modelling -->
+              <div class="premium-card group">
+                <div class="icon-wrapper">
+                  <img src="/assets/images/snowflake_3d_icon.png" class="w-full h-full object-contain"
+                    alt="Data Modelling">
+                </div>
+                <h4
+                  class="text-xs font-bold text-gray-300 group-hover:text-[#3b82f6] transition-colors duration-300 font-sans tracking-widest uppercase mt-2 text-center">
+                  Data Modelling</h4>
+              </div>
+
+              <!-- Card 4: Analytics Engineering -->
+              <div class="premium-card group">
+                <div class="icon-wrapper">
+                  <img src="/assets/images/dashboard_3d_icon.png" class="w-full h-full object-contain"
+                    alt="Analytics Engineering">
+                </div>
+                <h4
+                  class="text-xs font-bold text-gray-300 group-hover:text-[#3b82f6] transition-colors duration-300 font-sans tracking-widest uppercase mt-2 text-center">
+                  Analytics Engineering</h4>
+              </div>
+
+              <!-- Card 5: ETL Pipeline Design -->
+              <div class="premium-card group">
+                <div class="icon-wrapper">
+                  <img src="/assets/images/mdm_3d_icon.png" class="w-full h-full object-contain"
+                    alt="ETL Pipeline Design">
+                </div>
+                <h4
+                  class="text-xs font-bold text-gray-300 group-hover:text-[#3b82f6] transition-colors duration-300 font-sans tracking-widest uppercase mt-2 text-center">
+                  ETL Pipeline Design</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Why Work With Me / The Difference Section -->
+    
