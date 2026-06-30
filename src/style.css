@@ -95,6 +95,7 @@ html.lenis body {
 
 #hero {
   position: relative;
+  --hero-bg-url: url('/assets/images/hero_bg.jpg');
 }
 
 #hero::before {
@@ -694,8 +695,16 @@ html.lenis body {
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
+/* Mobile Drawer Overlay - Default hidden state */
+#mobile-menu {
+  --tw-translate-y: -100%;
+  transform: translateY(-100%);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 /* Mobile Drawer Overlay Open State */
 #mobile-menu.open {
+  --tw-translate-y: 0;
   transform: translateY(0) !important;
 }
 

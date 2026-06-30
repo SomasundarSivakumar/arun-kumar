@@ -1,6 +1,6 @@
 <?php
 // ─────────────────────────────────────────────────────────────────────
-// Fetch all content from MySQL — fallback to hardcoded defaults
+// Fetch all content from MySQL — NO hardcoded data on this page
 // ─────────────────────────────────────────────────────────────────────
 $dbHost = 'localhost';
 $dbUser = 'root';
@@ -14,48 +14,74 @@ try {
     $conn = new mysqli($dbHost, $dbUser, $dbPass, $dbName);
     if (!$conn->connect_error) {
         $conn->set_charset('utf8mb4');
+
+        // Fetch content
         $res = $conn->query('SELECT section, content FROM site_content');
         while ($row = $res->fetch_assoc()) {
             $siteContent[$row['section']] = json_decode($row['content'], true);
         }
+
+        // Fetch theme
         $res2 = $conn->query('SELECT setting_key, setting_value FROM theme_settings');
         while ($row = $res2->fetch_assoc()) {
             $theme[$row['setting_key']] = $row['setting_value'];
         }
+
         $conn->close();
     }
 } catch (Exception $e) {
-    // DB not available — use hardcoded defaults from HTML
+    // DB not available
 }
 
-// ── Extract variables (used only when DB has values) ──────────────
+// ── Defaults (used only when DB is empty / not yet set up) ──────────
 $hero        = $siteContent['hero']        ?? [];
 $about       = $siteContent['about']       ?? [];
+$services    = $siteContent['services']    ?? [];
+$experience  = $siteContent['experience']  ?? [];
+$technology  = $siteContent['technology']  ?? [];
+$expertise   = $siteContent['expertise']   ?? [];
 $contact     = $siteContent['contact']     ?? [];
 $meta        = $siteContent['meta']        ?? [];
 $opportunity = $siteContent['opportunity'] ?? [];
-$capabilities= $siteContent['capabilities']?? [];
-$services    = $siteContent['services']    ?? [];
 $clients     = $siteContent['clients']     ?? [];
-$impact      = $siteContent['impact']      ?? [];
-$experience  = $siteContent['experience']  ?? [];
-$technology  = $siteContent['technology']  ?? [];
 $difference  = $siteContent['difference']  ?? [];
-$expertise   = $siteContent['expertise']   ?? [];
+$capabilities = $siteContent['capabilities'] ?? [];
 
-// Hero
-$heroName     = $hero['name']     ?? 'Arun Kumar Jayakumar';
-$heroTaglines = $hero['taglines'] ?? [];
-$heroBgImage  = resolve_asset(!empty($hero['bg_image']) ? $hero['bg_image'] : '/assets/images/hero.jpg');
+// Hero defaults
+$heroName        = $hero['name']        ?? 'Arun Kumar Jayakumar';
+$heroTitle       = $hero['title']       ?? 'Fractional CDO & Enterprise Data Strategist';
+$heroSubtitle    = $hero['subtitle']    ?? 'Transforming Data into Strategic Advantage';
+$heroDescription = $hero['description'] ?? '14+ years leading high-stakes data and AI transformations across global enterprises';
+$heroCtaText     = $hero['cta_text']    ?? 'Book a Strategy Call';
+$heroCtaUrl      = $hero['cta_url']     ?? '#contact';
+$heroTaglines    = $hero['taglines']    ?? ['Data Strategist', 'AI Advisor', 'Enterprise Transformation Leader'];
+$heroBgImage     = $hero['bg_image']    ?? '/assets/images/hero_bg.jpg';
+if (empty($heroBgImage) || !file_exists(__DIR__ . '/' . ltrim($heroBgImage, '/'))) {
+    $heroBgImage = '/assets/images/hero_bg.jpg';
+}
 
-// About
-$aboutBio   = $about['bio']   ?? '';
-$aboutQuote = $about['quote'] ?? '';
-$aboutImage = resolve_asset($about['image'] ?? '/assets/images/arun_kumar.png');
-$aboutStats = $about['stats'] ?? [];
+// About defaults
+$aboutHeadline   = $about['headline']   ?? 'About Me';
+$aboutSubheading = $about['subheading'] ?? 'Enterprise Data Leader';
+$aboutBio        = $about['bio']        ?? '';
+$aboutQuote      = $about['quote']      ?? '';
+$aboutImage      = $about['image']      ?? '/assets/images/arun_kumar.png';
+$aboutStats      = $about['stats']      ?? [];
 
-// Opportunity
-$oppTitle         = $opportunity['title']         ?? 'Executive Data Leadership — Without the Full-Time Overhead';
+// Services defaults
+$serviceItems = $services['items'] ?? [];
+
+// Experience defaults
+$expJobs = $experience['jobs'] ?? [];
+
+// Technology defaults
+$techCategories = $technology['categories'] ?? [];
+
+// Expertise defaults
+$expertiseItems = $expertise['items'] ?? [];
+
+// Opportunity defaults
+$oppTitle         = $opportunity['title']         ?? '';
 $oppFrictionTitle = $opportunity['friction_title'] ?? '';
 $oppFrictionText  = $opportunity['friction_text']  ?? '';
 $oppQuote         = $opportunity['quote']         ?? '';
@@ -64,32 +90,36 @@ $oppSolutionText  = $opportunity['solution_text']  ?? '';
 $oppPillars       = $opportunity['pillars']       ?? [];
 $oppBottomQuote   = $opportunity['bottom_quote']   ?? '';
 
-// Contact
-$contactHeadline   = $contact['headline']   ?? 'READY TO BUILD A DATA-DRIVEN ORGANIZATION?';
-$contactSubheading = $contact['subheading'] ?? 'Schedule a Strategy Consultation';
-$contactText       = $contact['text']       ?? 'Whether you are exploring AI, modernizing analytics, implementing an ERP system, or establishing enterprise data governance, let us design a practical roadmap that delivers measurable business value.';
-$contactEmail      = $contact['email']      ?? '';
-$contactPhone      = $contact['phone']      ?? '';
-$contactLinkedin   = $contact['linkedin']   ?? '';
-$contactCalendly   = $contact['calendly']   ?? '';
-$contactLocation   = $contact['location']   ?? '';
+// Ideal Clients defaults
+$clientIntro = $clients['intro'] ?? '';
+$clientTabs = $clients['tabs'] ?? [];
 
-// Difference
-$diffHeadline   = $difference['headline']   ?? 'THE DIFFERENCE';
-$diffSubheading = $difference['subheading'] ?? 'Why Work With Me';
-$diffText1      = $difference['text1']      ?? 'Many consultants focus on technology. <span class="text-[#3b82f6] font-semibold">I focus on business outcomes.</span>';
-$diffText2      = $difference['text2']      ?? 'I bridge the gap between executive strategy, business operations, data platforms, and AI innovation — delivering practical roadmaps that create measurable, lasting value.';
+// Difference defaults
+$diffTitle      = $difference['title']      ?? '';
+$diffSubheading = $difference['subheading'] ?? '';
+$diffText1      = $difference['text1']      ?? '';
+$diffText2      = $difference['text2']      ?? '';
 $diffCards      = $difference['cards']      ?? [];
 
-// Meta
+// Contact defaults
+$contactHeadline = $contact['headline'] ?? 'Get In Touch';
+$contactSubheading = $contact['subheading'] ?? 'Book a Strategy Call';
+$contactText     = $contact['text']     ?? '';
+$contactEmail    = $contact['email']    ?? '';
+$contactPhone    = $contact['phone']    ?? '';
+$contactLinkedin = $contact['linkedin'] ?? '';
+$contactCalendly = $contact['calendly'] ?? '';
+$contactLocation = $contact['location'] ?? '';
+
+// Meta defaults
 $metaTitle       = $meta['title']       ?? 'Arun Kumar Jayakumar | Fractional CDO & Enterprise Data Strategist';
-$metaDescription = $meta['description'] ?? 'Portfolio of Arun Kumar Jayakumar, a Fractional CDO and Enterprise Data Strategy Consultant with over 14 years of experience leading high-stakes data and AI transformations.';
+$metaDescription = $meta['description'] ?? '';
 $metaKeywords    = $meta['keywords']    ?? '';
 
-// Theme
+// Theme defaults
 $primaryColor = $theme['primary_color'] ?? '#1d4ed8';
 $accentColor  = $theme['accent_color']  ?? '#60a5fa';
-$bgColor      = $theme['bg_color']      ?? '#060913';
+$bgColor      = $theme['bg_color']      ?? '#0b1a36';
 $textColor    = $theme['text_color']    ?? '#f3f4f6';
 $sidebarBg    = $theme['sidebar_bg']    ?? '#03050a';
 
@@ -115,422 +145,134 @@ if ($isDev) {
 
 function h($s) { return htmlspecialchars($s ?? '', ENT_QUOTES, 'UTF-8'); }
 
-function resolve_asset($path) {
-    global $isDev, $viteHost;
-    if (empty($path)) return '';
-    
-    if (strpos($path, 'http://') === 0 || strpos($path, 'https://') === 0) {
-        return $path;
-    }
-    
-    $cleanPath = ltrim($path, '/');
-    if (strpos($cleanPath, '../') === 0) {
-        $cleanPath = substr($cleanPath, 3);
-    }
-    
-    if (strpos($cleanPath, 'public/') === 0) {
-        $cleanPath = substr($cleanPath, 7);
-    }
-    if (strpos($cleanPath, 'dist/') === 0) {
-        $cleanPath = substr($cleanPath, 5);
-    }
-    
-    if ($isDev) {
-        return $viteHost . '/' . $cleanPath;
+function hexToRgb($hex) {
+    $hex = ltrim($hex, '#');
+    if (strlen($hex) == 6) {
+        $r = $hex[0].$hex[1];
+        $g = $hex[2].$hex[3];
+        $b = $hex[4].$hex[5];
+    } elseif (strlen($hex) == 3) {
+        $r = $hex[0].$hex[0];
+        $g = $hex[1].$hex[1];
+        $b = $hex[2].$hex[2];
     } else {
-        $baseUrl = '';
-        if (isset($_SERVER['SCRIPT_NAME'])) {
-            $dir = dirname($_SERVER['SCRIPT_NAME']);
-            if ($dir !== '/' && $dir !== '\\') {
-                $baseUrl = rtrim($dir, '/\\');
-            }
-        }
-        
-        if (is_dir(__DIR__ . '/dist')) {
-            if (!empty($baseUrl)) {
-                return $baseUrl . '/dist/' . $cleanPath;
-            } else {
-                return 'dist/' . $cleanPath;
-            }
-        } else {
-            if (!empty($baseUrl)) {
-                return $baseUrl . '/' . $cleanPath;
-            } else {
-                return '/' . $cleanPath;
-            }
-        }
+        return '6, 9, 19';
     }
+    return hexdec($r) . ', ' . hexdec($g) . ', ' . hexdec($b);
 }
 
-// ── SVG Helper Functions ──────────────────────────────────────────────
-function getExpertiseSvg($name) {
-    $n = strtolower($name);
-    if (strpos($n, 'manufactur') !== false) {
+function getVerticalIcon($name) {
+    $l = strtolower($name);
+    if (str_contains($l, 'manufacturing')) {
         return '<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#60a5fa">
-                  <path d="M2 21V13L6 10V13L10 10V21Z" fill="rgba(96, 165, 250,0.1)" stroke-width="1.2" stroke-linejoin="round" />
-                  <rect x="10" y="13" width="12" height="8" rx="0.5" fill="rgba(96, 165, 250,0.07)" stroke-width="1.2" />
-                  <rect x="15" y="7" width="3.5" height="6" fill="rgba(96,165,250,0.15)" stroke-width="1" />
-                  <rect x="7" y="17" width="2.5" height="4" fill="rgba(96, 165, 250,0.25)" stroke-width="0.8" />
-                  <g>
-                    <animateTransform attributeName="transform" type="rotate" from="0 18 17.5" to="360 18 17.5" dur="4s" repeatCount="indefinite" />
-                    <circle cx="18" cy="17.5" r="2.8" stroke-width="1.2" fill="rgba(96, 165, 250,0.08)" />
-                    <circle cx="18" cy="17.5" r="0.9" fill="#60a5fa" stroke="none" />
-                    <line x1="18" y1="14.7" x2="18" y2="20.3" stroke-width="0.8" />
-                    <line x1="15.2" y1="17.5" x2="20.8" y2="17.5" stroke-width="0.8" />
-                  </g>
-                  <circle cx="16.5" cy="5" r="2" fill="#60a5fa" stroke="none" opacity="0.2">
-                    <animate attributeName="cy" values="5;2;5" dur="3s" repeatCount="indefinite" />
-                    <animate attributeName="opacity" values="0.2;0;0.2" dur="3s" repeatCount="indefinite" />
-                    <animate attributeName="r" values="2;3.5;2" dur="3s" repeatCount="indefinite" />
-                  </circle>
-                </svg>';
-    } elseif (strpos($n, 'supply') !== false || strpos($n, 'chain') !== false) {
+            <path d="M2 21V13L6 10V13L10 10V21Z" fill="rgba(96, 165, 250,0.1)" stroke-width="1.2" stroke-linejoin="round" />
+            <rect x="10" y="13" width="12" height="8" rx="0.5" fill="rgba(96, 165, 250,0.07)" stroke-width="1.2" />
+            <rect x="15" y="7" width="3.5" height="6" fill="rgba(96,165,250,0.15)" stroke-width="1" />
+            <rect x="7" y="17" width="2.5" height="4" fill="rgba(96, 165, 250,0.25)" stroke-width="0.8" />
+            <g>
+              <animateTransform attributeName="transform" type="rotate" from="0 18 17.5" to="360 18 17.5" dur="4s" repeatCount="indefinite" />
+              <circle cx="18" cy="17.5" r="2.8" stroke-width="1.2" fill="rgba(96, 165, 250,0.08)" />
+              <circle cx="18" cy="17.5" r="0.9" fill="#60a5fa" stroke="none" />
+              <line x1="18" y1="14.7" x2="18" y2="20.3" stroke-width="0.8" />
+              <line x1="15.2" y1="17.5" x2="20.8" y2="17.5" stroke-width="0.8" />
+            </g>
+            <circle cx="16.5" cy="5" r="2" fill="#60a5fa" stroke="none" opacity="0.2">
+              <animate attributeName="cy" values="5;2;5" dur="3s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0.2;0;0.2" dur="3s" repeatCount="indefinite" />
+              <animate attributeName="r" values="2;3.5;2" dur="3s" repeatCount="indefinite" />
+            </circle>
+        </svg>';
+    } else if (str_contains($l, 'supply chain') || str_contains($l, 'supplychain')) {
         return '<svg width="30" height="30" viewBox="0 0 24 24" fill="none">
-                  <circle cx="12" cy="12" r="3" fill="rgba(96, 165, 250,0.3)" stroke="#60a5fa" stroke-width="1.5" />
-                  <line x1="12" y1="9" x2="12" y2="3" stroke="#60a5fa" stroke-width="1.1" />
-                  <line x1="14.6" y1="10.5" x2="20" y2="6.5" stroke="#60a5fa" stroke-width="1.1" />
-                  <line x1="14.6" y1="13.5" x2="20" y2="17.5" stroke="#60a5fa" stroke-width="1.1" />
-                  <line x1="12" y1="15" x2="12" y2="21" stroke="#60a5fa" stroke-width="1.1" />
-                  <line x1="9.4" y1="13.5" x2="4" y2="17.5" stroke="#60a5fa" stroke-width="1.1" />
-                  <line x1="9.4" y1="10.5" x2="4" y2="6.5" stroke="#60a5fa" stroke-width="1.1" />
-                  <circle cx="12" cy="2" r="2" fill="rgba(96, 165, 250,0.25)" stroke="#60a5fa" stroke-width="1.2" />
-                  <circle cx="21" cy="6" r="2" fill="rgba(96, 165, 250,0.2)" stroke="#60a5fa" stroke-width="1.2" />
-                  <circle cx="21" cy="18" r="2" fill="rgba(96, 165, 250,0.2)" stroke="#60a5fa" stroke-width="1.2" />
-                  <circle cx="12" cy="22" r="2" fill="rgba(96, 165, 250,0.25)" stroke="#60a5fa" stroke-width="1.2" />
-                  <circle cx="3" cy="18" r="2" fill="rgba(96, 165, 250,0.2)" stroke="#60a5fa" stroke-width="1.2" />
-                  <circle cx="3" cy="6" r="2" fill="rgba(96, 165, 250,0.2)" stroke="#60a5fa" stroke-width="1.2" />
-                  <circle cx="12" cy="12" r="5" fill="none" stroke="#60a5fa" stroke-width="0.5" opacity="0.35">
-                    <animate attributeName="r" values="3;7;3" dur="2.5s" repeatCount="indefinite" />
-                    <animate attributeName="opacity" values="0.5;0;0.5" dur="2.5s" repeatCount="indefinite" />
-                  </circle>
-                  <circle cx="12" cy="6" r="1.2" fill="#60a5fa">
-                    <animate attributeName="cy" values="9;2;9" dur="2s" repeatCount="indefinite" />
-                    <animate attributeName="opacity" values="1;0;1" dur="2s" repeatCount="indefinite" />
-                  </circle>
-                </svg>';
-    } elseif (strpos($n, 'logistic') !== false || strpos($n, 'saas') !== false || strpos($n, 'transport') !== false || strpos($n, 'deliver') !== false) {
+            <circle cx="12" cy="12" r="3" fill="rgba(96, 165, 250,0.3)" stroke="#60a5fa" stroke-width="1.5" />
+            <line x1="12" y1="9" x2="12" y2="3" stroke="#60a5fa" stroke-width="1.1" />
+            <line x1="14.6" y1="10.5" x2="20" y2="6.5" stroke="#60a5fa" stroke-width="1.1" />
+            <line x1="14.6" y1="13.5" x2="20" y2="17.5" stroke="#60a5fa" stroke-width="1.1" />
+            <line x1="12" y1="15" x2="12" y2="21" stroke="#60a5fa" stroke-width="1.1" />
+            <line x1="9.4" y1="13.5" x2="4" y2="17.5" stroke="#60a5fa" stroke-width="1.1" />
+            <line x1="9.4" y1="10.5" x2="4" y2="6.5" stroke="#60a5fa" stroke-width="1.1" />
+            <circle cx="12" cy="2" r="2" fill="rgba(96, 165, 250,0.25)" stroke="#60a5fa" stroke-width="1.2" />
+            <circle cx="21" cy="6" r="2" fill="rgba(96, 165, 250,0.2)" stroke="#60a5fa" stroke-width="1.2" />
+            <circle cx="21" cy="18" r="2" fill="rgba(96, 165, 250,0.2)" stroke="#60a5fa" stroke-width="1.2" />
+            <circle cx="12" cy="22" r="2" fill="rgba(96, 165, 250,0.25)" stroke="#60a5fa" stroke-width="1.2" />
+            <circle cx="3" cy="18" r="2" fill="rgba(96, 165, 250,0.2)" stroke="#60a5fa" stroke-width="1.2" />
+            <circle cx="3" cy="6" r="2" fill="rgba(96, 165, 250,0.2)" stroke="#60a5fa" stroke-width="1.2" />
+            <circle cx="12" cy="12" r="5" fill="none" stroke="#60a5fa" stroke-width="0.5" opacity="0.35">
+              <animate attributeName="r" values="3;7;3" dur="2.5s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0.5;0;0.5" dur="2.5s" repeatCount="indefinite" />
+            </circle>
+            <circle cx="12" cy="6" r="1.2" fill="#60a5fa">
+              <animate attributeName="cy" values="9;2;9" dur="2s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="1;0;1" dur="2s" repeatCount="indefinite" />
+            </circle>
+        </svg>';
+    } else if (str_contains($l, 'logistics')) {
         return '<svg width="30" height="30" viewBox="0 0 24 24" fill="none">
-                  <rect x="1" y="9" width="13" height="8" rx="1" fill="rgba(96,165,250,0.15)" stroke="#60a5fa" stroke-width="1.3" />
-                  <line x1="7" y1="9" x2="7" y2="17" stroke="#60a5fa" stroke-width="0.7" opacity="0.5" />
-                  <line x1="4" y1="12" x2="10" y2="12" stroke="#60a5fa" stroke-width="0.6" opacity="0.4" />
-                  <path d="M14 12 L14 17 L22 17 L22 13.5 L20 9 L14 9 Z" fill="rgba(96, 165, 250,0.2)" stroke="#60a5fa" stroke-width="1.3" stroke-linejoin="round" />
-                  <path d="M15.5 10.5 L20 10.5 L21.5 13.5 L15.5 13.5 Z" fill="rgba(96, 165, 250,0.35)" stroke="#60a5fa" stroke-width="0.8" />
-                  <circle cx="5" cy="19.5" r="2.5" fill="rgba(10,10,20,0.9)" stroke="#60a5fa" stroke-width="1.3" />
-                  <circle cx="5" cy="19.5" r="0.8" fill="#60a5fa" />
-                  <circle cx="11.5" cy="19.5" r="2.5" fill="rgba(10,10,20,0.9)" stroke="#60a5fa" stroke-width="1.3" />
-                  <circle cx="11.5" cy="19.5" r="0.8" fill="#60a5fa" />
-                  <circle cx="19" cy="19.5" r="2.5" fill="rgba(10,10,20,0.9)" stroke="#60a5fa" stroke-width="1.3" />
-                  <circle cx="19" cy="19.5" r="0.8" fill="#60a5fa" />
-                  <circle cx="22" cy="15" r="1" fill="#60a5fa">
-                    <animate attributeName="opacity" values="0.5;1;0.5" dur="1.5s" repeatCount="indefinite" />
-                  </circle>
-                </svg>';
-    } elseif (strpos($n, 'public') !== false || strpos($n, 'sector') !== false || strpos($n, 'gov') !== false) {
+            <rect x="1" y="9" width="13" height="8" rx="1" fill="rgba(96,165,250,0.15)" stroke="#60a5fa" stroke-width="1.3" />
+            <line x1="7" y1="9" x2="7" y2="17" stroke="#60a5fa" stroke-width="0.7" opacity="0.5" />
+            <line x1="4" y1="12" x2="10" y2="12" stroke="#60a5fa" stroke-width="0.6" opacity="0.4" />
+            <path d="M14 12 L14 17 L22 17 L22 13.5 L20 9 L14 9 Z" fill="rgba(96, 165, 250,0.2)" stroke="#60a5fa" stroke-width="1.3" stroke-linejoin="round" />
+            <path d="M15.5 10.5 L20 10.5 L21.5 13.5 L15.5 13.5 Z" fill="rgba(96, 165, 250,0.35)" stroke="#60a5fa" stroke-width="0.8" />
+            <circle cx="5" cy="19.5" r="2.5" fill="rgba(10,10,20,0.9)" stroke="#60a5fa" stroke-width="1.3" />
+            <circle cx="5" cy="19.5" r="0.8" fill="#60a5fa" />
+            <circle cx="11.5" cy="19.5" r="2.5" fill="rgba(10,10,20,0.9)" stroke="#60a5fa" stroke-width="1.3" />
+            <circle cx="11.5" cy="19.5" r="0.8" fill="#60a5fa" />
+            <circle cx="19" cy="19.5" r="2.5" fill="rgba(10,10,20,0.9)" stroke="#60a5fa" stroke-width="1.3" />
+            <circle cx="19" cy="19.5" r="0.8" fill="#60a5fa" />
+            <circle cx="22" cy="15" r="1" fill="#60a5fa">
+              <animate attributeName="opacity" values="0.5;1;0.5" dur="1.5s" repeatCount="indefinite" />
+            </circle>
+        </svg>';
+    } else if (str_contains($l, 'public sector') || str_contains($l, 'public')) {
         return '<svg width="30" height="30" viewBox="0 0 24 24" fill="none">
-                  <polygon points="12,1 22,7 2,7" fill="rgba(96, 165, 250,0.2)" stroke="#60a5fa" stroke-width="1.3" stroke-linejoin="round" />
-                  <rect x="2" y="7" width="20" height="2.5" fill="rgba(96,165,250,0.15)" stroke="#60a5fa" stroke-width="1" />
-                  <rect x="3" y="9.5" width="3" height="11" fill="rgba(96, 165, 250,0.12)" stroke="#60a5fa" stroke-width="1" />
-                  <rect x="8" y="9.5" width="3" height="11" fill="rgba(96, 165, 250,0.08)" stroke="#60a5fa" stroke-width="1" />
-                  <rect x="13" y="9.5" width="3" height="11" fill="rgba(96, 165, 250,0.08)" stroke="#60a5fa" stroke-width="1" />
-                  <rect x="18" y="9.5" width="3" height="11" fill="rgba(96, 165, 250,0.12)" stroke="#60a5fa" stroke-width="1" />
-                  <rect x="1.5" y="20.5" width="21" height="2" rx="0.3" fill="rgba(96, 165, 250,0.18)" stroke="#60a5fa" stroke-width="1" />
-                  <rect x="1.5" y="22.5" width="22" height="1" rx="0.3" fill="rgba(96, 165, 250,0.1)" stroke="#60a5fa" stroke-width="0.8" />
-                  <circle cx="12" cy="4" r="1.8" fill="#60a5fa">
-                    <animate attributeName="opacity" values="0.5;1;0.5" dur="2.5s" repeatCount="indefinite" />
-                  </circle>
-                </svg>';
-    } elseif (strpos($n, 'tech') !== false || strpos($n, 'enterprise') !== false || strpos($n, 'cloud') !== false || strpos($n, 'system') !== false) {
-        return '<svg width="30" height="30" viewBox="0 0 24 24" fill="none">
-                  <rect x="2" y="2" width="20" height="5.5" rx="1.2" fill="rgba(96,165,250,0.15)" stroke="#60a5fa" stroke-width="1.2" />
-                  <rect x="3.5" y="3.5" width="2.5" height="2.5" rx="0.4" fill="rgba(96, 165, 250,0.3)" stroke="#60a5fa" stroke-width="0.6" />
-                  <rect x="7" y="3.5" width="2.5" height="2.5" rx="0.4" fill="rgba(96, 165, 250,0.2)" stroke="#60a5fa" stroke-width="0.6" />
-                  <circle cx="19.5" cy="4.75" r="1.3" fill="#60a5fa">
-                    <animate attributeName="opacity" values="1;0.2;1" dur="0.9s" repeatCount="indefinite" />
-                  </circle>
-                  <circle cx="22" cy="4.75" r="1.3" fill="rgba(96, 165, 250,0.4)">
-                    <animate attributeName="opacity" values="0.2;1;0.2" dur="0.9s" repeatCount="indefinite" />
-                  </circle>
-                  <rect x="2" y="9.25" width="20" height="5.5" rx="1.2" fill="rgba(96, 165, 250,0.12)" stroke="#60a5fa" stroke-width="1.2" />
-                  <rect x="3.5" y="10.75" width="2.5" height="2.5" rx="0.4" fill="rgba(96, 165, 250,0.25)" stroke="#60a5fa" stroke-width="0.6" />
-                  <rect x="7" y="10.75" width="2.5" height="2.5" rx="0.4" fill="rgba(96,165,250,0.15)" stroke="#60a5fa" stroke-width="0.6" />
-                  <circle cx="19.5" cy="12" r="1.3" fill="#60a5fa">
-                    <animate attributeName="opacity" values="0.2;1;0.2" dur="1.3s" repeatCount="indefinite" />
-                  </circle>
-                  <circle cx="22" cy="12" r="1.3" fill="rgba(96, 165, 250,0.4)">
-                    <animate attributeName="opacity" values="1;0.2;1" dur="1.3s" repeatCount="indefinite" />
-                  </circle>
-                  <rect x="2" y="16.5" width="20" height="5.5" rx="1.2" fill="rgba(96, 165, 250,0.1)" stroke="#60a5fa" stroke-width="1.2" />
-                  <rect x="3.5" y="18" width="2.5" height="2.5" rx="0.4" fill="rgba(96, 165, 250,0.2)" stroke="#60a5fa" stroke-width="0.6" />
-                  <rect x="7" y="18" width="2.5" height="2.5" rx="0.4" fill="rgba(96, 165, 250,0.25)" stroke="#60a5fa" stroke-width="0.6" />
-                  <circle cx="19.5" cy="19.25" r="1.3" fill="#60a5fa">
-                    <animate attributeName="opacity" values="1;0.2;1" dur="1.7s" repeatCount="indefinite" />
-                  </circle>
-                  <circle cx="22" cy="19.25" r="1.3" fill="rgba(96, 165, 250,0.4)">
-                    <animate attributeName="opacity" values="0.2;1;0.2" dur="1.7s" repeatCount="indefinite" />
-                  </circle>
-                </svg>';
+            <polygon points="12,1 22,7 2,7" fill="rgba(96, 165, 250,0.2)" stroke="#60a5fa" stroke-width="1.3" stroke-linejoin="round" />
+            <rect x="2" y="7" width="20" height="2.5" fill="rgba(96,165,250,0.15)" stroke="#60a5fa" stroke-width="1" />
+            <rect x="3" y="9.5" width="3" height="11" fill="rgba(96, 165, 250,0.12)" stroke="#60a5fa" stroke-width="1" />
+            <rect x="8" y="9.5" width="3" height="11" fill="rgba(96, 165, 250,0.08)" stroke="#60a5fa" stroke-width="1" />
+            <rect x="13" y="9.5" width="3" height="11" fill="rgba(96, 165, 250,0.08)" stroke="#60a5fa" stroke-width="1" />
+            <rect x="18" y="9.5" width="3" height="11" fill="rgba(96, 165, 250,0.12)" stroke="#60a5fa" stroke-width="1" />
+            <rect x="1.5" y="20.5" width="21" height="2" rx="0.3" fill="rgba(96, 165, 250,0.18)" stroke="#60a5fa" stroke-width="1" />
+            <rect x="1" y="22.5" width="22" height="1" rx="0.3" fill="rgba(96, 165, 250,0.1)" stroke="#60a5fa" stroke-width="0.8" />
+            <circle cx="12" cy="4" r="1.8" fill="#60a5fa">
+              <animate attributeName="opacity" values="0.5;1;0.5" dur="2.5s" repeatCount="indefinite" />
+            </circle>
+        </svg>';
     } else {
-        return '<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="1.5">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.43l-1.003.828c-.293.241-.438.613-.43.992a7.723 7.723 0 010 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.43l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 010-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" />
-                  <circle cx="12" cy="12" r="3" />
-                </svg>';
+        return '<svg width="30" height="30" viewBox="0 0 24 24" fill="none">
+            <rect x="2" y="2" width="20" height="5.5" rx="1.2" fill="rgba(96,165,250,0.15)" stroke="#60a5fa" stroke-width="1.2" />
+            <circle cx="19.5" cy="4.75" r="1.3" fill="#60a5fa" />
+            <rect x="2" y="9.25" width="20" height="5.5" rx="1.2" fill="rgba(96, 165, 250,0.12)" stroke="#60a5fa" stroke-width="1.2" />
+            <circle cx="19.5" cy="12" r="1.3" fill="#60a5fa" />
+            <rect x="2" y="16.5" width="20" height="5.5" rx="1.2" fill="rgba(96, 165, 250,0.15)" stroke="#60a5fa" stroke-width="1.2" />
+            <circle cx="19.5" cy="19.25" r="1.3" fill="#60a5fa" />
+        </svg>';
     }
 }
 
-function getServiceSvg($title) {
-    $t = strtolower($title);
-    if (strpos($t, 'fractional') !== false || strpos($t, 'cdo') !== false || strpos($t, 'chief') !== false) {
-        return '<svg class="w-[1.75rem] h-[1.75rem]" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.5">
-                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                  <path d="M7 10l3-2 2 4 2-4 3 2v4H7v-4z" fill="#3b82f6" fill-opacity="0.2" />
-                </svg>';
-    } elseif (strpos($t, 'strategy') !== false || strpos($t, 'govern') !== false) {
-        return '<svg class="w-[1.75rem] h-[1.75rem]" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.5">
-                  <circle cx="12" cy="12" r="10" />
-                  <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" fill="#3b82f6" fill-opacity="0.1" />
-                  <path d="M2 12h20" />
-                </svg>';
-    } elseif (strpos($t, 'ai') !== false || strpos($t, 'artificial') !== false || strpos($t, 'intelligence') !== false || strpos($t, 'ml') !== false) {
-        return '<svg class="w-[1.75rem] h-[1.75rem]" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.5">
-                  <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15A2.5 2.5 0 0 1 9.5 22 2.5 2.5 0 0 1 7 19.5v-15A2.5 2.5 0 0 1 9.5 2z" fill="#3b82f6" fill-opacity="0.1" />
-                  <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15A2.5 2.5 0 0 0 14.5 22 2.5 2.5 0 0 0 17 19.5v-15A2.5 2.5 0 0 0 14.5 2z" fill="#3b82f6" fill-opacity="0.1" />
-                  <path d="M12 4.5a2.5 2.5 0 0 1 5 0M12 19.5a2.5 2.5 0 0 0 5 0M7 4.5a2.5 2.5 0 0 1 5 0M7 19.5a2.5 2.5 0 0 0 5 0" />
-                </svg>';
-    } elseif (strpos($t, 'erp') !== false || strpos($t, 'database') !== false || strpos($t, 'excellence') !== false) {
-        return '<svg class="w-[1.75rem] h-[1.75rem]" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.5">
-                  <ellipse cx="12" cy="5" rx="9" ry="3" fill="#3b82f6" fill-opacity="0.2" />
-                  <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
-                  <path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3" />
-                </svg>';
-    } elseif (strpos($t, 'business') !== false || strpos($t, 'bi') !== false || strpos($t, 'analytics') !== false) {
-        return '<svg class="w-[1.75rem] h-[1.75rem]" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.5">
-                  <rect x="18" y="3" width="4" height="18" rx="1" fill="#3b82f6" fill-opacity="0.3" />
-                  <rect x="10" y="8" width="4" height="13" rx="1" fill="#3b82f6" fill-opacity="0.15" />
-                  <rect x="2" y="13" width="4" height="8" rx="1" />
-                </svg>';
-    } else {
-        return '<svg class="w-[1.75rem] h-[1.75rem]" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.5">
-                  <path d="M22 2L11.2 12.8M22 2v6M22 2h-6M2 22l7.5-7.5" stroke-linecap="round" stroke-linejoin="round" />
-                  <path d="M12 18h7a2 2 0 002-2V9M12 6H5a2 2 0 00-2 2v7a2 2 0 002 2h4" stroke-dasharray="3 3" />
-                </svg>';
+function renderMarqueeGroup($items) {
+    foreach ($items as $item) {
+        $iconSvg = getVerticalIcon($item);
+        ?>
+        <div class="marquee-item">
+          <div class="icon-badge">
+            <?= $iconSvg ?>
+          </div>
+          <span class="text-xl font-bold text-white group-hover:text-[#3b82f6] transition-colors font-serif"><?= h($item) ?></span>
+        </div>
+        <?php
     }
-}
-
-function getClientSvg($id) {
-    switch ($id) {
-        case 'ceos-founders':
-            return '<svg class="w-[5rem] h-[5rem] text-[#3b82f6]" viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="1.2">
-                      <circle cx="60" cy="35" r="8" fill="#3b82f6" fill-opacity="0.1" stroke-width="1.5" />
-                      <line x1="60" y1="43" x2="60" y2="80" />
-                      <line x1="60" y1="55" x2="25" y2="55" />
-                      <line x1="60" y1="55" x2="95" y2="55" />
-                      <line x1="25" y1="55" x2="25" y2="80" />
-                      <line x1="95" y1="55" x2="95" y2="80" />
-                      <circle cx="25" cy="84" r="4" fill="#3b82f6" />
-                      <circle cx="60" cy="84" r="4" fill="#3b82f6" />
-                      <circle cx="95" cy="84" r="4" fill="#3b82f6" />
-                      <path d="M15 100 L 45 85 L 75 90 L 105 45" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" class="draw-path" />
-                      <circle cx="105" cy="45" r="3.5" fill="#60a5fa" class="pulse-node" />
-                    </svg>';
-        case 'cios-ctos':
-            return '<svg class="w-[5rem] h-[5rem] text-[#3b82f6]" viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="1.2">
-                      <rect x="20" y="25" width="22" height="14" rx="3" fill="#3b82f6" fill-opacity="0.1" />
-                      <rect x="20" y="53" width="22" height="14" rx="3" fill="#3b82f6" fill-opacity="0.1" />
-                      <rect x="20" y="81" width="22" height="14" rx="3" fill="#3b82f6" fill-opacity="0.1" />
-                      <path d="M42 32 L 75 32 L 75 60" class="draw-path" />
-                      <path d="M42 60 L 75 60" class="draw-path" />
-                      <path d="M42 88 L 75 88 L 75 60" class="draw-path" />
-                      <line x1="75" y1="60" x2="98" y2="60" stroke-width="1.5" />
-                      <circle cx="100" cy="60" r="6" fill="#60a5fa" class="pulse-node" />
-                      <circle cx="100" cy="60" r="12" stroke-dasharray="3 3" />
-                    </svg>';
-        case 'erp-leaders':
-            return '<svg class="w-[5rem] h-[5rem] text-[#3b82f6]" viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="1.2">
-                      <ellipse cx="60" cy="30" rx="18" ry="6" fill="#3b82f6" fill-opacity="0.1" />
-                      <path d="M42 30 V 45 A 18 6 0 0 0 78 45 V 30" />
-                      <path d="M42 45 V 60 A 18 6 0 0 0 78 60 V 45" />
-                      <circle cx="20" cy="45" r="4" />
-                      <circle cx="100" cy="45" r="4" />
-                      <circle cx="60" cy="95" r="4" />
-                      <line x1="38" y1="45" x2="24" y2="45" stroke-dasharray="2 2" />
-                      <line x1="82" y1="45" x2="96" y2="45" stroke-dasharray="2 2" />
-                      <line x1="60" y1="68" x2="60" y2="91" stroke-dasharray="2 2" />
-                    </svg>';
-        case 'pe-firms':
-            return '<svg class="w-[5rem] h-[5rem] text-[#3b82f6]" viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="1.2">
-                      <rect x="15" y="25" width="90" height="70" rx="6" stroke-dasharray="4 2" />
-                      <line x1="30" y1="45" x2="70" y2="45" stroke-width="2" class="draw-path" />
-                      <line x1="30" y1="60" x2="85" y2="60" stroke-width="2" class="draw-path" />
-                      <line x1="30" y1="75" x2="60" y2="75" stroke-width="2" stroke="#60a5fa" class="draw-path" />
-                      <circle cx="70" cy="45" r="3" fill="#3b82f6" />
-                      <circle cx="85" cy="60" r="3" fill="#3b82f6" />
-                      <circle cx="60" cy="75" r="3" fill="#60a5fa" class="pulse-node" />
-                    </svg>';
-        case 'enterprises':
-            return '<svg class="w-[5rem] h-[5rem] text-[#3b82f6]" viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="1.2">
-                      <circle cx="60" cy="60" r="35" stroke-width="1.5" />
-                      <path d="M25 60 H 95" />
-                      <path d="M60 25 V 95" />
-                      <path d="M30 40 Q 60 70 90 40" stroke-opacity="0.5" />
-                      <path d="M30 80 Q 60 50 90 80" stroke-opacity="0.5" />
-                      <circle cx="45" cy="45" r="2.5" fill="#60a5fa" class="pulse-node" />
-                      <circle cx="75" cy="75" r="2.5" fill="#60a5fa" class="pulse-node" />
-                    </svg>';
-        default:
-            return '<svg class="w-[5rem] h-[5rem] text-[#3b82f6]" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1">
-                      <circle cx="50" cy="50" r="10" stroke-dasharray="2 2" />
-                      <circle cx="50" cy="50" r="25" stroke-dasharray="3 3" />
-                      <circle cx="20" cy="30" r="3" fill="#3b82f6" />
-                      <circle cx="80" cy="30" r="3" fill="#3b82f6" />
-                      <circle cx="50" cy="85" r="3" fill="#3b82f6" />
-                      <line x1="20" y1="30" x2="50" y2="50" stroke-width="0.8" />
-                      <line x1="80" y1="30" x2="50" y2="50" stroke-width="0.8" />
-                      <line x1="50" y1="85" x2="50" y2="50" stroke-width="0.8" />
-                    </svg>';
-    }
-}
-
-function getExperienceSvg($index) {
-    switch ($index) {
-        case 0:
-            return '<svg class="w-5 h-5" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <defs>
-                        <linearGradient id="bolt-front" x1="16" y1="4" x2="16" y2="24" gradientUnits="userSpaceOnUse">
-                          <stop offset="0%" stop-color="#ffffff" />
-                          <stop offset="30%" stop-color="#60a5fa" />
-                          <stop offset="100%" stop-color="#1d4ed8" />
-                        </linearGradient>
-                        <linearGradient id="bolt-side" x1="16" y1="4" x2="20" y2="25" gradientUnits="userSpaceOnUse">
-                          <stop offset="0%" stop-color="#a87500" />
-                          <stop offset="100%" stop-color="#473000" />
-                        </linearGradient>
-                        <filter id="bolt-shadow" x="-20%" y="-20%" width="140%" height="140%">
-                          <feDropShadow dx="1" dy="2" stdDeviation="1.5" flood-color="#60a5fa" flood-opacity="0.3" />
-                        </filter>
-                      </defs>
-                      <g filter="url(#bolt-shadow)">
-                        <path d="M17 4 L18.5 5.5 L17.5 14.5 L16 13 Z" fill="url(#bolt-side)" />
-                        <path d="M16 13 L17.5 14.5 L22.5 14.5 L21 13 Z" fill="url(#bolt-side)" />
-                        <path d="M21 13 L22.5 14.5 L15.5 25.5 L14 24 Z" fill="url(#bolt-side)" />
-                        <path d="M17 4 L11 13 H16 L14 24 L21 13 H16 Z" fill="url(#bolt-front)" />
-                      </g>
-                    </svg>';
-        case 1:
-            return '<svg class="w-5 h-5" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <defs>
-                        <linearGradient id="col-top" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="0%" stop-color="#ffffff" />
-                          <stop offset="100%" stop-color="#60a5fa" />
-                        </linearGradient>
-                        <linearGradient id="col-right" x1="0" y1="0" x2="1" y2="0">
-                          <stop offset="0%" stop-color="#3b82f6" />
-                          <stop offset="100%" stop-color="#1d4ed8" />
-                        </linearGradient>
-                        <linearGradient id="col-left" x1="0" y1="0" x2="1" y2="0">
-                          <stop offset="0%" stop-color="#1d4ed8" />
-                          <stop offset="100%" stop-color="#543c00" />
-                        </linearGradient>
-                        <filter id="shadow-3d" x="-20%" y="-20%" width="140%" height="140%">
-                          <feDropShadow dx="1" dy="2" stdDeviation="1" flood-color="#000000" flood-opacity="0.5" />
-                        </filter>
-                      </defs>
-                      <g filter="url(#shadow-3d)">
-                        <path d="M19 8 L24 5.5 L29 8 L24 10.5 Z" fill="url(#col-top)" />
-                        <path d="M19 8 L24 10.5 L24 21 L19 18.5 Z" fill="url(#col-left)" />
-                        <path d="M24 10.5 L29 8 L29 18.5 L24 21 Z" fill="url(#col-right)" />
-                        <path d="M12 14 L17 11.5 L22 14 L17 16.5 Z" fill="url(#col-top)" />
-                        <path d="M12 14 L17 16.5 L17 24 L12 21.5 Z" fill="url(#col-left)" />
-                        <path d="M17 16.5 L22 14 L22 21.5 L17 24 Z" fill="url(#col-right)" />
-                        <path d="M5 20 L10 17.5 L15 20 L10 22.5 Z" fill="url(#col-top)" />
-                        <path d="M5 20 L10 22.5 L10 27 L5 24.5 Z" fill="url(#col-left)" />
-                        <path d="M10 22.5 L15 20 L15 24.5 L10 27 Z" fill="url(#col-right)" />
-                        <path d="M4 22 L11 15 L17 16.5 L26 7.5" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0.125rem 0.25rem rgba(96, 165, 250,0.4));" />
-                        <path d="M21 7.5 H 26 V 12.5" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0.125rem 0.25rem rgba(96, 165, 250,0.4));" />
-                        <circle cx="26" cy="7.5" r="2" fill="#ffffff" class="pulse-node" />
-                      </g>
-                    </svg>';
-        case 2:
-            return '<svg class="w-5 h-5" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <defs>
-                        <linearGradient id="cube-top" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="0%" stop-color="#ffffff" />
-                          <stop offset="100%" stop-color="#60a5fa" />
-                        </linearGradient>
-                        <linearGradient id="cube-right" x1="0" y1="0" x2="1" y2="0">
-                          <stop offset="0%" stop-color="#3b82f6" />
-                          <stop offset="100%" stop-color="#1d4ed8" />
-                        </linearGradient>
-                        <linearGradient id="cube-left" x1="0" y1="0" x2="1" y2="0">
-                          <stop offset="0%" stop-color="#1d4ed8" />
-                          <stop offset="100%" stop-color="#2a3c75" />
-                        </linearGradient>
-                      </defs>
-                      <path d="M16 6 L25 10.5 L16 15 L7 10.5 Z" fill="url(#cube-top)" />
-                      <path d="M7 10.5 L16 15 L16 25.5 L7 21 Z" fill="url(#cube-left)" />
-                      <path d="M16 15 L25 10.5 L25 21 L16 25.5 Z" fill="url(#cube-right)" />
-                      <circle cx="16" cy="15" r="2.5" fill="#ffffff" class="pulse-node" />
-                    </svg>';
-        case 3:
-            return '<svg class="w-5 h-5" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <ellipse cx="16" cy="8" rx="10" ry="4" fill="#3b82f6" fill-opacity="0.2" stroke="#60a5fa" stroke-width="1.5" />
-                      <path d="M6 8 V 16 A 10 4 0 0 0 26 16 V 8" stroke="#1d4ed8" stroke-width="1.5" />
-                      <path d="M6 16 V 24 A 10 4 0 0 0 26 24 V 16" stroke="#3b82f6" stroke-width="1.5" />
-                      <ellipse cx="16" cy="16" rx="10" ry="4" fill="none" stroke="#60a5fa" stroke-width="1" stroke-dasharray="2 2" />
-                    </svg>';
-        default:
-            return '<svg class="w-5 h-5" viewBox="0 0 32 32" fill="none" stroke="#60a5fa" stroke-width="1.5">
-                      <circle cx="16" cy="16" r="6" fill="#3b82f6" fill-opacity="0.1" />
-                      <circle cx="16" cy="16" r="2" fill="#60a5fa" />
-                      <path d="M16 4 v 4 M16 24 v 4 M4 16 h 4 M24 16 h 4" stroke-linecap="round" />
-                    </svg>';
-    }
-}
-
-function getTechName($item) {
-    if (is_array($item)) {
-        return $item['name'] ?? '';
-    }
-    return $item;
-}
-
-function getTechIcon($item) {
-    if (is_array($item) && !empty($item['image'])) {
-        return $item['image'];
-    }
-    $name = is_array($item) ? ($item['name'] ?? '') : $item;
-    $n = strtolower(trim($name));
-    
-    if (strpos($n, 'strat') !== false && strpos($n, 'ai') === false) return '/assets/images/strat_3d_icon.png';
-    if (strpos($n, 'gov') !== false && strpos($n, 'ai') === false) return '/assets/images/gov_3d_icon.png';
-    if (strpos($n, 'master data') !== false || strpos($n, 'mdm') !== false || strpos($n, 'etl') !== false || strpos($n, 'functional') !== false) return '/assets/images/mdm_3d_icon.png';
-    if (strpos($n, 'ai strategy') !== false || strpos($n, 'generative') !== false) return '/assets/images/ai_3d_icon.png';
-    if (strpos($n, 'ai gov') !== false) return '/assets/images/aig_3d_icon.png';
-    if (strpos($n, 'power bi') !== false || strpos($n, 'powerbi') !== false) return '/assets/images/powerbi_3d_icon.png';
-    if (strpos($n, 'tableau') !== false) return '/assets/images/tableau_3d_icon.png';
-    if (strpos($n, 'dashboard') !== false || strpos($n, 'analytics engineering') !== false) return '/assets/images/dashboard_3d_icon.png';
-    if (strpos($n, 'kpi') !== false || strpos($n, 'machine learning') !== false) return '/assets/images/kpi_3d_icon.png';
-    if (strpos($n, 'reporting') !== false || strpos($n, 'sql') !== false) return '/assets/images/reporting_3d_icon.png';
-    if (strpos($n, 'aws') !== false || strpos($n, 'amazon') !== false) return '/assets/images/aws_3d_icon.png';
-    if (strpos($n, 'azure') !== false) return '/assets/images/azure_3d_icon.png';
-    if (strpos($n, 'snowflake') !== false || strpos($n, 'data modelling') !== false || strpos($n, 'data modeling') !== false) return '/assets/images/snowflake_3d_icon.png';
-    if (strpos($n, 'lake') !== false) return '/assets/images/datalake_3d_icon.png';
-    if (strpos($n, 'warehouse') !== false) return '/assets/images/datawarehouse_3d_icon.png';
-    if (strpos($n, 'oracle erp') !== false) return '/assets/images/oracle_erp_3d_icon.png';
-    if (strpos($n, 'oracle fusion') !== false) return '/assets/images/oracle_fusion_3d_icon.png';
-    if (strpos($n, 'python') !== false) return '/assets/images/gov_3d_icon.png';
-    
-    return '/assets/images/strat_3d_icon.png';
 }
 ?>
+
 <!DOCTYPE html>
-<html lang="en" class="lenis text-[2vw] md:text-[1vw]">
+<html lang="en" class="lenis text-[4.2vw] md:text-[1.5vw] lg:text-[1vw]">
 
 <head>
   <meta charset="UTF-8" />
   <link rel="icon" type="image/svg+xml" href="/vite.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title><?= h($metaTitle) ?></title>
-  <meta name="description" content="<?= h($metaDescription) ?>" />
+    <meta name="description" content="<?= h($metaDescription) ?>" />
   <meta name="keywords" content="<?= h($metaKeywords) ?>" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -543,44 +285,32 @@ function getTechIcon($item) {
 
   <?php if ($isDev): ?>
     <script type="module" src="http://localhost:5173/@vite/client"></script>
-  <?php else: ?>
-    <?php if (!empty($cssPath)): ?>
-      <link rel="stylesheet" href="<?= h($cssPath) ?>" />
-    <?php endif; ?>
   <?php endif; ?>
-
-  <?php
-    $primaryRgb = implode(',', sscanf($primaryColor, "#%02x%02x%02x") ?: [29, 78, 216]);
-    $accentRgb = implode(',', sscanf($accentColor, "#%02x%02x%02x") ?: [96, 165, 250]);
-    $bgRgb = implode(',', sscanf($bgColor, "#%02x%02x%02x") ?: [6, 9, 19]);
-    $sidebarRgb = implode(',', sscanf($sidebarBg, "#%02x%02x%02x") ?: [3, 5, 10]);
-  ?>
-  <!-- Dynamic Theme CSS Overrides -->
+  <?php if (!empty($cssPath)): ?>
+    <link rel="stylesheet" href="<?= h($cssPath) ?>" />
+  <?php endif; ?>
+  <!-- ── Dynamic Theme CSS Variables from Admin ── -->
   <style>
     :root {
-      --color-primary: <?= h($accentColor) ?>;
-      --color-primary-rgb: <?= $accentRgb ?>;
-      --color-accent: <?= h($accentColor) ?>;
-      --color-accent-rgb: <?= $accentRgb ?>;
-      --color-dark-accent: <?= h($primaryColor) ?>;
-      --color-dark-accent-rgb: <?= $primaryRgb ?>;
-      --color-bg-base: <?= h($bgColor) ?>;
-      --color-bg-base-rgb: <?= $bgRgb ?>;
-      --color-bg-deep: <?= h($sidebarBg) ?>;
-      --color-bg-deep-rgb: <?= $sidebarRgb ?>;
+      --color-primary:  <?= h($primaryColor) ?>;
+      --color-accent:   <?= h($accentColor) ?>;
+      --color-bg:       <?= h($bgColor) ?>;
+      --color-text:     <?= h($textColor) ?>;
+      --color-sidebar:  <?= h($sidebarBg) ?>;
+      --hero-bg-url:    url('<?= h($heroBgImage) ?>');
     }
     body {
+      background-color: <?= h($bgColor) ?> !important;
       color: <?= h($textColor) ?> !important;
     }
+    /* Override hardcoded values with theme variables */
+    .text-\[\#1d4ed8\], .text-\[\#3b82f6\], .text-\[\#60a5fa\], .text-violet-500 { color: var(--color-accent) !important; }
+    .bg-\[\#060913\], .bg-\[\#0a0a0a\] { background-color: var(--color-bg) !important; }
+    .bg-\[\#03050a\] { background-color: var(--color-sidebar) !important; }
   </style>
-
-  <!-- Global JS variables for Typewriter animation -->
-  <script>
-    window.HERO_TITLE = <?= json_encode($hero['title'] ?? 'Fractional Chief Data Officer') ?>;
-  </script>
 </head>
 
-<body class="bg-[#060913]! text-[#f3f4f6] font-sans antialiased selection:bg-violet-500 selection:text-white">
+<body class=" text-[#f3f4f6] font-sans antialiased selection:bg-violet-500 selection:text-white">
 
   <!-- Premium Preloader/Loading Screen -->
   <div id="preloader"
@@ -604,7 +334,7 @@ function getTechIcon($item) {
     <!-- User Initials / Profile avatar (Moved to Top) -->
     <div
       class="w-10 h-10 rounded-full bg-gradient-to-tr from-[#3b82f6] to-[#1d4ed8] flex items-center justify-center border border-white/10 shadow-[0_0_10px_rgba(29,78,216,0.15)] text-black text-xs font-semibold cursor-pointer">
-      AKJ
+      JAK
     </div>
 
     <!-- Navigation Items -->
@@ -705,7 +435,7 @@ function getTechIcon($item) {
     <!-- Brand Avatar Logo -->
     <a href="#hero"
       class="w-9 h-9 rounded-full bg-gradient-to-tr from-[#3b82f6] to-[#1d4ed8] flex items-center justify-center border border-white/10 shadow-[0_0_10px_rgba(29,78,216,0.15)] text-black text-[11px] font-bold cursor-pointer transition-transform hover:scale-105 duration-300">
-      AKJ
+      JAK
     </a>
 
     <!-- Hamburger Button -->
@@ -721,7 +451,7 @@ function getTechIcon($item) {
 
   <!-- Mobile Menu Drawer (Overlay) -->
   <div id="mobile-menu"
-    class="md:hidden fixed inset-0 bg-[#03050a]/98 backdrop-blur-xl z-45 translate-y-[-100%] transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] flex flex-col justify-center px-10">
+    class="md:hidden fixed inset-0 bg-[#03050a]/98 backdrop-blur-xl z-[49] flex flex-col justify-center px-10 pt-16">
     <nav class="flex flex-col gap-8">
       <a href="#hero"
         class="mobile-nav-item flex items-center gap-4 text-2xl font-semibold text-gray-400 hover:text-[#60a5fa] transition-colors py-2 relative">
@@ -774,7 +504,7 @@ function getTechIcon($item) {
   <!-- Main Container -->
   <main class="w-full md:pl-[100px] pt-16 md:pt-0">
 
-    <section id="hero" class="relative min-h-screen w-full overflow-hidden flex items-center" style="--hero-bg-url: url('<?= h($heroBgImage) ?>');">
+    <section id="hero" class="relative min-h-screen w-full overflow-hidden flex items-center">
 
       <div class="absolute top-1/3 left-1/4 w-[500px] h-[500px] rounded-full pointer-events-none z-[1]"
         style="background: radial-gradient(circle, rgba(29,78,216,0.08) 0%, transparent 70%); filter: blur(60px);">
@@ -802,34 +532,14 @@ function getTechIcon($item) {
             <div id="hero-role"
               class="text-lg mt-8 uppercase font-sans tracking-widest opacity-90 min-h-[1.5em] inline-block"></div>
             <div class="hero-tagline flex flex-wrap justify-center items-center gap-3 mt-6 select-none">
-              <?php if (!empty($heroTaglines)): ?>
-                <?php foreach ($heroTaglines as $tagline): ?>
-                  <span
-                    class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold tracking-widest uppercase font-inter text-gray-300 bg-white/[0.02] border border-white/5 hover:border-[#1d4ed8]/30 hover:bg-[#1d4ed8]/5 hover:text-[#3b82f6] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_4px_20px_rgba(29,78,216,0.15)] cursor-default">
-                    <span class="w-1.5 h-1.5 rounded-full bg-[#1d4ed8]"></span>
-                    <?= h($tagline) ?>
-                  </span>
-                <?php endforeach; ?>
-              <?php else: ?>
-                <span
-                  class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold tracking-widest uppercase font-inter text-gray-300 bg-white/[0.02] border border-white/5 hover:border-[#1d4ed8]/30 hover:bg-[#1d4ed8]/5 hover:text-[#3b82f6] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_4px_20px_rgba(29,78,216,0.15)] cursor-default">
-                  <span class="w-1.5 h-1.5 rounded-full bg-[#1d4ed8]"></span>
-                  Data Strategist
-                </span>
-                <span
-                  class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold tracking-widest uppercase font-inter text-gray-300 bg-white/[0.02] border border-white/5 hover:border-[#1d4ed8]/30 hover:bg-[#1d4ed8]/5 hover:text-[#3b82f6] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_4px_20px_rgba(29,78,216,0.15)] cursor-default">
-                  <span class="w-1.5 h-1.5 rounded-full bg-[#1d4ed8]"></span>
-                  AI Advisor
-                </span>
-                <span
-                  class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold tracking-widest uppercase font-inter text-gray-300 bg-white/[0.02] border border-white/5 hover:border-[#1d4ed8]/30 hover:bg-[#1d4ed8]/5 hover:text-[#3b82f6] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_4px_20px_rgba(29,78,216,0.15)] cursor-default">
-                  <span class="w-1.5 h-1.5 rounded-full bg-[#1d4ed8]"></span>
-                  Enterprise Transformation Leader
-                </span>
-              <?php endif; ?>
+              <?php foreach ($heroTaglines as $tagline): ?>
+              <span
+                class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold tracking-widest uppercase font-inter text-gray-300 bg-white/[0.02] border border-white/5 hover:border-[#1d4ed8]/30 hover:bg-[#1d4ed8]/5 hover:text-[#3b82f6] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_4px_20px_rgba(29,78,216,0.15)] cursor-default">
+                <span class="w-1.5 h-1.5 rounded-full bg-[#1d4ed8]"></span>
+                <?= h($tagline) ?>
+              </span>
+              <?php endforeach; ?>
             </div>
-
-
           </div>
         </div>
 
@@ -838,10 +548,10 @@ function getTechIcon($item) {
 
     </section>
 
-    <section id="expertise" class="py-24 overflow-hidden w-full select-none">
-      <div class="max-w-[90%] mx-auto px-6 md:px-16 mb-12">
-        <h2 class="text-sm font-semibold uppercase tracking-widest text-[#1d4ed8] mb-2 font-inter">Core Verticals</h2>
-        <p class="text-3xl md:text-5xl font-serif font-bold text-white">Strategic Domain Expertise</p>
+    <section id="expertise" class="py-10 lg:py-24 overflow-hidden w-full select-none">
+      <div class="max-w-[90%] mx-auto md:px-16 mb-12">
+        <h2 class="text-[3.2vw] md:text-xs lg:text-sm font-semibold uppercase tracking-widest text-[#1d4ed8] mb-2 font-inter">Core Verticals</h2>
+        <p class="text-[7.5vw] md:text-[6vw] lg:text-5xl font-serif font-bold text-white">Strategic Domain Expertise</p>
       </div>
 
       <style>
@@ -930,57 +640,40 @@ function getTechIcon($item) {
       <div class="relative w-full overflow-hidden py-4 flex select-none">
         <!-- Edge masks for premium fade effect -->
         <div
-          class="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#0b0b0f] to-transparent z-10 pointer-events-none">
+          class="absolute left-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
+          style="background: linear-gradient(to right, var(--color-bg), transparent);">
         </div>
         <div
-          class="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#0b0b0f] to-transparent z-10 pointer-events-none">
+          class="absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
+          style="background: linear-gradient(to left, var(--color-bg), transparent);">
         </div>
 
         <div class="marquee-track py-2">
           <!-- Marquee Group A -->
           <div class="marquee-group">
-            <?php
-            $expertiseItems = $expertise['items'] ?? ['Manufacturing', 'Supply Chain', 'Logistics SaaS', 'Public Sector', 'Enterprise Tech'];
-            foreach ($expertiseItems as $item):
-            ?>
-              <div class="marquee-item">
-                <div class="icon-badge">
-                  <?= getExpertiseSvg($item) ?>
-                </div>
-                <span class="text-xl font-bold text-white group-hover:text-[#3b82f6] transition-colors font-serif"><?= h($item) ?></span>
-              </div>
-            <?php endforeach; ?>
+            <?php renderMarqueeGroup($expertiseItems); ?>
           </div>
           <!-- Marquee Group B (Duplicated for seamless infinite looping) -->
           <div class="marquee-group">
-            <?php foreach ($expertiseItems as $item): ?>
-              <div class="marquee-item">
-                <div class="icon-badge">
-                  <?= getExpertiseSvg($item) ?>
-                </div>
-                <span class="text-xl font-bold text-white group-hover:text-[#3b82f6] transition-colors font-serif"><?= h($item) ?></span>
-              </div>
-            <?php endforeach; ?>
+            <?php renderMarqueeGroup($expertiseItems); ?>
           </div>
+        </div>
         </div>
       </div>
     </section>
 
     <!-- THE OPPORTUNITY   -->
-    <section id="opportunity" class="relative py-30 overflow-hidden w-full select-none">
+    <section id="opportunity" class="relative py-10 lg:py-30 overflow-hidden w-full select-none">
       <!-- Plexus Data Network Canvas Background -->
       <canvas id="opportunity-network-canvas"
         class="absolute inset-0 w-full h-full pointer-events-none opacity-40 z-0"></canvas>
 
-      <div class="mx-auto max-w-[90%] pb-30 relative z-10">
-        <div class=" px-6 md:px-16 mb-12">
-          <h2 class="text-sm font-semibold uppercase tracking-widest text-[#1d4ed8] mb-2 font-inter">THE OPPORTUNITY
-          </h2>
-          <p class="text-3xl md:text-5xl leading-14 font-serif font-bold text-white">
-            <?= h($oppTitle) ?>
-          </p>
+      <div class="mx-auto max-w-[90%] pb-10 lg:pb-30 relative z-10">
+        <div class="  md:px-16 mb-12">
+          <h2 class="text-[3.2vw] md:text-xs lg:text-sm font-semibold uppercase tracking-widest text-[#1d4ed8] mb-2 font-inter">THE OPPORTUNITY</h2>
+          <p class="text-[7.5vw] md:text-[6vw] lg:text-5xl leading-14 font-serif font-bold text-white"><?= h($oppTitle) ?> </p>
         </div>
-        <div class="flex flex-wrap lg:flex-nowrap items-stretch w-full gap-8 md:gap-10 px-6 md:px-16">
+        <div class="flex flex-wrap lg:flex-nowrap items-stretch w-full gap-8 md:gap-10  md:px-16">
 
           <!-- Left Column: The Friction / The Challenge -->
           <div
@@ -991,25 +684,19 @@ function getTechIcon($item) {
             </div>
 
             <div class="flex items-center gap-2 z-10">
-              <span class="w-1.5 h-1.5 rounded-full bg-red-400 animate-pulse"></span>
-              <span class="text-[#1d4ed8] text-xs font-bold tracking-[0.2em] uppercase font-inter">The Friction</span>
+              <span class="w-2 h-2 lg:w-1.5 lg:h-1.5 rounded-full bg-red-400 animate-pulse"></span>
+              <span class="text-[#1d4ed8] text-[3.2vw] md:text-xs font-bold tracking-[0.2em] uppercase font-inter">The Friction</span>
             </div>
 
-            <h3 class="text-xl md:text-2xl font-bold font-sans text-white/90 leading-snug z-10">
-              <?= !empty($oppFrictionTitle) ? $oppFrictionTitle : 'Most organizations sit on <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400 font-extrabold">significant untapped data potential</span>.' ?>
+            <h3 class="text-[5vw] md:text-xl lg:text-2xl font-bold font-sans text-white/90 leading-snug z-10">
+              <?= $oppFrictionTitle ?>
             </h3>
 
-            <div class="flex flex-col gap-4 text-gray-400 font-light text-sm md:text-base leading-relaxed z-10">
-              <p>
-                <?= h($oppFrictionText) ?>
-              </p>
-              <?php if (!empty($oppQuote)): ?>
-                <div class="pl-4 border-l-2 border-[#1d4ed8]/50 py-1 my-2">
-                  <p class="font-serif italic text-white/90 text-base md:text-lg">
-                    "<?= h($oppQuote) ?>"
-                  </p>
-                </div>
-              <?php endif; ?>
+            <div class="flex flex-col gap-4 text-gray-400 font-light text-[3.8vw] md:text-sm lg:text-base leading-relaxed z-10">
+              <p><?= h($oppFrictionText) ?></p>
+              <div class="pl-4 border-l-2 border-[#1d4ed8]/50 py-1 my-2">
+                <p class="font-serif italic text-white/90 text-[4vw] md:text-base lg:text-lg">"<?= h($oppQuote) ?>"</p>
+              </div>
             </div>
           </div>
 
@@ -1023,40 +710,25 @@ function getTechIcon($item) {
 
             <div class="flex items-center gap-2 z-10">
               <span class="w-1.5 h-1.5 rounded-full bg-[#1d4ed8] animate-pulse"></span>
-              <span class="text-[#1d4ed8] text-xs font-bold tracking-[0.2em] uppercase font-inter">The CDO Advantage</span>
+              <span class="text-[#1d4ed8] text-[3.2vw] md:text-xs font-bold tracking-[0.2em] uppercase font-inter">The CDO Advantage</span>
             </div>
 
-            <h3 class="text-xl md:text-2xl font-bold font-sans text-white leading-snug z-10">
-              <?= !empty($oppSolutionTitle) ? $oppSolutionTitle : 'Executive-level data leadership <span class="text-[#3b82f6] font-extrabold">precisely when you need it</span>.' ?>
+            <h3 class="text-[5vw] md:text-xl lg:text-2xl font-bold font-sans text-white leading-snug z-10">
+              <?= $oppSolutionTitle ?>
             </h3>
 
-            <p class="text-gray-300 font-light text-sm md:text-base leading-relaxed z-10">
+            <p class="text-gray-300 font-light text-[3.8vw] md:text-sm lg:text-base leading-relaxed z-10">
               <?= h($oppSolutionText) ?>
             </p>
 
             <!-- Key pillars of Fractional CDO -->
             <div class="flex flex-wrap gap-2.5 mt-2 z-10">
-              <?php if (!empty($oppPillars)): ?>
-                <?php foreach ($oppPillars as $pillar): ?>
-                  <span
-                    class="px-3.5 py-1.5 rounded-full text-xs font-medium bg-[#1d4ed8]/8 border border-[#1d4ed8]/25 text-[#3b82f6] backdrop-blur-sm shadow-sm transition-all duration-300 hover:bg-[#1d4ed8]/15 hover:border-[#1d4ed8]/50 cursor-default">
-                    <?= h($pillar) ?>
-                  </span>
-                <?php endforeach; ?>
-              <?php else: ?>
-                <span
-                  class="px-3.5 py-1.5 rounded-full text-xs font-medium bg-[#1d4ed8]/8 border border-[#1d4ed8]/25 text-[#3b82f6] backdrop-blur-sm shadow-sm transition-all duration-300 hover:bg-[#1d4ed8]/15 hover:border-[#1d4ed8]/50 cursor-default">
-                  Cross-Industry Expertise
-                </span>
-                <span
-                  class="px-3.5 py-1.5 rounded-full text-xs font-medium bg-[#1d4ed8]/8 border border-[#1d4ed8]/25 text-[#3b82f6] backdrop-blur-sm shadow-sm transition-all duration-300 hover:bg-[#1d4ed8]/15 hover:border-[#1d4ed8]/50 cursor-default">
-                  Global Delivery Experience
-                </span>
-                <span
-                  class="px-3.5 py-1.5 rounded-full text-xs font-medium bg-[#1d4ed8]/8 border border-[#1d4ed8]/25 text-[#3b82f6] backdrop-blur-sm shadow-sm transition-all duration-300 hover:bg-[#1d4ed8]/15 hover:border-[#1d4ed8]/50 cursor-default">
-                  Business-Outcome Orientation
-                </span>
-              <?php endif; ?>
+              <?php foreach ($oppPillars as $pillar): ?>
+              <span
+                class="px-3.5 py-1.5 rounded-full text-xs font-medium bg-[#1d4ed8]/8 border border-[#1d4ed8]/25 text-[#3b82f6] backdrop-blur-sm shadow-sm transition-all duration-300 hover:bg-[#1d4ed8]/15 hover:border-[#1d4ed8]/50 cursor-default">
+                <?= h($pillar) ?>
+              </span>
+              <?php endforeach; ?>
             </div>
           </div>
 
@@ -1064,80 +736,66 @@ function getTechIcon($item) {
 
         <!-- Bottom Quote Sign-off -->
         <div
-          class="mt-16 md:mt-20 pt-12 border-t border-white/5 flex flex-col items-center text-center relative max-w-4xl mx-auto px-6">
+          class=" md:mt-20 pt-12 border-t border-white/5 flex flex-col items-center text-center relative max-w-4xl mx-auto px-6">
           <span class="text-[#1d4ed8]/25 text-5xl font-serif leading-none mb-2">“</span>
-          <p class="text-xl md:text-3xl font-serif font-semibold text-white/95 leading-relaxed">
-            <?php if (empty($oppBottomQuote) || $oppBottomQuote === 'Data should not exist in reports. It should influence decisions. It should accelerate growth. It should create competitive advantage.'): ?>
-              Data should <span class="text-[#3b82f6] font-bold font-sans">not exist in reports</span>.
-              It should <span class="text-white font-bold font-sans">influence decisions</span>.
-              It should <span class="text-white font-bold font-sans">accelerate growth</span>.
-              It should <span class="text-[#3b82f6] font-bold font-sans">create competitive advantage</span>.
-            <?php else: ?>
-              <?= h($oppBottomQuote) ?>
-            <?php endif; ?>
+          <p class="text-[5.5vw] md:text-2xl lg:text-3xl font-serif font-semibold text-white/95 leading-relaxed">
+            <?= h($oppBottomQuote) ?>
           </p>
           <div class="w-10 h-[1.5px] bg-[#1d4ed8]/30 mt-6"></div>
         </div>
+
       </div>
     </section>
 
     <!-- About section  -->
     <section id="about">
-      <div class="pb-30 mx-auto max-w-[90%]">
-        <div class=" px-6 md:px-16 ">
-          <h2 class="text-sm font-semibold uppercase tracking-widest text-[#1d4ed8] mb-2 font-inter">ABOUT
+      <div class="pb-10 lg:pb-30 mx-auto max-w-[90%]">
+        <div class="  md:px-16 ">
+          <h2 class="text-[3.2vw] md:text-xs lg:text-sm font-semibold uppercase tracking-widest text-[#1d4ed8] mb-2 font-inter">ABOUT
           </h2>
-          <p class="text-3xl md:text-5xl leading-14 font-serif font-bold text-white">Meet<br /><span
-              class="text-white text-6xl"><?= h($heroName) ?></span>
+          <p class="text-3xl md:text-5xl lg:leading-14 font-serif font-bold text-white">Meet<br /><span class="text-white text-[9vw] md:text-[8vw] lg:text-6xl"><?= h($heroName) ?></span>
           </p>
         </div>
-        <div class="w-full flex flex-wrap lg:flex-nowrap justify-between items-center gap-10 px-6 md:px-16 mt-12">
+        <div class="w-full flex flex-wrap lg:flex-nowrap justify-between items-center gap-10  md:px-16 mt-6 lg:mt-12">
           <!-- Left Column: Biography Content (First 50%) -->
-          <div
-            class="w-full lg:w-[calc(50%-1.25rem)] flex flex-col gap-6 text-gray-300 font-light text-base leading-relaxed">
-            <?php if (empty($aboutBio) || strpos($aboutBio, 'seasoned Fractional Chief Data Officer') !== false): ?>
+            <div
+              class="w-full lg:w-[calc(50%-1.25rem)] flex flex-col gap-6 text-gray-300 font-light text-base leading-relaxed">
               <p class="text-lg text-white font-medium">
-                I am a <span class="text-[#3b82f6] font-semibold">Fractional Chief Data Officer</span> and <span
-                  class="text-[#3b82f6] font-semibold">Enterprise Data Strategy Consultant</span> with over 14 years of
-                experience leading high-stakes transformations across five countries — UAE, Netherlands, Germany, Canada,
-                and India.
+                <?= nl2br(h($aboutBio)) ?>
               </p>
-              <p>
-                My career began in enterprise ERP consulting at <span class="text-white font-medium">Accenture</span> and
-                <span class="text-white font-medium">TCS</span>, where I developed a rigorous understanding of how
-                operational processes generate business value. That foundation became the lens through which I now
-                approach every data, analytics, and AI engagement.
-              </p>
-              <p>
-                Today I work alongside CEOs, CIOs, and transformation leaders to build the data capabilities that drive
-                growth: strategies grounded in business reality, governance frameworks that earn organizational trust,
-                analytics platforms that surface actionable intelligence, and AI roadmaps that move from concept to value
-                creation.
-              </p>
-            <?php else: ?>
-              <?php
-              $paragraphs = explode("\n", str_replace("\r", "", $aboutBio));
-              foreach ($paragraphs as $idx => $para) {
-                  $para = trim($para);
-                  if (empty($para)) continue;
-                  $pClass = ($idx === 0) ? 'text-lg text-white font-medium' : '';
-                  echo '<p class="' . $pClass . '">' . h($para) . '</p>';
-              }
-              ?>
-            <?php endif; ?>
-            <div class="mt-4 p-5 rounded-2xl bg-[#1d4ed8]/5 border border-[#1d4ed8]/15 relative overflow-hidden group">
-              <p class="font-serif italic text-white/90 text-lg leading-relaxed relative z-10">
-                "<?= h($aboutQuote) ?>"
-              </p>
+              <div class="mt-4 p-5 rounded-2xl bg-[#1d4ed8]/5 border border-[#1d4ed8]/15 relative overflow-hidden group">
+                <div
+                  class="absolute left-0 top-0 bottom-0 w-[3px] bg-[#1d4ed8]/60 group-hover:bg-[#3b82f6] transition-colors duration-300">
+                </div>
+                <p class="font-serif italic text-white/90 text-lg leading-relaxed relative z-10">
+                  "<?= h($aboutQuote) ?>"
+                </p>
+              </div>
+              
+              <div class="flex flex-wrap gap-4 mt-8 w-full">
+                <?php foreach ($aboutStats as $stat): ?>
+                <div class="flex-grow flex-shrink-0 w-[calc(50%-0.5rem)] min-w-[130px] p-6 rounded-2xl bg-[#0a0e1c]/40 backdrop-blur-md border border-[#1d4ed8]/15 hover:border-[#60a5fa]/40 hover:-translate-y-1 transition-all duration-300 text-center shadow-[0_4px_20px_rgba(0,0,0,0.3)] relative overflow-hidden group">
+                  <!-- Glow Effect inside card -->
+                  <div class="absolute -top-10 -right-10 w-20 h-20 bg-[#1d4ed8]/10 rounded-full blur-xl group-hover:bg-[#3b82f6]/20 transition-all duration-500"></div>
+                  <!-- Stat Value -->
+                  <div class="text-4xl font-extrabold text-white font-serif tracking-tight mb-1 bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-white/70 group-hover:scale-105 transition-transform duration-300">
+                    <?= h($stat['value']) ?>
+                  </div>
+                  <!-- Stat Label -->
+                  <div class="text-[10px] md:text-xs font-bold font-sans uppercase tracking-widest text-[#3b82f6] group-hover:text-[#60a5fa] transition-colors duration-300">
+                    <?= h($stat['label']) ?>
+                  </div>
+                </div>
+                <?php endforeach; ?>
+              </div>
             </div>
-          </div>
 
           <div class="w-full lg:w-[calc(50%-1.25rem)] relative min-h-[400px] overflow-hidden rounded-3xl">
             <div
-              class="absolute z-10 h-[25rem] w-[34.375rem] xl:w-[45.625rem] rotate-[-12deg] bottom-[3.4rem] -right-[13rem] rounded-[0.6rem]"
+              class="absolute z-10 h-[25rem] w-[31.375rem] lg:w-[34.375rem] xl:w-[45.625rem] rotate-[-12deg] bottom-[3.4rem] -right-[13rem] rounded-[0.6rem]"
               style="background: linear-gradient(90deg, #1d4ed8 0%, #1d4ed8 35%, rgba(0, 0, 0, 0.98) 60%, rgba(0, 0, 0, 0.98) 100%);">
             </div>
-            <div class="relative w-110 z-20 -right-7">
+            <div class="relative  lg:w-110 z-20 lg:-right-7">
               <img src="<?= h($aboutImage) ?>" class="w-full object-contain h-full" alt="">
             </div>
           </div>
@@ -1146,12 +804,12 @@ function getTechIcon($item) {
     </section>
 
     <!-- CAPABILITIES & EXPERIENCE SECTION -->
-    <section id="capabilities" class="relative pb-30 pt-10 overflow-hidden w-full select-none">
+    <section id="capabilities" class="relative pb-20 lg:pb-30 pt-10 overflow-hidden w-full select-none">
       <div class="mx-auto max-w-[90%] relative z-10">
 
-        <div class="px-6 md:px-16 mb-20">
-          <h2 class="text-sm font-semibold uppercase tracking-widest text-[#1d4ed8] mb-2 font-inter">Capabilities</h2>
-          <p class="text-3xl md:text-5xl font-serif font-bold text-white">Professional Footprint</p>
+        <div class="px-6 md:px-16 mb-15 lg:mb-20">
+          <h2 class="text-[3.2vw] md:text-xs lg:text-sm font-semibold uppercase tracking-widest text-[#1d4ed8] mb-2 font-inter">Capabilities</h2>
+          <p class="text-[7.5vw] md:text-[6vw] lg:text-5xl font-serif font-bold text-white">Professional Footprint</p>
         </div>
 
         <div class="relative w-full  flex flex-col lg:flex-row gap-12 lg:gap-16 items-center">
@@ -1169,54 +827,54 @@ function getTechIcon($item) {
               <!-- Dots aligned on the line -->
               <div class="absolute top-0 bottom-0 w-full flex flex-col justify-between items-center py-6 h-[600px]"
                 id="timeline-dots-container">
-                <?php
-                $capItems = $capabilities['items'] ?? [
-                    ['category' => 'Experience', 'description' => '14+ years across data strategy, ERP, AI, and enterprise delivery'],
-                    ['category' => 'Industries Served', 'description' => 'Manufacturing, Supply Chain, Logistics SaaS, Public Sector, Enterprise Tech'],
-                    ['category' => 'Global Footprint', 'type' => 'pills', 'items' => ['UAE', 'Netherlands', 'Germany', 'Canada', 'India']],
-                    ['category' => 'Engagement Model', 'type' => 'pills', 'items' => ['Fractional CDO', 'Advisory Retainer', 'Project-Based Consulting']],
-                    ['category' => 'Core Disciplines', 'description' => 'Data Strategy • AI Advisory • Business Intelligence • ERP Governance • Cloud Platforms']
-                ];
-                foreach ($capItems as $idx => $item):
-                ?>
-                  <div
-                    class="timeline-dot w-4.5 h-4.5 rounded-full bg-[#121216] border-2 border-white/10 flex items-center justify-center transition-all duration-300 z-10"
-                    data-index="<?= $idx ?>">
-                    <div class="w-1.5 h-1.5 rounded-full bg-white/20 transition-all duration-300 inner-dot"></div>
-                  </div>
-                <?php endforeach; ?>
+                <!-- Dot 1 -->
+                <div
+                  class="timeline-dot w-4.5 h-4.5 rounded-full bg-[#121216] border-2 border-white/10 flex items-center justify-center transition-all duration-300 z-10"
+                  data-index="0">
+                  <div class="w-1.5 h-1.5 rounded-full bg-white/20 transition-all duration-300 inner-dot"></div>
+                </div>
+                <!-- Dot 2 -->
+                <div
+                  class="timeline-dot w-4.5 h-4.5 rounded-full bg-[#121216] border-2 border-white/10 flex items-center justify-center transition-all duration-300 z-10"
+                  data-index="1">
+                  <div class="w-1.5 h-1.5 rounded-full bg-white/20 transition-all duration-300 inner-dot"></div>
+                </div>
+                <!-- Dot 3 -->
+                <div
+                  class="timeline-dot w-4.5 h-4.5 rounded-full bg-[#121216] border-2 border-white/10 flex items-center justify-center transition-all duration-300 z-10"
+                  data-index="2">
+                  <div class="w-1.5 h-1.5 rounded-full bg-white/20 transition-all duration-300 inner-dot"></div>
+                </div>
+                <!-- Dot 4 -->
+                <div
+                  class="timeline-dot w-4.5 h-4.5 rounded-full bg-[#121216] border-2 border-white/10 flex items-center justify-center transition-all duration-300 z-10"
+                  data-index="3">
+                  <div class="w-1.5 h-1.5 rounded-full bg-white/20 transition-all duration-300 inner-dot"></div>
+                </div>
+                <!-- Dot 5 -->
+                <div
+                  class="timeline-dot w-4.5 h-4.5 rounded-full bg-[#121216] border-2 border-white/10 flex items-center justify-center transition-all duration-300 z-10"
+                  data-index="4">
+                  <div class="w-1.5 h-1.5 rounded-full bg-white/20 transition-all duration-300 inner-dot"></div>
+                </div>
               </div>
             </div>
 
             <!-- Content Column -->
-            <div class="flex flex-col justify-between py-2 h-[600px] flex-grow" id="timeline-content-container">
-              <?php
-              foreach ($capItems as $idx => $item):
-                  $category = $item['category'] ?? '';
-                  $type = $item['type'] ?? 'text';
-                  $desc = $item['description'] ?? '';
-                  $pills = $item['items'] ?? [];
-              ?>
-                <div class="timeline-item opacity-25 translate-x-4 transition-all duration-500" data-index="<?= $idx ?>">
-                  <h3 class="text-[#3b82f6] font-sans font-bold text-sm uppercase tracking-wider mb-2"><?= h($category) ?></h3>
-                  <?php if ($type === 'pills'): ?>
-                    <div class="flex flex-wrap gap-2.5 mt-1">
-                      <?php foreach ($pills as $pill): 
-                        $pillClass = (strtolower($category) === 'engagement model') 
-                          ? 'bg-[#1d4ed8]/10 border-[#1d4ed8]/30 text-[#3b82f6]' 
-                          : 'bg-white/5 border-white/10 text-white';
-                      ?>
-                        <span class="px-4 py-1.5 rounded-full text-xs md:text-sm border font-medium <?= $pillClass ?>">
-                          <?= h($pill) ?>
-                        </span>
-                      <?php endforeach; ?>
-                    </div>
-                  <?php else: ?>
-                    <p class="text-white text-lg md:text-2xl font-serif font-medium leading-snug">
-                      <?= h($desc) ?>
-                    </p>
-                  <?php endif; ?>
-                </div>
+            <div class="flex flex-col justify-between gap-12 py-2 lg:h-[600px] flex-grow" id="timeline-content-container">
+              <?php foreach ($capabilities['items'] as $idx => $ci): ?>
+              <div class="timeline-item opacity-25 translate-x-4 transition-all duration-500" data-index="<?= $idx ?>">
+                <h3 class="text-[#3b82f6] font-sans font-bold text-sm uppercase tracking-wider mb-2"><?= h($ci['category']) ?></h3>
+                <?php if (isset($ci['type']) && $ci['type'] === 'pills'): ?>
+                  <div class="flex flex-wrap gap-2.5 mt-1">
+                    <?php foreach ($ci['items'] as $pill): ?>
+                    <span class="px-4 py-1.5 rounded-full text-xs md:text-sm bg-white/5 border border-white/10 text-white font-medium"><?= h($pill) ?></span>
+                    <?php endforeach; ?>
+                  </div>
+                <?php else: ?>
+                  <p class="text-white text-lg md:text-2xl font-serif font-medium leading-snug"><?= h($ci['description'] ?? $ci['text']) ?></p>
+                <?php endif; ?>
+              </div>
               <?php endforeach; ?>
             </div>
           </div>
@@ -1610,7 +1268,7 @@ function getTechIcon($item) {
     </section>
 
     <!-- Services Section -->
-    <section id="services" class="relative pb-30 pt-10 overflow-hidden">
+    <section id="services" class="relative pb-10 lg:pb-30 pt-10 overflow-hidden">
       <!-- Glow effects behind services -->
       <div
         class="absolute top-1/4 left-1/4 w-[31.25rem] h-[31.25rem] rounded-full bg-[#1d4ed8]/5 blur-[7.5rem] pointer-events-none">
@@ -1621,94 +1279,55 @@ function getTechIcon($item) {
 
       <div class="mx-auto max-w-[90%] relative z-10">
 
-        <div class="px-[1.5rem] md:px-[4rem] mb-[4rem]">
+        <div class=" md:px-[4rem] mb-[2rem] lg:mb-[4rem]">
           <h2 class="text-xs md:text-sm font-semibold uppercase tracking-widest text-[#1d4ed8] mb-[0.5rem] font-inter">
             Services</h2>
-          <p class="text-3xl md:text-5xl font-serif font-bold text-white leading-tight">How I Help Organizations Succeed
+          <p class="text-4xl lg:text-5xl font-serif font-bold text-white leading-tight">How I Help Organizations Succeed
           </p>
         </div>
 
-        <div
-          class="flex flex-wrap justify-center gap-[1.5rem] lg:gap-[2rem] px-[1.5rem] md:px-[4rem] mt-[3rem] lg:mt-[4rem]">
+        <div class="flex flex-wrap justify-center gap-[1.5rem] lg:gap-[2rem] px-0 md:px-[4rem] mt-[3rem] lg:mt-[4rem]">
           <?php
-          $serviceItems = $services['items'] ?? [
-              [
-                  'title' => 'Fractional Chief Data Officer',
-                  'subtitle' => 'Executive Leadership',
-                  'description' => 'Part-time executive leadership designed to establish data capabilities, coordinate business strategies, and guide core analytics implementations.',
-                  'bullets' => ['Data Strategy Development & Roadmapping', 'Enterprise Data Governance Frameworks', 'Executive KPI & Reporting Architecture', 'AI Readiness & Opportunity Assessment', 'Board-Level Stakeholder Alignment', 'Analytics Operating Model Design']
-              ],
-              [
-                  'title' => 'Data Strategy & Governance',
-                  'subtitle' => 'Strategic Alignment',
-                  'description' => 'Establishing clear structures, ownership models, metadata catalogs, and quality parameters that drive corporate value and cross-functional trust.',
-                  'bullets' => ['Enterprise Data Strategy Documentation', 'Data Governance Operating Model', 'Data Quality & Integrity Frameworks', 'Master Data Management Programs', 'Data Ownership & Stewardship Models', 'Policies, Standards & Compliance']
-              ],
-              [
-                  'title' => 'AI Strategy & Transformation',
-                  'subtitle' => 'Innovation & Scale',
-                  'description' => 'Evaluating data assets for AI-readiness, prioritizing operational use cases, and introducing governance parameters for Generative AI tooling.',
-                  'bullets' => ['AI Opportunity & Maturity Assessment', 'Use Case Identification & Prioritization', 'Generative AI Strategy & Implementation', 'AI Governance & Responsible AI Frameworks', 'Proof of Concept Design & Oversight', 'Enterprise AI Adoption & Change Management']
-              ],
-              [
-                  'title' => 'ERP Data Excellence',
-                  'subtitle' => 'System Optimization',
-                  'description' => 'Protecting transactional data integrity. Advising on ERP data governance, reporting structures, migration validation, and system integrations.',
-                  'bullets' => ['ERP Data Governance Design', 'Reporting Strategy & Architecture', 'Data Migration Planning & Validation', 'KPI Definition & Measurement Frameworks', 'Analytics Integration with ERP Systems', 'Post-Go-Live Data Quality Programs']
-              ],
-              [
-                  'title' => 'Business Intelligence & Analytics',
-                  'subtitle' => 'Insight Enablement',
-                  'description' => 'Structuring corporate dashboards and analytics platforms that deliver actionable insight, unified metric structures, and dashboard systems.',
-                  'bullets' => ['Executive Dashboard Design & Delivery', 'KPI Framework Architecture', 'Power BI & Tableau Implementation', 'Self-Service Analytics Enablement', 'Data Visualization Standards', 'Analytics Adoption Programs']
-              ],
-              [
-                  'title' => 'Cloud Data Platform Advisory',
-                  'subtitle' => 'Design & Platform Ecosystems',
-                  'description' => 'Defining modern, cloud-based data storage and processing ecosystems, covering vendor alignment, migration strategies, and data pipelines.',
-                  'bullets' => ['Cloud Architecture Strategy (AWS, Azure)', 'Snowflake Platform Design', 'Data Lake & Warehouse Architecture', 'Analytics Pipeline Engineering', 'Platform Vendor Selection & Governance', 'Migration Planning & Risk Management']
-              ]
+          $serviceSvgs = [
+              0 => '<svg class="w-[1.75rem] h-[1.75rem]" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /><path d="M7 10l3-2 2 4 2-4 3 2v4H7v-4z" fill="#3b82f6" fill-opacity="0.2" /></svg>',
+              1 => '<svg class="w-[1.75rem] h-[1.75rem]" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.5"><circle cx="12" cy="12" r="9" /><circle cx="12" cy="12" r="4" stroke-dasharray="2 2" /><path d="M12 2v20M2 12h22" stroke-opacity="0.4" /><path d="M12 12l4-4" stroke-linecap="round" /><circle cx="16" cy="8" r="1" fill="#3b82f6" /></svg>',
+              2 => '<svg class="w-[1.75rem] h-[1.75rem]" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M9 3v18M15 3v18M3 9h18M3 15h18" /><circle cx="12" cy="12" r="2.5" fill="#3b82f6" /><path d="M12 6.5A5.5 5.5 0 0 0 6.5 12A5.5 5.5 0 0 0 12 17.5A5.5 5.5 0 0 0 17.5 12A5.5 5.5 0 0 0 12 6.5Z" stroke-dasharray="2 3" /></svg>',
+              3 => '<svg class="w-[1.75rem] h-[1.75rem]" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.5"><path d="M4 22V4c0-.5.5-1 1-1h14c.5 0 1 .5 1 1v18M4 7h16M4 12h16M4 17h16" /><path d="M8 3v19M16 3v19" stroke-opacity="0.3" /></svg>',
+              4 => '<svg class="w-[1.75rem] h-[1.75rem]" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.5"><path d="M3 3v18h18M18 9l-5 5-3-3-4 4" stroke-linecap="round" stroke-linejoin="round" /><circle cx="18" cy="9" r="2" fill="#3b82f6" /><circle cx="13" cy="14" r="1.5" fill="#3b82f6" /></svg>',
+              5 => '<svg class="w-[1.75rem] h-[1.75rem]" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.5"><ellipse cx="12" cy="5" rx="9" ry="3" /><path d="M3 5v6c0 1.66 4 3 9 3s9-1.34 9-3V5M3 11v6c0 1.66 4 3 9 3s9-1.34 9-3v-6" /><path d="M12 2v6" stroke-dasharray="2 2" /></svg>'
           ];
-          foreach ($serviceItems as $idx => $item):
-              $title = $item['title'] ?? '';
-              $subtitle = $item['subtitle'] ?? '';
-              $description = $item['description'] ?? '';
-              $bullets = $item['bullets'] ?? [];
+          foreach ($serviceItems as $idx => $svc):
+              $svg = $serviceSvgs[$idx % count($serviceSvgs)];
           ?>
-            <div class="service-card w-full md:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1.333rem)]" id="service-card-<?= $idx + 1 ?>">
-              <div
-                class="w-[3.5rem] h-[3.5rem] rounded-2xl bg-[#1d4ed8]/10 flex items-center justify-center border border-[#1d4ed8]/30 mb-[1.5rem]">
-                <?php if (!empty($item['icon_image'])): ?>
-                  <img src="<?= h(resolve_asset($item['icon_image'])) ?>" alt="<?= h($title) ?>" class="w-7 h-7 object-contain">
-                <?php else: ?>
-                  <?= getServiceSvg($title) ?>
-                <?php endif; ?>
-              </div>
-              <h3 class="text-white text-xl font-bold font-sans mb-[0.25rem]"><?= h($title) ?></h3>
-              <p class="text-[#3b82f6] text-xs font-semibold uppercase tracking-wider mb-[0.75rem] font-inter"><?= h($subtitle) ?></p>
-              <p class="text-white/60 text-sm leading-relaxed font-inter mb-[1.5rem]">
-                <?= h($description) ?>
-              </p>
-              <div class="h-[1px] bg-white/5 w-full mb-[1.5rem]"></div>
-              <ul class="space-y-[0.875rem] mt-auto">
-                <?php foreach ($bullets as $bullet): ?>
-                  <li class="flex items-start gap-[0.75rem] text-sm text-white/80 font-inter">
-                    <svg class="w-[1rem] h-[1rem] text-[#3b82f6] mt-[0.125rem] flex-shrink-0" fill="none"
-                      viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span><?= h($bullet) ?></span>
-                  </li>
-                <?php endforeach; ?>
-              </ul>
+          <div class="service-card w-full md:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1.333rem)]" id="service-card-<?= $idx + 1 ?>">
+            <div class="w-[3.5rem] h-[3.5rem] rounded-2xl bg-[#1d4ed8]/10 flex items-center justify-center border border-[#1d4ed8]/30 mb-[1.5rem]">
+              <?= $svg ?>
             </div>
+            <h3 class="text-white text-xl font-bold font-sans mb-[0.25rem]"><?= h($svc['title']) ?></h3>
+            <p class="text-white/60 text-sm leading-relaxed font-inter mb-[1.5rem]">
+              <?= h($svc['description']) ?>
+            </p>
+            <?php if (!empty($svc['bullets'])): ?>
+            <div class="h-[1px] bg-white/5 w-full mb-[1.5rem]"></div>
+            <ul class="space-y-[0.875rem] mt-auto">
+              <?php foreach ($svc['bullets'] as $bullet): ?>
+              <li class="flex items-start gap-[0.75rem] text-sm text-white/80 font-inter">
+                <svg class="w-[1rem] h-[1rem] text-[#3b82f6] mt-[0.125rem] flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+                <span><?= h($bullet) ?></span>
+              </li>
+              <?php endforeach; ?>
+            </ul>
+            <?php endif; ?>
+          </div>
           <?php endforeach; ?>
         </div>
       </div>
     </section>
 
     <!-- Ideal Clients Section -->
-    <section id="ideal-clients" class="relative py-32 overflow-hidden">
+    <section id="ideal-clients" class="relative py-10 lg:py-32 overflow-hidden">
       <!-- Glow effects -->
       <div
         class="absolute -top-[10%] -left-[10%] w-96 h-96 rounded-full bg-[#1d4ed8]/5 blur-[120px] pointer-events-none">
@@ -1720,23 +1339,22 @@ function getTechIcon($item) {
       <div class="max-w-7xl mx-auto px-6 md:px-12 flex flex-col lg:flex-row gap-16 lg:gap-20">
         <!-- Left Column: Navigation Index -->
         <div class="w-full lg:w-[55%] flex flex-col justify-center">
-          <h2 class="text-xs md:text-sm font-semibold uppercase tracking-widest text-[#1d4ed8] mb-2 font-inter">Ideal
-            Clients</h2>
-          <h3 class="text-3xl md:text-5xl font-serif font-extrabold tracking-tight text-white mb-8 whitespace-nowrap">
+          <h2 class="text-[3.2vw] md:text-xs lg:text-sm font-semibold uppercase tracking-widest text-[#1d4ed8] mb-2 font-inter">Ideal Clients</h2>
+          <h3 class="text-[5.5vw] md:text-[6vw] lg:text-5xl font-serif font-extrabold tracking-tight text-white mb-8 whitespace-nowrap">
             Who I Work With</h3>
 
           <!-- Interactive List -->
           <div class="client-nav flex flex-col gap-6" id="client-nav-list">
-            <?php foreach (($clients['tabs'] ?? []) as $idx => $tab): 
-              $activeClass = ($idx === 0) ? ' active-item' : '';
+            <?php foreach ($clientTabs as $idx => $tab):
+                $activeClass = ($idx === 0) ? 'active-item' : '';
             ?>
-              <div class="client-nav-item group cursor-pointer py-4 border-b border-white/5 relative<?= $activeClass ?>"
-                data-target="<?= h($tab['id'] ?? '') ?>">
-                <span class="font-serif text-xs text-[#1d4ed8]/50 mr-4"><?= h($tab['num'] ?? '') ?></span>
-                <span
-                  class="text-xl md:text-2xl font-bold font-sans text-white/50 group-hover:text-white transition-colors duration-300"><?= h($tab['title'] ?? '') ?></span>
-                <div class="nav-line absolute bottom-0 left-0 w-0 h-[2px] bg-[#3b82f6] transition-all duration-300"></div>
-              </div>
+            <div class="client-nav-item group cursor-pointer py-4 border-b border-white/5 relative <?= $activeClass ?>"
+              data-target="<?= h($tab['id']) ?>">
+              <span class="font-serif text-xs text-[#1d4ed8]/50 mr-4"><?= h($tab['num'] ?? sprintf("%02d //", $idx+1)) ?></span>
+              <span
+                class="text-xl md:text-2xl font-bold font-sans text-white/50 group-hover:text-white transition-colors duration-300"><?= h($tab['title']) ?></span>
+              <div class="nav-line absolute bottom-0 left-0 w-0 h-[2px] bg-[#3b82f6] transition-all duration-300"></div>
+            </div>
             <?php endforeach; ?>
           </div>
         </div>
@@ -1754,28 +1372,49 @@ function getTechIcon($item) {
             <div id="panel-default"
               class="showcase-panel flex flex-col justify-center h-full gap-4 transition-all duration-500">
               <div class="mb-6 opacity-40">
-                <?= getClientSvg('default') ?>
+                <svg class="w-[5rem] h-[5rem] text-[#3b82f6]" viewBox="0 0 100 100" fill="none" stroke="currentColor"
+                  stroke-width="1">
+                  <circle cx="50" cy="50" r="10" stroke-dasharray="2 2" />
+                  <circle cx="50" cy="50" r="25" stroke-dasharray="3 3" />
+                  <circle cx="20" cy="30" r="3" fill="#3b82f6" />
+                  <circle cx="80" cy="30" r="3" fill="#3b82f6" />
+                  <circle cx="50" cy="85" r="3" fill="#3b82f6" />
+                  <line x1="20" y1="30" x2="50" y2="50" stroke-width="0.8" />
+                  <line x1="80" y1="30" x2="50" y2="50" stroke-width="0.8" />
+                  <line x1="50" y1="85" x2="50" y2="50" stroke-width="0.8" />
+                </svg>
               </div>
               <p class="text-white/60 text-base md:text-lg leading-relaxed font-inter">
-                <?= h($clients['intro'] ?? '') ?>
+                <?= h($clientIntro) ?>
               </p>
             </div>
 
-            <!-- Detail Panels -->
-            <?php foreach (($clients['tabs'] ?? []) as $tab): ?>
-              <div id="panel-<?= h($tab['id'] ?? '') ?>"
-                class="showcase-panel absolute inset-0 p-8 md:p-12 opacity-0 pointer-events-none flex flex-col justify-between transition-all duration-500 translate-y-4">
-                <div class="flex justify-between items-start mb-6">
-                  <?= getClientSvg($tab['id'] ?? '') ?>
-                  <span class="text-5xl font-serif font-black text-white/5"><?= h(str_replace(' //', '', $tab['num'] ?? '')) ?></span>
-                </div>
-                <div>
-                  <h4 class="text-2xl font-bold font-sans text-white mb-4"><?= h($tab['title'] ?? '') ?></h4>
-                  <p class="text-white/80 text-sm md:text-base leading-relaxed font-inter">
-                    <?= h($tab['text'] ?? '') ?>
-                  </p>
-                </div>
+            <?php
+            $panelSvgs = [
+                'ceos-founders' => '<svg class="w-[5rem] h-[5rem] text-[#3b82f6]" viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="60" cy="35" r="8" fill="#3b82f6" fill-opacity="0.1" stroke-width="1.5" /><line x1="60" y1="43" x2="60" y2="80" /><line x1="60" y1="55" x2="25" y2="55" /><line x1="60" y1="55" x2="95" y2="55" /><line x1="25" y1="55" x2="25" y2="80" /><line x1="95" y1="55" x2="95" y2="80" /><circle cx="25" cy="84" r="4" fill="#3b82f6" /><circle cx="60" cy="84" r="4" fill="#3b82f6" /><circle cx="95" cy="84" r="4" fill="#3b82f6" /><path d="M15 100 L 45 85 L 75 90 L 105 45" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" class="draw-path" /><circle cx="105" cy="45" r="3.5" fill="#60a5fa" class="pulse-node" /></svg>',
+                'cios-ctos' => '<svg class="w-[5rem] h-[5rem] text-[#3b82f6]" viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="20" y="25" width="22" height="14" rx="3" fill="#3b82f6" fill-opacity="0.1" /><rect x="20" y="53" width="22" height="14" rx="3" fill="#3b82f6" fill-opacity="0.1" /><rect x="20" y="81" width="22" height="14" rx="3" fill="#3b82f6" fill-opacity="0.1" /><path d="M42 32 L 75 32 L 75 60" class="draw-path" /><path d="M42 60 L 75 60" class="draw-path" /><path d="M42 88 L 75 88 L 75 60" class="draw-path" /><line x1="75" y1="60" x2="98" y2="60" stroke-width="1.5" /><circle cx="100" cy="60" r="6" fill="#60a5fa" class="pulse-node" /><circle cx="100" cy="60" r="12" stroke-dasharray="3 3" /></svg>',
+                'erp-leaders' => '<svg class="w-[5rem] h-[5rem] text-[#3b82f6]" viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="1.2"><ellipse cx="60" cy="30" rx="18" ry="6" fill="#3b82f6" fill-opacity="0.1" /><path d="M42 30 V 45 A 18 6 0 0 0 78 45 V 30" /><path d="M42 45 V 60 A 18 6 0 0 0 78 60 V 45" /><circle cx="20" cy="45" r="4" /><circle cx="100" cy="45" r="4" /><circle cx="60" cy="95" r="4" /><line x1="38" y1="45" x2="24" y2="45" stroke-dasharray="2 2" /><line x1="82" y1="45" x2="96" y2="45" stroke-dasharray="2 2" /><line x1="60" y1="68" x2="60" y2="91" stroke-dasharray="2 2" /></svg>',
+                'pe-firms' => '<svg class="w-[5rem] h-[5rem] text-[#3b82f6]" viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="15" y="25" width="90" height="70" rx="6" stroke-dasharray="4 2" /><line x1="30" y1="45" x2="70" y2="45" stroke-width="2" class="draw-path" /><line x1="30" y1="60" x2="85" y2="60" stroke-width="2" class="draw-path" /><line x1="30" y1="75" x2="60" y2="75" stroke-width="2" stroke="#60a5fa" class="draw-path" /><circle cx="70" cy="45" r="3" fill="#3b82f6" /><circle cx="85" cy="60" r="3" fill="#3b82f6" /><circle cx="60" cy="75" r="3" fill="#60a5fa" class="pulse-node" /></svg>',
+                'enterprises' => '<svg class="w-[5rem] h-[5rem] text-[#3b82f6]" viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="60" cy="60" r="35" stroke-width="1.5" /><path d="M25 60 H 95" /><path d="M60 25 V 95" /><path d="M30 40 Q 60 70 90 40" stroke-opacity="0.5" /><path d="M30 80 Q 60 50 90 80" stroke-opacity="0.5" /><circle cx="45" cy="45" r="2.5" fill="#60a5fa" class="pulse-node" /><circle cx="75" cy="75" r="2.5" fill="#60a5fa" class="pulse-node" /></svg>'
+            ];
+
+            foreach ($clientTabs as $idx => $tab):
+                $pId = $tab['id'];
+                $svg = $panelSvgs[$pId] ?? '<svg class="w-[5rem] h-[5rem] text-[#3b82f6]" viewBox="0 0 100 100" fill="none" stroke="currentColor"><circle cx="50" cy="50" r="10" /></svg>';
+            ?>
+            <div id="panel-<?= h($pId) ?>"
+              class="showcase-panel absolute inset-0 p-8 md:p-12 opacity-0 pointer-events-none flex flex-col justify-between transition-all duration-500 translate-y-4">
+              <div class="flex justify-between items-start mb-6">
+                <?= $svg ?>
+                <span class="text-5xl font-serif font-black text-white/5"><?= sprintf("%02d", $idx + 1) ?></span>
               </div>
+              <div>
+                <h4 class="text-2xl font-bold font-sans text-white mb-4"><?= h($tab['title']) ?></h4>
+                <p class="text-white/80 text-sm md:text-base leading-relaxed font-inter">
+                  <?= h($tab['text']) ?>
+                </p>
+              </div>
+            </div>
             <?php endforeach; ?>
           </div>
         </div>
@@ -1783,7 +1422,7 @@ function getTechIcon($item) {
     </section>
 
     <!-- Impact Section -->
-    <section id="impact" class="relative py-32 border-t border-white/5 overflow-hidden w-full select-none">
+    <section id="impact" class="relative py-10 lg:py-32 border-t border-white/5 overflow-hidden w-full select-none">
       <!-- Glow ambient background -->
       <div
         class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-[#1d4ed8]/5 blur-[150px] pointer-events-none">
@@ -1791,47 +1430,55 @@ function getTechIcon($item) {
 
       <div class="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
         <!-- Section Header -->
-        <div class="text-center max-w-3xl mx-auto mb-16">
-          <h2 class="text-xs md:text-sm font-semibold uppercase tracking-widest text-[#1d4ed8] mb-2 font-inter">
-            <?= h($impact['headline'] ?? 'Impact') ?>
-          </h2>
-          <h3 class="text-3xl md:text-5xl font-serif font-extrabold tracking-tight text-white mb-6">
-            <?= h($impact['subheading'] ?? 'Delivered Results — Across Industries') ?>
-          </h3>
-          <p class="text-white/60 text-sm md:text-base leading-relaxed font-inter">
-            <?= h($impact['intro'] ?? 'The measure of successful data leadership is not the sophistication of the technology deployed. It is the quality of decisions made, the speed of business response, and the competitive advantage unlocked.') ?>
+        <div class="text-center max-w-3xl mx-auto mb-6 lg:mb-16">
+          <h2 class="text-[3.2vw] md:text-xs lg:text-sm font-semibold uppercase tracking-widest text-[#1d4ed8] mb-2 font-inter">Impact</h2>
+          <h3 class="text-[5.5vw] md:text-[6vw] lg:text-5xl font-serif font-extrabold tracking-tight text-white mb-6">Delivered Results —
+            Across Industries</h3>
+          <p class="text-white/60 text-[3.8vw] md:text-sm lg:text-base leading-relaxed font-inter">
+            The measure of successful data leadership is not the sophistication of the technology deployed. It is the
+            quality of decisions made, the speed of business response, and the competitive advantage unlocked.
           </p>
         </div>
 
         <!-- Swiper Container -->
         <div class="swiper impact-swiper relative py-12">
           <div class="swiper-wrapper">
-            <?php foreach (($impact['slides'] ?? []) as $slide): ?>
-              <div
-                class="swiper-slide w-[28rem] h-[22rem] flex-shrink-0 glassmorphism rounded-3xl p-8 border border-[#1d4ed8]/15 flex flex-col justify-between relative shadow-xl transform-gpu">
-                <div class="flex justify-between items-start">
-                  <div
-                    class="w-[3.5rem] h-[3.5rem] rounded-2xl bg-[#1d4ed8]/10 flex items-center justify-center border border-[#1d4ed8]/30 text-[#3b82f6]">
-                    <?= $slide['svg'] ?? '' ?>
-                  </div>
-                  <span class="font-serif text-5xl font-extrabold text-white/5"><?= h($slide['num'] ?? '') ?></span>
+
+            <?php
+            $slideSvgs = [
+                0 => '<svg class="w-[3.5rem] h-[3.5rem]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /><circle cx="12" cy="12" r="3" /></svg>',
+                1 => '<svg class="w-[3.5rem] h-[3.5rem]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3v18h18M18 9l-5 5-3-3-4 4" stroke-linecap="round" stroke-linejoin="round" /></svg>',
+                2 => '<svg class="w-[3.5rem] h-[3.5rem]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="14" height="14" rx="2" /><path d="M9 5V2M15 5V2M9 19v3M15 19v3M5 9H2M5 15H2M19 9h3M19 15h3" /></svg>',
+                3 => '<svg class="w-[3.5rem] h-[3.5rem]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 10h-.7a7 7 0 00-13.8 2.1 4 4 0 00.5 7.9H18a5 5 0 000-10z" /></svg>',
+                4 => '<svg class="w-[3.5rem] h-[3.5rem]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="12" cy="5" rx="9" ry="3" /><path d="M3 5v6c0 1.66 4 3 9 3s9-1.34 9-3V5M3 11v6c0 1.66 4 3 9 3s9-1.34 9-3v-6" /></svg>'
+            ];
+
+            $slides = $siteContent['impact']['slides'] ?? [];
+            foreach ($slides as $idx => $slide):
+                $svg = $slideSvgs[$idx % count($slideSvgs)];
+            ?>
+            <div class="swiper-slide w-[28rem] h-[22rem] flex-shrink-0 glassmorphism rounded-3xl p-8 border border-[#1d4ed8]/15 flex flex-col justify-between relative shadow-xl transform-gpu">
+              <div class="flex justify-between items-start mb-10">
+                <div class="w-[3.5rem] h-[3.5rem] rounded-2xl bg-[#1d4ed8]/10 flex items-center justify-center border border-[#1d4ed8]/30 text-[#3b82f6]">
+                  <?= $svg ?>
                 </div>
-                <div>
-                  <h4 class="text-xl font-bold font-sans text-white mb-3"><?= h($slide['title'] ?? '') ?></h4>
-                  <p class="text-white/60 text-sm leading-relaxed font-inter">
-                    <?= h($slide['description'] ?? '') ?>
-                  </p>
-                </div>
+                <span class="font-serif text-5xl font-extrabold text-white/5"><?= h($slide['num']) ?></span>
               </div>
+              <div>
+                <h4 class="text-xl font-bold font-sans text-white mb-3"><?= h($slide['title']) ?></h4>
+                <p class="text-white/60 text-sm leading-relaxed font-inter">
+                  <?= h($slide['description']) ?>
+                </p>
+              </div>
+            </div>
             <?php endforeach; ?>
           </div>
-
           <!-- Swiper Navigation Arrows -->
           <div
-            class="swiper-button-prev !text-[#3b82f6] !w-12 !h-12 !rounded-full !bg-white/5 !border !border-white/10 hover:!border-[#60a5fa] hover:!bg-[#1d4ed8]/10 !left-4 md:!left-12 flex items-center justify-center after:!text-sm transition-all">
+            class="!hidden md:!flex swiper-button-prev !text-[#3b82f6] !w-12 !h-12 !rounded-full !bg-white/5 !border !border-white/10 hover:!border-[#60a5fa] hover:!bg-[#1d4ed8]/10 !left-4 md:!left-12 flex items-center justify-center after:!text-sm transition-all">
           </div>
           <div
-            class="swiper-button-next !text-[#3b82f6] !w-12 !h-12 !rounded-full !bg-white/5 !border !border-white/10 hover:!border-[#60a5fa] hover:!bg-[#1d4ed8]/10 !right-4 md:!right-12 flex items-center justify-center after:!text-sm transition-all">
+            class="!hidden md:!flex swiper-button-next !text-[#3b82f6] !w-12 !h-12 !rounded-full !bg-white/5 !border !border-white/10 hover:!border-[#60a5fa] hover:!bg-[#1d4ed8]/10 !right-4 md:!right-12 flex items-center justify-center after:!text-sm transition-all">
           </div>
 
           <!-- Swiper Pagination dots -->
@@ -1841,7 +1488,7 @@ function getTechIcon($item) {
     </section>
 
     <!-- Experience Section -->
-    <section id="experience" class="relative py-32  overflow-hidden w-full select-none">
+    <section id="experience" class="relative py-10 lg:py-32  overflow-hidden w-full select-none">
       <!-- Ambient glow -->
       <div
         class="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-[#1d4ed8]/5 blur-[180px] pointer-events-none">
@@ -1850,11 +1497,8 @@ function getTechIcon($item) {
       <div class="max-w-5xl mx-auto px-6 md:px-12 relative z-10">
         <!-- Section Header -->
         <div class="text-center max-w-3xl mx-auto mb-20 exp-header">
-          <h2 class="text-xs md:text-sm font-semibold uppercase tracking-widest text-[#1d4ed8] mb-2 font-inter">
-            <?= h($experience['headline'] ?? 'Experience') ?></h2>
-          <h3 class="text-3xl md:text-5xl font-serif font-extrabold tracking-tight text-white mb-6">
-            <?= h($experience['subheading'] ?? 'Career Highlights') ?>
-          </h3>
+          <h2 class="text-[3.2vw] md:text-xs lg:text-sm font-semibold uppercase tracking-widest text-[#1d4ed8] mb-2 font-inter">Experience</h2>
+          <h3 class="text-[7.5vw] md:text-[6vw] lg:text-5xl font-serif font-extrabold tracking-tight text-white mb-6">Career Highlights</h3>
         </div>
 
         <!-- Timeline Container -->
@@ -1866,125 +1510,289 @@ function getTechIcon($item) {
               style="height: 0%;"></div>
           </div>
 
-          <?php foreach (($experience['jobs'] ?? []) as $idx => $job): 
-            $isEven = ($idx % 2 === 0);
-            $alignClass = $isEven 
-              ? 'md:ml-[calc(50%+2rem)]' 
-              : 'md:text-right';
-            $badgeRowClass = !$isEven ? 'md:flex-row-reverse' : '';
+          <?php
+          $jobSvgs = [
+              0 => '<svg class="w-5 h-5" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <defs>
+                        <linearGradient id="bolt-front" x1="16" y1="4" x2="16" y2="24" gradientUnits="userSpaceOnUse">
+                          <stop offset="0%" stop-color="#ffffff" />
+                          <stop offset="30%" stop-color="#60a5fa" />
+                          <stop offset="100%" stop-color="#1d4ed8" />
+                        </linearGradient>
+                        <linearGradient id="bolt-side" x1="16" y1="4" x2="20" y2="25" gradientUnits="userSpaceOnUse">
+                          <stop offset="0%" stop-color="#a87500" />
+                          <stop offset="100%" stop-color="#473000" />
+                        </linearGradient>
+                        <filter id="bolt-shadow" x="-20%" y="-20%" width="140%" height="140%">
+                          <feDropShadow dx="1" dy="2" stdDeviation="1.5" flood-color="#60a5fa" flood-opacity="0.3" />
+                        </filter>
+                      </defs>
+                      <g filter="url(#bolt-shadow)">
+                        <!-- Top slant side -->
+                        <path d="M17 4 L18.5 5.5 L17.5 14.5 L16 13 Z" fill="url(#bolt-side)" />
+                        <!-- Horizontal middle side -->
+                        <path d="M16 13 L17.5 14.5 L22.5 14.5 L21 13 Z" fill="url(#bolt-side)" />
+                        <!-- Lower slant side -->
+                        <path d="M21 13 L22.5 14.5 L15.5 25.5 L14 24 Z" fill="url(#bolt-side)" />
+                        <!-- Front Face -->
+                        <path d="M17 4 L11 13 H16 L14 24 L21 13 H16 Z" fill="url(#bolt-front)" />
+                      </g>
+                    </svg>',
+              1 => '<svg class="w-5 h-5" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <defs>
+                        <linearGradient id="col-top" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stop-color="#ffffff" />
+                          <stop offset="100%" stop-color="#60a5fa" />
+                        </linearGradient>
+                        <linearGradient id="col-right" x1="0" y1="0" x2="1" y2="0">
+                          <stop offset="0%" stop-color="#3b82f6" />
+                          <stop offset="100%" stop-color="#1d4ed8" />
+                        </linearGradient>
+                        <linearGradient id="col-left" x1="0" y1="0" x2="1" y2="0">
+                          <stop offset="0%" stop-color="#1d4ed8" />
+                          <stop offset="100%" stop-color="#543c00" />
+                        </linearGradient>
+                        <filter id="shadow-3d" x="-20%" y="-20%" width="140%" height="140%">
+                          <feDropShadow dx="1" dy="2" stdDeviation="1" flood-color="#000000" flood-opacity="0.5" />
+                        </filter>
+                      </defs>
+                      <g filter="url(#shadow-3d)">
+                        <!-- Column 3 (Back) -->
+                        <path d="M19 8 L24 5.5 L29 8 L24 10.5 Z" fill="url(#col-top)" />
+                        <path d="M19 8 L24 10.5 L24 21 L19 18.5 Z" fill="url(#col-left)" />
+                        <path d="M24 10.5 L29 8 L29 18.5 L24 21 Z" fill="url(#col-right)" />
+
+                        <!-- Column 2 (Middle) -->
+                        <path d="M12 14 L17 11.5 L22 14 L17 16.5 Z" fill="url(#col-top)" />
+                        <path d="M12 14 L17 16.5 L17 24 L12 21.5 Z" fill="url(#col-left)" />
+                        <path d="M17 16.5 L22 14 L22 21.5 L17 24 Z" fill="url(#col-right)" />
+
+                        <!-- Column 1 (Front) -->
+                        <path d="M5 20 L10 17.5 L15 20 L10 22.5 Z" fill="url(#col-top)" />
+                        <path d="M5 20 L10 22.5 L10 27 L5 24.5 Z" fill="url(#col-left)" />
+                        <path d="M10 22.5 L15 20 L15 24.5 L10 27 Z" fill="url(#col-right)" />
+
+                        <!-- Floating Trend Arrow (3D styled) -->
+                        <path d="M4 22 L11 15 L17 16.5 L26 7.5" stroke="#ffffff" stroke-width="1.5"
+                          stroke-linecap="round" stroke-linejoin="round"
+                          style="filter: drop-shadow(0 0.125rem 0.25rem rgba(96, 165, 250,0.4));" />
+                        <path d="M21 7.5 H 26 V 12.5" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"
+                          stroke-linejoin="round"
+                          style="filter: drop-shadow(0 0.125rem 0.25rem rgba(96, 165, 250,0.4));" />
+                        <circle cx="26" cy="7.5" r="2" fill="#ffffff" class="pulse-node" />
+                      </g>
+                    </svg>',
+              2 => '<svg class="w-5 h-5" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <defs>
+                        <radialGradient id="globe-sphere" cx="35%" cy="35%" r="65%">
+                          <stop offset="0%" stop-color="#ffffff" />
+                          <stop offset="40%" stop-color="#60a5fa" />
+                          <stop offset="85%" stop-color="#1d4ed8" />
+                          <stop offset="100%" stop-color="#422e00" />
+                        </radialGradient>
+                        <linearGradient id="ring-grad" x1="0" y1="0" x2="1" y2="1">
+                          <stop offset="0%" stop-color="#ffffff" stop-opacity="0.8" />
+                          <stop offset="50%" stop-color="#60a5fa" stop-opacity="0.5" />
+                          <stop offset="100%" stop-color="#1d4ed8" stop-opacity="0.1" />
+                        </linearGradient>
+                      </defs>
+                      <!-- Back half of the ring -->
+                      <path d="M 6 20 C 7 13, 23 10, 27 15" stroke="url(#ring-grad)" stroke-width="1.5"
+                        stroke-linecap="round" />
+
+                      <!-- Globe Sphere -->
+                      <circle cx="16" cy="16" r="9.5" fill="url(#globe-sphere)"
+                        style="filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));" />
+
+                      <!-- Grid Lines -->
+                      <path d="M 7.5 12 A 9.5 4.5 0 0 0 24.5 12" stroke="#ffffff" stroke-width="0.75"
+                        stroke-opacity="0.3" />
+                      <path d="M 6.5 16 A 9.5 5.5 0 0 0 25.5 16" stroke="#ffffff" stroke-width="0.75"
+                        stroke-opacity="0.4" />
+                      <path d="M 7.5 20 A 9.5 4.5 0 0 0 24.5 20" stroke="#ffffff" stroke-width="0.75"
+                        stroke-opacity="0.3" />
+
+                      <path d="M 12 6.5 A 5.5 9.5 0 0 0 12 25.5" stroke="#ffffff" stroke-width="0.75"
+                        stroke-opacity="0.3" />
+                      <path d="M 16 6.5 A 1 9.5 0 0 0 16 25.5" stroke="#ffffff" stroke-width="0.75"
+                        stroke-opacity="0.4" />
+                      <path d="M 20 6.5 A 5.5 9.5 0 0 0 20 25.5" stroke="#ffffff" stroke-width="0.75"
+                        stroke-opacity="0.3" />
+
+                      <!-- Front half of the ring -->
+                      <path d="M 27 15 C 26 21, 10 23, 6 20" stroke="url(#ring-grad)" stroke-width="1.5"
+                        stroke-linecap="round" />
+
+                      <!-- Pulse nodes -->
+                      <circle cx="12" cy="12" r="1.5" fill="#ffffff" class="pulse-node" />
+                      <circle cx="20" cy="16" r="1.5" fill="#ffffff" class="pulse-node" />
+                      <circle cx="16" cy="20" r="1.5" fill="#ffffff" class="pulse-node" />
+                    </svg>',
+              3 => '<svg class="w-5 h-5" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <defs>
+                        <linearGradient id="case-top" x1="16" y1="4" x2="16" y2="11" gradientUnits="userSpaceOnUse">
+                          <stop offset="0%" stop-color="#ffffff" />
+                          <stop offset="100%" stop-color="#60a5fa" />
+                        </linearGradient>
+                        <linearGradient id="case-right" x1="16" y1="11" x2="24" y2="18.5"
+                          gradientUnits="userSpaceOnUse">
+                          <stop offset="0%" stop-color="#60a5fa" />
+                          <stop offset="100%" stop-color="#1d4ed8" />
+                        </linearGradient>
+                        <linearGradient id="case-left" x1="8" y1="7.5" x2="16" y2="22" gradientUnits="userSpaceOnUse">
+                          <stop offset="0%" stop-color="#1d4ed8" />
+                          <stop offset="100%" stop-color="#3d2b00" />
+                        </linearGradient>
+                        <linearGradient id="case-handle" x1="13" y1="2" x2="19" y2="6.5" gradientUnits="userSpaceOnUse">
+                          <stop offset="0%" stop-color="#ffffff" />
+                          <stop offset="100%" stop-color="#1d4ed8" />
+                        </linearGradient>
+                      </defs>
+                      <path d="M 12.5 6 L 12.5 3.5 C 12.5 2.5, 19.5 2.5, 19.5 3.5 L 19.5 6" stroke="url(#case-handle)"
+                        stroke-width="1.5" stroke-linecap="round" fill="none" />
+                      <path d="M 8 7.5 L 16 11.2 L 16 22 L 8 18.2 Z" fill="url(#case-left)" />
+                      <path d="M 16 11.2 L 24 7.5 L 24 18.2 L 16 22 Z" fill="url(#case-right)" />
+                      <path d="M 16 11.2 L 24 7.5 L 16 3.8 L 8 7.5 Z" fill="url(#case-top)" />
+                      <path d="M 11.5 11 L 12.5 11.5 L 12.5 15.5 L 11.5 15 Z" fill="#ffffff" opacity="0.9"
+                        style="filter: drop-shadow(0 0.0625rem 0.125rem rgba(0,0,0,0.5));" />
+                      <circle cx="12" cy="14.5" r="0.75" fill="#1d4ed8" />
+                      <path d="M 19.5 11.5 L 20.5 11 L 20.5 15 L 19.5 15.5 Z" fill="#ffffff" opacity="0.9"
+                        style="filter: drop-shadow(0 0.0625rem 0.125rem rgba(0,0,0,0.5));" />
+                      <circle cx="20" cy="14.5" r="0.75" fill="#1d4ed8" />
+                      <path d="M 8 16 L 8 18.2 L 10 19.2 L 10 17 Z" fill="#60a5fa" opacity="0.8" />
+                      <path d="M 24 16 L 24 18.2 L 22 19.2 L 22 17 Z" fill="#60a5fa" opacity="0.8" />
+                    </svg>',
+              4 => '<svg class="w-5 h-5" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <defs>
+                        <linearGradient id="db-top" x1="8" y1="5" x2="24" y2="11" gradientUnits="userSpaceOnUse">
+                          <stop offset="0%" stop-color="#ffffff" />
+                          <stop offset="100%" stop-color="#60a5fa" />
+                        </linearGradient>
+                        <linearGradient id="db-body" x1="8" y1="0" x2="24" y2="0" gradientUnits="userSpaceOnUse">
+                          <stop offset="0%" stop-color="#543a00" />
+                          <stop offset="25%" stop-color="#60a5fa" />
+                          <stop offset="65%" stop-color="#1d4ed8" />
+                          <stop offset="100%" stop-color="#302000" />
+                        </linearGradient>
+                      </defs>
+                      <path d="M 8 22 A 8 3 0 0 0 24 22 L 24 27 A 8 3 0 0 1 8 27 Z" fill="url(#db-body)" />
+                      <ellipse cx="16" cy="22" rx="8" ry="3" fill="url(#db-top)" />
+                      <path d="M 10 24.5 H 14" stroke="#ffffff" stroke-width="0.5" opacity="0.7" />
+                      <circle cx="21" cy="24.5" r="0.75" fill="#ffffff" class="pulse-node" />
+
+                      <path d="M 8 15 A 8 3 0 0 0 24 15 L 24 20 A 8 3 0 0 1 8 20 Z" fill="url(#db-body)" />
+                      <ellipse cx="16" cy="15" rx="8" ry="3" fill="url(#db-top)" />
+                      <path d="M 10 17.5 H 14" stroke="#ffffff" stroke-width="0.5" opacity="0.7" />
+                      <circle cx="21" cy="17.5" r="0.75" fill="#ffffff" class="pulse-node" />
+
+                      <path d="M 8 8 A 8 3 0 0 0 24 8 L 24 13 A 8 3 0 0 1 8 13 Z" fill="url(#db-body)" />
+                      <ellipse cx="16" cy="8" rx="8" ry="3" fill="url(#db-top)" />
+                      <path d="M 10 10.5 H 14" stroke="#ffffff" stroke-width="0.5" opacity="0.7" />
+                      <circle cx="21" cy="10.5" r="0.75" fill="#ffffff" class="pulse-node" />
+                    </svg>'
+          ];
+
+          foreach ($expJobs as $idx => $job):
+              $isLeft = ($idx % 2 !== 0);
+              // Right side: card starts at 50%+gap; Left side: card sits at left (ml-0) with 50%-gap width
+              $alignClass = $isLeft ? 'md:w-[calc(50%-2rem)] md:ml-0' : 'md:w-[calc(50%-2rem)] md:ml-[calc(50%+2rem)]';
+              $textAlign  = $isLeft ? 'md:text-right' : '';
+              $headerAlign = $isLeft ? 'md:flex-row-reverse' : '';
+              $svg = $jobSvgs[$idx % count($jobSvgs)];
+              $period = $job['period'] ?? '';
           ?>
-            <!-- Timeline Item <?= $idx + 1 ?> -->
-            <div class="exp-item relative flex flex-col md:flex-row md:items-start mb-16 md:mb-20 group">
-              <!-- Dot -->
+          <!-- Timeline Item -->
+          <div class="exp-item relative flex flex-col md:flex-row md:items-start mb-16 md:mb-20 group">
+            <!-- Dot -->
+            <div
+              class="exp-dot absolute left-[1.75rem] md:left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-[#0a0a0a] border-2 border-white/15 z-10 transition-all duration-500 group-[.is-active]:border-[#3b82f6] group-[.is-active]:bg-[#3b82f6] group-[.is-active]:shadow-[0_0_12px_rgba(59,130,246,0.6)]">
               <div
-                class="exp-dot absolute left-[1.75rem] md:left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-[#0a0a0a] border-2 border-white/15 z-10 transition-all duration-500 group-[.is-active]:border-[#3b82f6] group-[.is-active]:bg-[#3b82f6] group-[.is-active]:shadow-[0_0_12px_rgba(59,130,246,0.6)]">
-                <div
-                  class="absolute inset-0 rounded-full bg-[#3b82f6]/30 scale-0 group-[.is-active]:scale-[2.5] transition-transform duration-700">
-                </div>
+                class="absolute inset-0 rounded-full bg-[#3b82f6]/30 scale-0 group-[.is-active]:scale-[2.5] transition-transform duration-700">
               </div>
-              
-              <!-- Content Card -->
-              <div class="ml-16 md:ml-0 md:w-[calc(50%-2rem)] <?= $alignClass ?>">
-                <div
-                  class="exp-card glassmorphism rounded-2xl p-6 md:p-8 border border-white/8 hover:border-[#1d4ed8]/30 transition-all duration-500">
-                  <div class="flex items-center gap-3 mb-4 <?= $badgeRowClass ?>">
-                    <div
-                      class="w-10 h-10 rounded-xl bg-[#1d4ed8]/10 flex items-center justify-center border border-[#1d4ed8]/25 text-[#3b82f6]">
-                      <?= getExperienceSvg($idx) ?>
-                    </div>
-                    <span
-                      class="text-white/30 text-xs font-semibold font-inter uppercase tracking-widest"><?= h($job['period'] ?? '') ?></span>
+            </div>
+            <!-- Content Card -->
+            <div class="ml-16 md:ml-0 <?= $alignClass ?> <?= $textAlign ?>">
+              <div
+                class="exp-card glassmorphism rounded-2xl p-6 md:p-8 border border-white/8 hover:border-[#1d4ed8]/30 transition-all duration-500">
+                <div class="flex items-center gap-3 mb-4 <?= $headerAlign ?>">
+                  <div class="w-10 h-10 rounded-xl bg-[#1d4ed8]/10 flex items-center justify-center border border-[#1d4ed8]/25 text-[#3b82f6]">
+                    <?= $svg ?>
                   </div>
-                  <h4 class="text-lg md:text-xl font-bold text-white mb-1 font-sans"><?= h($job['title'] ?? '') ?></h4>
-                  <p class="text-[#3b82f6] text-sm font-semibold mb-3 font-inter">
-                    <?php if ($isEven): ?>
-                      <?= h($job['company'] ?? '') ?> <span class="text-white/30 mx-2">•</span> <span class="text-white/40 font-normal"><?= h($job['location'] ?? '') ?></span>
-                    <?php else: ?>
-                      <span class="text-white/40 font-normal"><?= h($job['location'] ?? '') ?></span> <span class="text-white/30 mx-2">•</span> <?= h($job['company'] ?? '') ?>
-                    <?php endif; ?>
-                  </p>
-                  
-                  <div class="text-white/55 text-sm leading-relaxed font-inter flex flex-col gap-2">
-                    <?php foreach (($job['bullets'] ?? []) as $bullet): ?>
-                      <p><?= h($bullet) ?></p>
-                    <?php endforeach; ?>
-                  </div>
+                  <span class="text-[#3b82f6]/60 text-xs font-semibold font-inter uppercase tracking-widest"><?= h($period) ?></span>
+                </div>
+                <h4 class="text-lg md:text-xl font-bold text-white mb-1 font-sans"><?= h($job['title']) ?></h4>
+                <p class="text-[#3b82f6] text-sm font-semibold mb-3 font-inter"><?= h($job['company']) ?> <span
+                    class="text-white/30 mx-2">•</span> <span class="text-white/40 font-normal"><?= h($job['location']) ?></span></p>
+                <div class="text-white/55 text-sm leading-relaxed font-inter space-y-2">
+                  <?php foreach (($job['bullets'] ?? []) as $bullet): ?>
+                    <p>• <?= h($bullet) ?></p>
+                  <?php endforeach; ?>
                 </div>
               </div>
             </div>
+          </div>
           <?php endforeach; ?>
         </div>
       </div>
     </section>
 
-        </div>
-      </div>
-    </section>
-
     <!-- Technology Expertise Section -->
-    <section id="technology" class="relative pb-30 pt-10 overflow-hidden w-full">
+    <section id="technology" class="relative pb-10 lg:pb-30 pt-10 overflow-hidden w-full">
 
 
       <div class="max-w-[90%] mx-auto px-6 md:px-12 relative z-10">
         <!-- Section Header -->
         <div class="text-center mx-auto">
-          <h2 class="text-xs md:text-sm font-semibold uppercase tracking-widest text-[#1d4ed8] mb-2 font-inter">
-            <?= h($technology['headline'] ?? 'TECHNOLOGY EXPERTISE') ?>
-          </h2>
-          <h3 class="text-3xl md:text-5xl font-serif font-extrabold tracking-tight text-white mb-6">
-            <?= h($technology['subheading'] ?? 'Platforms & Technologies') ?>
-          </h3>
-          <p class="text-white/60 w-1/2 mx-auto text-base md:text-lg leading-relaxed font-inter">
-            I bring hands-on proficiency across the full data and analytics stack — from strategy and governance through to platform architecture and delivery execution.
+          <h2 class="text-[3.2vw] md:text-xs lg:text-sm font-semibold uppercase tracking-widest text-[#1d4ed8] mb-2 font-inter">TECHNOLOGY EXPERTISE</h2>
+          <h3 class="text-[7.5vw] md:text-[6vw] lg:text-5xl font-serif font-extrabold tracking-tight text-white mb-6">Platforms & Technologies</h3>
+          <p class="text-white/60 w-full lg:w-1/2 mx-auto text-[3.8vw] md:text-sm lg:text-base leading-relaxed font-inter">
+            I bring hands-on proficiency across the full data and analytics stack — from strategy and governance through
+            to platform architecture and delivery execution.
           </p>
         </div>
 
-        <div class="max-w-[80%] mx-auto">
-          <?php foreach (($technology['categories'] ?? []) as $cat): 
-            $items = $cat['items'] ?? [];
-            $count = count($items);
-            if ($count === 4) {
-                $gridColsClass = 'lg:grid-cols-4';
-                $widthClass = 'max-w-[80%] mx-auto';
-            } elseif ($count === 3) {
-                $gridColsClass = 'lg:grid-cols-3';
-                $widthClass = 'max-w-[60%] mx-auto';
-            } elseif ($count === 2) {
-                $gridColsClass = 'lg:grid-cols-2';
-                $widthClass = 'max-w-[40%] mx-auto';
-            } else {
-                $gridColsClass = 'lg:grid-cols-5';
-                $widthClass = 'w-full';
-            }
+        <div class="w-full">
+          <?php foreach ($techCategories as $category): 
+              $itemCount = count($category['items'] ?? []);
+              if ($itemCount === 5) {
+                  $gridClass = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 w-full gap-6 pt-10 justify-center';
+              } elseif ($itemCount === 4) {
+                  $gridClass = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 lg:max-w-[80%] mx-auto w-full gap-6 pt-10 justify-center';
+              } elseif ($itemCount === 3) {
+                  $gridClass = 'grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 lg:max-w-[60%] mx-auto w-full gap-6 pt-10 justify-center';
+              } elseif ($itemCount === 2) {
+                  $gridClass = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 lg:max-w-[40%] mx-auto w-full gap-6 pt-10 justify-center';
+              } else {
+                  $gridClass = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 w-full gap-6 pt-10 justify-center';
+              }
           ?>
-            <div class="flex flex-col pt-20 w-full items-center justify-center">
-              <div class="text-2xl font-semibold">
-                <?= h($cat['name'] ?? '') ?>
-              </div>
-              <div class="grid grid-cols-1 sm:grid-cols-2 <?= $gridColsClass ?> <?= $widthClass ?> w-full gap-6 pt-10">
-                <?php foreach ($items as $item): 
-                  $itemName = getTechName($item);
-                  $itemIcon = resolve_asset(getTechIcon($item));
-                ?>
-                  <div class="premium-card group">
-                    <div class="icon-wrapper">
-                      <img src="<?= h($itemIcon) ?>" class="w-full h-full object-contain" alt="<?= h($itemName) ?>">
-                    </div>
-                    <h4
-                      class="text-xs font-bold text-gray-300 group-hover:text-[#3b82f6] transition-colors duration-300 font-sans tracking-widest uppercase mt-2 text-center">
-                      <?= h($itemName) ?>
-                    </h4>
-                  </div>
-                <?php endforeach; ?>
-              </div>
+          <div class="flex flex-col pt-20 w-full items-center justify-center">
+            <div class="text-2xl font-semibold">
+              <?= h($category['name']) ?>
             </div>
+            <div class="<?= $gridClass ?>">
+              <?php foreach (($category['items'] ?? []) as $item): 
+                  $itemImg = $item['image'] ?? '/assets/images/strat_3d_icon.png';
+                  $itemName = $item['name'] ?? '';
+              ?>
+              <div class="premium-card group">
+                <div class="icon-wrapper">
+                  <img src="<?= h($itemImg) ?>" class="w-full h-full object-contain" alt="<?= h($itemName) ?>">
+                </div>
+                <h4
+                  class="text-xs font-bold text-gray-300 group-hover:text-[#3b82f6] transition-colors duration-300 font-sans tracking-widest uppercase mt-2 text-center">
+                  <?= h($itemName) ?></h4>
+              </div>
+              <?php endforeach; ?>
+            </div>
+          </div>
           <?php endforeach; ?>
         </div>
       </div>
     </section>
 
     <!-- Why Work With Me / The Difference Section -->
-    <section id="the-difference" class="relative py-24 md:py-32 overflow-hidden w-full">
+    <section id="the-difference" class="relative py-10 md:py-32 overflow-hidden w-full">
       <!-- Background subtle glow -->
       <div class="absolute top-1/4 right-1/4 w-[400px] h-[400px] rounded-full pointer-events-none z-0"
         style="background: radial-gradient(circle, rgba(29, 78, 216,0.04) 0%, transparent 70%); filter: blur(80px);">
@@ -1996,36 +1804,22 @@ function getTechIcon($item) {
           <!-- Left Column: Header & Context -->
           <div class="lg:col-span-5 difference-header flex flex-col gap-6">
             <h2 class="text-xs md:text-sm font-semibold uppercase tracking-widest text-[#1d4ed8] font-inter">
-              <?= h($diffHeadline) ?>
+              THE DIFFERENCE
             </h2>
             <h3 class="text-3xl md:text-5xl font-serif font-extrabold tracking-tight text-white leading-tight">
-              <?= h($diffSubheading) ?>
+              Why Work With Me
             </h3>
             <p class="text-white/85 text-base md:text-lg leading-relaxed font-sans mt-2">
-              <?= $diffText1 ?>
-            </p>
+            <?= h($diffText1) ?>
+          </p>
             <p class="text-white/60 text-sm md:text-base leading-relaxed font-sans">
-              <?= $diffText2 ?>
-            </p>
+            <?= h($diffText2) ?>
+          </p>
           </div>
 
           <!-- Right Column: Staggered Value Cards -->
           <div class="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-6">
-
-            <?php
-            $cardsToRender = $diffCards;
-            if (empty($cardsToRender)) {
-                $cardsToRender = [
-                    ['title' => 'Decision Quality & Speed', 'text' => 'Replace intuition with trusted, timely intelligence at every level of the organization.'],
-                    ['title' => 'Operational Efficiency', 'text' => 'Surface the data insights that drive process improvement, cost reduction, and performance gains.'],
-                    ['title' => 'AI Transformation', 'text' => 'Move from strategy to delivery with governance, prioritization, and programme leadership in place.'],
-                    ['title' => 'Data Foundations', 'text' => 'Build the quality, governance, and ownership structures that make data an organizational asset.'],
-                    ['title' => 'Responsible AI Scale', 'text' => 'Design the frameworks, controls, and use-case roadmaps that turn AI potential into business value.'],
-                    ['title' => 'Technology ROI', 'text' => 'Ensure your ERP, cloud, and analytics investments deliver the intelligence they were designed to provide.']
-                ];
-            }
-            foreach ($cardsToRender as $card):
-            ?>
+            <?php foreach ($diffCards as $dc): ?>
             <div class="difference-item">
               <div class="premium-card group w-full h-full">
                 <div class="flex items-start gap-4 w-full">
@@ -2038,19 +1832,17 @@ function getTechIcon($item) {
                   <div class="flex flex-col gap-2 text-left">
                     <h4
                       class="text-sm font-bold text-white font-sans tracking-wide transition-colors duration-300 group-hover:text-[#3b82f6]">
-                      <?= h($card['title'] ?? '') ?>
+                      <?= h($dc['title']) ?>
                     </h4>
                     <p class="text-xs text-white/50 leading-relaxed font-sans">
-                      <?= h($card['text'] ?? '') ?>
+                      <?= h($dc['text'] ?? '') ?>
                     </p>
                   </div>
                 </div>
               </div>
             </div>
             <?php endforeach; ?>
-
           </div>
-
         </div>
       </div>
     </section>
@@ -2063,16 +1855,15 @@ function getTechIcon($item) {
         style="background: radial-gradient(circle, rgba(29,78,216,0.05) 0%, transparent 70%); filter: blur(100px);">
       </div>
 
-      <div class="max-w-[90%] mx-auto px-6 md:px-12 relative z-10 text-center flex flex-col items-center">
+      <div class="max-w-[90%] mx-auto  lg:px-12 relative z-10 text-center flex flex-col items-center">
         <div class="cta-container max-w-3xl flex flex-col items-center">
           <span class="text-xs md:text-sm font-semibold uppercase tracking-widest text-[#1d4ed8] font-inter">
-            <?= h($contactHeadline) ?>
-          </span>
+            <?= h($contactSubheading) ?></span>
           <h2 class="text-3xl md:text-5xl font-serif font-extrabold tracking-tight text-white leading-tight mt-4">
-            <?= h($contactSubheading) ?>
-          </h2>
+            <?= h($contactHeadline) ?></h2>
           <p class="text-white/70 text-base md:text-lg leading-relaxed font-sans mt-6">
-            <?= h($contactText) ?>
+            Whether you are exploring AI, modernizing analytics, implementing an ERP system, or establishing enterprise
+            data governance, let us design a practical roadmap that delivers measurable business value.
           </p>
         </div>
 
@@ -2082,7 +1873,7 @@ function getTechIcon($item) {
           <span class="text-[#1d4ed8]/40 text-lg md:text-xl font-light select-none">&raquo;</span>
 
           <!-- Link 1: Book Consultation -->
-          <a href="<?= h($contactCalendly ?: '#') ?>"
+          <a href="https://wa.me/971557154748" target="_blank" rel="noopener noreferrer"
             class="cta-link-item flex items-center gap-3.5 group relative py-2 px-1 transition-colors duration-300 hover:text-white">
             <svg class="w-6 h-6 transition-transform duration-300 group-hover:scale-115" viewBox="0 0 24 24" fill="none"
               xmlns="http://www.w3.org/2000/svg">
@@ -2106,7 +1897,7 @@ function getTechIcon($item) {
           <span class="text-white/20 select-none">&bull;</span>
 
           <!-- Link 2: LinkedIn -->
-          <a href="<?= h($contactLinkedin ?: '#') ?>" target="_blank" rel="noopener noreferrer"
+          <a href="<?= h($contactLinkedin) ?>" target="_blank" rel="noopener noreferrer"
             class="cta-link-item flex items-center gap-3.5 group relative py-2 px-1 transition-colors duration-300 hover:text-white">
             <svg class="w-6 h-6 transition-transform duration-300 group-hover:scale-115" viewBox="0 0 24 24" fill="none"
               xmlns="http://www.w3.org/2000/svg">
@@ -2131,7 +1922,7 @@ function getTechIcon($item) {
           <span class="text-white/20 select-none">&bull;</span>
 
           <!-- Link 3: Send Enquiry -->
-          <a href="<?= $contactEmail ? 'mailto:' . h($contactEmail) : '#' ?>"
+          <a href="mailto:<?= h($contactEmail) ?>"
             class="cta-link-item flex items-center gap-3.5 group relative py-2 px-1 transition-colors duration-300 hover:text-white">
             <svg class="w-6 h-6 transition-transform duration-300 group-hover:scale-115" viewBox="0 0 24 24" fill="none"
               xmlns="http://www.w3.org/2000/svg">
@@ -2275,12 +2066,11 @@ function getTechIcon($item) {
   </script>
 
   <!-- Project Script Entry Point -->
-  <?php if ($isDev): ?>
-    <script type="module" src="http://localhost:5173/src/main.js"></script>
-  <?php elseif (!empty($jsPath)): ?>
+  <script>
+    window.HERO_TITLE = <?= json_encode($heroTitle) ?>;
+  </script>
+  <?php if (!empty($jsPath)): ?>
     <script type="module" src="<?= h($jsPath) ?>"></script>
-  <?php else: ?>
-    <script type="module" src="/src/main.js"></script>
   <?php endif; ?>
 
 

@@ -6,7 +6,7 @@
  */
 
 // Only allow local access
-if (!in_array($_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1', 'localhost'])) {
+if (php_sapi_name() !== 'cli' && !in_array($_SERVER['REMOTE_ADDR'] ?? '', ['127.0.0.1', '::1', 'localhost'])) {
     http_response_code(403);
     die('Access denied');
 }
@@ -72,7 +72,7 @@ try {
     $themeDefaults = [
         ['primary_color', '#1d4ed8'],
         ['accent_color', '#60a5fa'],
-        ['bg_color', '#060913'],
+        ['bg_color', '#0b1a36'],
         ['text_color', '#f3f4f6'],
         ['sidebar_bg', '#03050a'],
         ['card_bg', 'rgba(255,255,255,0.02)'],
@@ -351,7 +351,27 @@ try {
                     'name' => 'ERP Systems',
                     'items' => [
                         ['name' => 'Oracle ERP', 'image' => '/assets/images/oracle_erp_3d_icon.png'],
-                        ['name' => 'Oracle Fusion', 'image' => '/assets/images/oracle_fusion_3d_icon.png']
+                        ['name' => 'Oracle Fusion', 'image' => '/assets/images/oracle_fusion_3d_icon.png'],
+                        ['name' => 'Functional & Technical ERP Delivery', 'image' => '/assets/images/mdm_3d_icon.png']
+                    ]
+                ],
+                [
+                    'name' => 'AI & Machine Learning',
+                    'items' => [
+                        ['name' => 'Generative AI', 'image' => '/assets/images/ai_3d_icon.png'],
+                        ['name' => 'Machine Learning', 'image' => '/assets/images/kpi_3d_icon.png'],
+                        ['name' => 'AI Use Case Design', 'image' => '/assets/images/strat_3d_icon.png'],
+                        ['name' => 'AI Governance Frameworks', 'image' => '/assets/images/aig_3d_icon.png']
+                    ]
+                ],
+                [
+                    'name' => 'Data Engineering',
+                    'items' => [
+                        ['name' => 'SQL', 'image' => '/assets/images/reporting_3d_icon.png'],
+                        ['name' => 'Python', 'image' => '/assets/images/gov_3d_icon.png'],
+                        ['name' => 'Data Modelling', 'image' => '/assets/images/snowflake_3d_icon.png'],
+                        ['name' => 'Analytics Engineering', 'image' => '/assets/images/dashboard_3d_icon.png'],
+                        ['name' => 'ETL Pipeline Design', 'image' => '/assets/images/mdm_3d_icon.png']
                     ]
                 ]
             ]
@@ -380,7 +400,7 @@ try {
             'subheading' => 'Book a Strategy Call',
             'text' => 'Whether you are exploring AI, modernizing analytics, implementing an ERP system, or establishing enterprise data governance, let us design a practical roadmap that delivers measurable business value.',
             'email' => 'arun@example.com',
-            'linkedin' => 'https://linkedin.com/in/arunkumarjayakumar',
+            'linkedin' => 'https://www.linkedin.com/in/jakinsights/',
             'calendly' => 'https://calendly.com/arunkumar',
             'phone' => '+65 XXXX XXXX',
             'location' => 'Singapore / Global Remote'

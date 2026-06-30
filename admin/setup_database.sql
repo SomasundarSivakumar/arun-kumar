@@ -60,7 +60,7 @@ INSERT INTO site_content (section, content) VALUES
 
 ('expertise', '{"headline":"Core Verticals","subheading":"Strategic Domain Expertise","items":["Manufacturing","Supply Chain","Logistics SaaS","Public Sector","Enterprise Tech","Financial Services","Healthcare","Retail"]}'),
 
-('contact', '{"headline":"Get In Touch","subheading":"Book a Strategy Call","email":"arun@example.com","linkedin":"https://linkedin.com/in/arunkumarjayakumar","calendly":"https://calendly.com/arunkumar","phone":"+65 XXXX XXXX","location":"Singapore / Global Remote"}'),
+('contact', '{"headline":"Get In Touch","subheading":"Book a Strategy Call","email":"arun@example.com","linkedin":"https://www.linkedin.com/in/jakinsights/","calendly":"https://calendly.com/arunkumar","phone":"+65 XXXX XXXX","location":"Singapore / Global Remote"}'),
 
 ('meta', '{"title":"Arun Kumar Jayakumar | Fractional CDO & Enterprise Data Strategist","description":"Portfolio of Arun Kumar Jayakumar, a Fractional CDO and Enterprise Data Strategy Consultant with over 14 years of experience leading high-stakes data and AI transformations.","keywords":"Fractional CDO, Data Strategist, AI Advisor, Enterprise Data, Digital Transformation"}')
 

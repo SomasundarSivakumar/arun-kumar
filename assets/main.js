@@ -1,7 +1,7 @@
-import './style.css';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Lenis from 'lenis';
+// ─────────────────────────────────────────────────────────────────────────────
+// All libraries (gsap, ScrollTrigger, Lenis, Swiper) are loaded via CDN
+// in index.php <head>. This file assumes they are globally available.
+// ─────────────────────────────────────────────────────────────────────────────
 
 // Register GSAP plugins
 gsap.registerPlugin(ScrollTrigger);
@@ -14,7 +14,7 @@ function initPreloader() {
   if (!preloader) return;
 
   const startTime = Date.now();
-  const MIN_LOADING_TIME = 1500; // Minimum duration in milliseconds
+  const MIN_LOADING_TIME = 1500;
 
   const fadeOut = () => {
     const elapsed = Date.now() - startTime;
@@ -80,7 +80,6 @@ ScrollTrigger.addEventListener('refresh', () => lenis.resize());
 
 // ─────────────────────────────────────────────────────────────────────────────
 // UTILITY: Generic section text reveal helper
-// Animates an array of elements with a fade-up reveal tied to a trigger.
 // ─────────────────────────────────────────────────────────────────────────────
 function revealSection(trigger, targets, options = {}) {
   const {
@@ -98,25 +97,14 @@ function revealSection(trigger, targets, options = {}) {
   if (!targets || (targets.length !== undefined && targets.length === 0)) return;
 
   gsap.from(targets, {
-    y,
-    x,
-    opacity,
-    duration,
-    stagger,
-    ease,
-    delay,
-    scrollTrigger: {
-      trigger,
-      start,
-      toggleActions,
-    },
+    y, x, opacity, duration, stagger, ease, delay,
+    scrollTrigger: { trigger, start, toggleActions },
   });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
 // UTILITY: Hero typing effect
 // ─────────────────────────────────────────────────────────────────────────────
-// Dynamic hero title — set by index.php from the database
 const HERO_ROLE_TEXT = (typeof window.HERO_TITLE === 'string' && window.HERO_TITLE.trim())
   ? window.HERO_TITLE
   : 'Fractional Chief Data Officer';
@@ -136,7 +124,7 @@ function typeText(element, text, speed) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 2. HERO BANNER — entrance timeline (plays on load, replays when returning)
+// 2. HERO BANNER — entrance timeline
 // ─────────────────────────────────────────────────────────────────────────────
 let heroTimeline = null;
 
@@ -159,7 +147,6 @@ function initHeroScrollAnimations() {
 
   const playHero = () => {
     resetHero();
-
     heroTimeline = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
     if (heroName) {
@@ -191,10 +178,8 @@ function initHeroScrollAnimations() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 3. Responsive Navigation & Smooth Scrolling (Lenis + GSAP integration)
+// 3. Responsive Navigation & Smooth Scrolling
 // ─────────────────────────────────────────────────────────────────────────────
-
-// Setup mobile menu drawer toggles and state
 function initMobileNavigation() {
   const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
   const mobileMenu = document.getElementById('mobile-menu');
@@ -207,35 +192,25 @@ function initMobileNavigation() {
   const openMobileMenu = () => {
     isMenuOpen = true;
     mobileMenu.classList.add('open');
-    if (hamburgerPath) {
-      hamburgerPath.setAttribute('d', 'M6 18L18 6M6 6l12 12');
-    }
+    if (hamburgerPath) hamburgerPath.setAttribute('d', 'M6 18L18 6M6 6l12 12');
     lenis.stop();
   };
 
   const closeMobileMenu = () => {
     isMenuOpen = false;
     mobileMenu.classList.remove('open');
-    if (hamburgerPath) {
-      hamburgerPath.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
-    }
+    if (hamburgerPath) hamburgerPath.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
     lenis.start();
   };
 
   mobileMenuToggle.addEventListener('click', (e) => {
     e.stopPropagation();
-    if (isMenuOpen) {
-      closeMobileMenu();
-    } else {
-      openMobileMenu();
-    }
+    if (isMenuOpen) { closeMobileMenu(); } else { openMobileMenu(); }
   });
 
-  // Register on window object for accessibility across components
   window.closeMobileMenu = closeMobileMenu;
 }
 
-// Set up smooth scrolling for all anchor links
 function initSmoothScrollLinks() {
   document.querySelectorAll('a[href^="#"]').forEach((link) => {
     link.addEventListener('click', (event) => {
@@ -247,12 +222,10 @@ function initSmoothScrollLinks() {
         event.preventDefault();
         event.stopPropagation();
 
-        // Close mobile menu if open
         if (typeof window.closeMobileMenu === 'function') {
           window.closeMobileMenu();
         }
 
-        // Calculate responsive offset for mobile top bar (64px)
         const isMobile = window.innerWidth < 768;
         const scrollOffset = isMobile ? -64 : 0;
 
@@ -270,20 +243,16 @@ function initSmoothScrollLinks() {
   });
 }
 
-// Set up active section highlighting spy
 function initActiveSectionSpy() {
   const navItems = document.querySelectorAll('#main-sidebar .nav-item');
   const mobileNavItems = document.querySelectorAll('#mobile-menu .mobile-nav-item');
   const sections = [];
 
-  // Map links to corresponding DOM sections
   navItems.forEach((item) => {
     const href = item.getAttribute('href');
     if (href && href.startsWith('#')) {
       const sec = document.querySelector(href);
-      if (sec) {
-        sections.push({ href, element: sec });
-      }
+      if (sec) sections.push({ href, element: sec });
     }
   });
 
@@ -292,25 +261,19 @@ function initActiveSectionSpy() {
   sections.forEach((sec) => {
     ScrollTrigger.create({
       trigger: sec.element,
-      start: 'top 45%', // section enters viewport active zone
-      end: 'bottom 45%', // section leaves active zone
+      start: 'top 45%',
+      end: 'bottom 45%',
       onToggle: (self) => {
         if (self.isActive) {
-          // Sync desktop sidebar
           navItems.forEach((item) => {
-            if (item.getAttribute('href') === sec.href) {
-              item.classList.add('active');
-            } else {
-              item.classList.remove('active');
-            }
+            item.getAttribute('href') === sec.href
+              ? item.classList.add('active')
+              : item.classList.remove('active');
           });
-          // Sync mobile menu drawer
           mobileNavItems.forEach((item) => {
-            if (item.getAttribute('href') === sec.href) {
-              item.classList.add('active');
-            } else {
-              item.classList.remove('active');
-            }
+            item.getAttribute('href') === sec.href
+              ? item.classList.add('active')
+              : item.classList.remove('active');
           });
         }
       },
@@ -338,9 +301,9 @@ if (capabilitiesSection && timelineScrollLine) {
       end: 'bottom 55%',
       scrub: 0.5,
       onUpdate: (self) => {
-        const progress    = self.progress;
+        const progress = self.progress;
         const currentHeight = progress * timelineHeight;
-        let activeIndex   = 0;
+        let activeIndex = 0;
 
         timelineDots.forEach((dot, index) => {
           const dotTop = (index / (timelineDots.length - 1)) * timelineHeight;
@@ -373,11 +336,9 @@ if (capabilitiesSection && timelineScrollLine) {
         });
 
         timelineVisuals.forEach((visual, index) => {
-          if (index === activeIndex) {
-            visual.classList.add('active');
-          } else {
-            visual.classList.remove('active');
-          }
+          index === activeIndex
+            ? visual.classList.add('active')
+            : visual.classList.remove('active');
         });
       },
     },
@@ -394,52 +355,24 @@ function initServicesAnimations() {
   const header = servicesSection.querySelector('.px-\\[1\\.5rem\\], .px-6');
   if (header) {
     gsap.from(header.children, {
-      y: 35,
-      opacity: 0,
-      duration: 0.85,
-      stagger: 0.12,
-      ease: 'power3.out',
+      y: 35, opacity: 0, duration: 0.85, stagger: 0.12, ease: 'power3.out',
       immediateRender: false,
-      scrollTrigger: {
-        trigger: servicesSection,
-        start: 'top 85%',
-        toggleActions: 'play reverse play reverse',
-      },
+      scrollTrigger: { trigger: servicesSection, start: 'top 85%', toggleActions: 'play reverse play reverse' },
     });
   }
 
   const cards = servicesSection.querySelectorAll('.service-card');
   if (cards.length > 0) {
     cards.forEach((card) => {
-      // First, animate the card container itself
       gsap.from(card, {
-        opacity: 0,
-        y: 50,
-        duration: 0.8,
-        ease: 'power3.out',
-        immediateRender: false,
-        scrollTrigger: {
-          trigger: card,
-          start: 'top 85%',
-          toggleActions: 'play reverse play reverse',
-        },
+        opacity: 0, y: 50, duration: 0.8, ease: 'power3.out', immediateRender: false,
+        scrollTrigger: { trigger: card, start: 'top 85%', toggleActions: 'play reverse play reverse' },
       });
-
-      // Then stagger the contents inside each card
       const cardContents = card.querySelectorAll('div, h3, p, li');
       if (cardContents.length > 0) {
         gsap.from(cardContents, {
-          opacity: 0,
-          y: 20,
-          duration: 0.65,
-          stagger: 0.05,
-          ease: 'power2.out',
-          immediateRender: false,
-          scrollTrigger: {
-            trigger: card,
-            start: 'top 80%',
-            toggleActions: 'play reverse play reverse',
-          },
+          opacity: 0, y: 20, duration: 0.65, stagger: 0.05, ease: 'power2.out', immediateRender: false,
+          scrollTrigger: { trigger: card, start: 'top 80%', toggleActions: 'play reverse play reverse' },
         });
       }
     });
@@ -447,28 +380,18 @@ function initServicesAnimations() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 7. Ideal Clients Showcase Interactive Handler
+// 7. Ideal Clients Showcase
 // ─────────────────────────────────────────────────────────────────────────────
 function initIdealClientsAnimations() {
   const section = document.getElementById('ideal-clients');
   if (!section) return;
 
-  // Section Header
   const header = section.querySelector('.w-full.lg\\:w-\\[45\\%\\]');
   if (header) {
     const headings = header.querySelectorAll('h2, h3');
     gsap.from(headings, {
-      y: 40,
-      opacity: 0,
-      duration: 0.85,
-      stagger: 0.15,
-      ease: 'power3.out',
-      immediateRender: false,
-      scrollTrigger: {
-        trigger: section,
-        start: 'top 85%',
-        toggleActions: 'play reverse play reverse',
-      },
+      y: 40, opacity: 0, duration: 0.85, stagger: 0.15, ease: 'power3.out', immediateRender: false,
+      scrollTrigger: { trigger: section, start: 'top 85%', toggleActions: 'play reverse play reverse' },
     });
   }
 
@@ -481,7 +404,7 @@ function initIdealClientsAnimations() {
     let initialPanel = defaultPanel;
 
     if (activeItem) {
-      const targetId    = activeItem.getAttribute('data-target');
+      const targetId = activeItem.getAttribute('data-target');
       const targetPanel = document.getElementById(`panel-${targetId}`);
       if (targetPanel) initialPanel = targetPanel;
     }
@@ -501,7 +424,7 @@ function initIdealClientsAnimations() {
 
     clientNavItems.forEach((item) => {
       item.addEventListener('mouseenter', () => {
-        const targetId    = item.getAttribute('data-target');
+        const targetId = item.getAttribute('data-target');
         const targetPanel = document.getElementById(`panel-${targetId}`);
 
         if (targetPanel && !targetPanel.classList.contains('active-panel')) {
@@ -512,10 +435,7 @@ function initIdealClientsAnimations() {
             if (panel.classList.contains('active-panel')) {
               panel.classList.remove('active-panel');
               gsap.to(panel, {
-                opacity: 0,
-                y: 15,
-                duration: 0.4,
-                ease: 'power2.inOut',
+                opacity: 0, y: 15, duration: 0.4, ease: 'power2.inOut',
                 onComplete: () => gsap.set(panel, { pointerEvents: 'none', display: 'none' }),
               });
             }
@@ -523,10 +443,7 @@ function initIdealClientsAnimations() {
 
           targetPanel.classList.add('active-panel');
           gsap.set(targetPanel, { pointerEvents: 'auto', display: 'flex' });
-          gsap.fromTo(targetPanel,
-            { opacity: 0, y: 15 },
-            { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }
-          );
+          gsap.fromTo(targetPanel, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' });
 
           const paths = targetPanel.querySelectorAll('.draw-path');
           if (paths.length > 0) {
@@ -539,41 +456,23 @@ function initIdealClientsAnimations() {
       });
     });
 
-    // Section entrance stagger
     gsap.from(clientNavItems, {
-      opacity: 0,
-      x: -35,
-      duration: 0.85,
-      stagger: 0.1,
-      ease: 'power3.out',
-      immediateRender: false,
-      scrollTrigger: {
-        trigger: '#ideal-clients',
-        start: 'top 80%',
-        toggleActions: 'play reverse play reverse',
-      },
+      opacity: 0, x: -35, duration: 0.85, stagger: 0.1, ease: 'power3.out', immediateRender: false,
+      scrollTrigger: { trigger: '#ideal-clients', start: 'top 80%', toggleActions: 'play reverse play reverse' },
     });
 
     const visualPanel = section.querySelector('.glassmorphism');
     if (visualPanel) {
       gsap.from(visualPanel, {
-        opacity: 0,
-        x: 40,
-        duration: 0.9,
-        ease: 'power3.out',
-        immediateRender: false,
-        scrollTrigger: {
-          trigger: '#ideal-clients',
-          start: 'top 80%',
-          toggleActions: 'play reverse play reverse',
-        },
+        opacity: 0, x: 40, duration: 0.9, ease: 'power3.out', immediateRender: false,
+        scrollTrigger: { trigger: '#ideal-clients', start: 'top 80%', toggleActions: 'play reverse play reverse' },
       });
     }
   }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 8. Swiper 3D Coverflow Carousel Initialization
+// 8. Swiper 3D Coverflow Carousel
 // ─────────────────────────────────────────────────────────────────────────────
 function initImpactSwiper() {
   if (window.impactSwiper) return;
@@ -594,31 +493,11 @@ function initImpactSwiper() {
       resistanceRatio: 0.65,
       observer: true,
       observeParents: true,
-      autoplay: {
-        delay: 3000,
-        disableOnInteraction: false,
-        pauseOnMouseEnter: true,
-      },
-      coverflowEffect: {
-        rotate: 12,
-        stretch: 0,
-        depth: 100,
-        modifier: 1,
-        slideShadows: false,
-      },
-      pagination: {
-        el: '.swiper-pagination',
-        clickable: true,
-      },
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      },
-      breakpoints: {
-        320: { spaceBetween: 20 },
-        768: { spaceBetween: 30 },
-        1024: { spaceBetween: 40 },
-      },
+      autoplay: { delay: 3000, disableOnInteraction: false, pauseOnMouseEnter: true },
+      coverflowEffect: { rotate: 12, stretch: 0, depth: 100, modifier: 1, slideShadows: false },
+      pagination: { el: '.swiper-pagination', clickable: true },
+      navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+      breakpoints: { 320: { spaceBetween: 20 }, 768: { spaceBetween: 30 }, 1024: { spaceBetween: 40 } },
     });
 
     if (swiper.autoplay) swiper.autoplay.start();
@@ -642,81 +521,44 @@ function initExperienceAnimations() {
   const expSection = document.getElementById('experience');
   if (!expSection) return;
 
-  const expHeader   = expSection.querySelector('.exp-header');
-  const expItems    = expSection.querySelectorAll('.exp-item');
-  const lineFill    = expSection.querySelector('.exp-line-fill');
+  const expHeader = expSection.querySelector('.exp-header');
+  const expItems  = expSection.querySelectorAll('.exp-item');
+  const lineFill  = expSection.querySelector('.exp-line-fill');
 
   if (expHeader) {
     gsap.from(expHeader.children, {
-      y: 45,
-      opacity: 0,
-      duration: 0.9,
-      stagger: 0.15,
-      ease: 'power3.out',
-      immediateRender: false,
-      scrollTrigger: {
-        trigger: expHeader,
-        start: 'top 85%',
-        toggleActions: 'play reverse play reverse',
-      },
+      y: 45, opacity: 0, duration: 0.9, stagger: 0.15, ease: 'power3.out', immediateRender: false,
+      scrollTrigger: { trigger: expHeader, start: 'top 85%', toggleActions: 'play reverse play reverse' },
     });
   }
 
   if (lineFill) {
     gsap.to(lineFill, {
-      height: '100%',
-      ease: 'none',
-      scrollTrigger: {
-        trigger: '.exp-timeline',
-        start: 'top 70%',
-        end: 'bottom 30%',
-        scrub: 0.8,
-      },
+      height: '100%', ease: 'none',
+      scrollTrigger: { trigger: '.exp-timeline', start: 'top 70%', end: 'bottom 30%', scrub: 0.8 },
     });
   }
 
   expItems.forEach((item, index) => {
-    const card   = item.querySelector('.exp-card');
+    const card = item.querySelector('.exp-card');
     const isLeft = index % 2 !== 0;
 
     if (card) {
-      // Card container reveal
       gsap.from(card, {
-        x: isLeft ? -65 : 65,
-        opacity: 0,
-        duration: 0.85,
-        ease: 'power3.out',
-        immediateRender: false,
-        scrollTrigger: {
-          trigger: item,
-          start: 'top 80%',
-          toggleActions: 'play reverse play reverse',
-        },
+        x: isLeft ? -65 : 65, opacity: 0, duration: 0.85, ease: 'power3.out', immediateRender: false,
+        scrollTrigger: { trigger: item, start: 'top 80%', toggleActions: 'play reverse play reverse' },
       });
-
-      // Inner card text elements stagger
       const elements = card.querySelectorAll('.flex.items-center, h4, p');
       if (elements.length > 0) {
         gsap.from(elements, {
-          opacity: 0,
-          y: 15,
-          duration: 0.65,
-          stagger: 0.08,
-          ease: 'power2.out',
-          immediateRender: false,
-          scrollTrigger: {
-            trigger: item,
-            start: 'top 78%',
-            toggleActions: 'play reverse play reverse',
-          },
+          opacity: 0, y: 15, duration: 0.65, stagger: 0.08, ease: 'power2.out', immediateRender: false,
+          scrollTrigger: { trigger: item, start: 'top 78%', toggleActions: 'play reverse play reverse' },
         });
       }
     }
 
     ScrollTrigger.create({
-      trigger: item,
-      start: 'top 65%',
-      end: 'bottom 35%',
+      trigger: item, start: 'top 65%', end: 'bottom 35%',
       onEnter:     () => item.classList.add('is-active'),
       onLeave:     () => item.classList.remove('is-active'),
       onEnterBack: () => item.classList.add('is-active'),
@@ -726,7 +568,7 @@ function initExperienceAnimations() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 10. The Difference / Why Work With Me — ScrollTrigger Animations
+// 10. The Difference Section
 // ─────────────────────────────────────────────────────────────────────────────
 function initDifferenceAnimations() {
   const differenceSection = document.getElementById('the-difference');
@@ -737,39 +579,20 @@ function initDifferenceAnimations() {
 
   if (header) {
     gsap.from(header.children, {
-      y: 40,
-      opacity: 0,
-      duration: 0.85,
-      stagger: 0.15,
-      ease: 'power3.out',
-      immediateRender: false,
-      scrollTrigger: {
-        trigger: differenceSection,
-        start: 'top 80%',
-        toggleActions: 'play reverse play reverse',
-      },
+      y: 40, opacity: 0, duration: 0.85, stagger: 0.15, ease: 'power3.out', immediateRender: false,
+      scrollTrigger: { trigger: differenceSection, start: 'top 80%', toggleActions: 'play reverse play reverse' },
     });
   }
-
   if (items.length > 0) {
     gsap.from(items, {
-      y: 45,
-      opacity: 0,
-      duration: 0.85,
-      stagger: 0.1,
-      ease: 'power3.out',
-      immediateRender: false,
-      scrollTrigger: {
-        trigger: differenceSection,
-        start: 'top 75%',
-        toggleActions: 'play reverse play reverse',
-      },
+      y: 45, opacity: 0, duration: 0.85, stagger: 0.1, ease: 'power3.out', immediateRender: false,
+      scrollTrigger: { trigger: differenceSection, start: 'top 75%', toggleActions: 'play reverse play reverse' },
     });
   }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 11. Call to Action Section ScrollTrigger Animations
+// 11. CTA Section
 // ─────────────────────────────────────────────────────────────────────────────
 function initCTAAnimations() {
   const ctaSection = document.getElementById('cta');
@@ -780,39 +603,20 @@ function initCTAAnimations() {
 
   if (container) {
     gsap.from(container.children, {
-      y: 45,
-      opacity: 0,
-      duration: 0.9,
-      stagger: 0.15,
-      ease: 'power3.out',
-      immediateRender: false,
-      scrollTrigger: {
-        trigger: ctaSection,
-        start: 'top 85%',
-        toggleActions: 'play reverse play reverse',
-      },
+      y: 45, opacity: 0, duration: 0.9, stagger: 0.15, ease: 'power3.out', immediateRender: false,
+      scrollTrigger: { trigger: ctaSection, start: 'top 85%', toggleActions: 'play reverse play reverse' },
     });
   }
-
   if (links.length > 0) {
     gsap.from(links, {
-      y: 55,
-      opacity: 0,
-      duration: 0.9,
-      stagger: 0.15,
-      ease: 'power3.out',
-      immediateRender: false,
-      scrollTrigger: {
-        trigger: ctaSection,
-        start: 'top 75%',
-        toggleActions: 'play reverse play reverse',
-      },
+      y: 55, opacity: 0, duration: 0.9, stagger: 0.15, ease: 'power3.out', immediateRender: false,
+      scrollTrigger: { trigger: ctaSection, start: 'top 75%', toggleActions: 'play reverse play reverse' },
     });
   }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 12. Expertise (Marquee) Section — Header Text Reveal
+// 12. Expertise (Marquee) Section
 // ─────────────────────────────────────────────────────────────────────────────
 function initExpertiseSectionAnimations() {
   const expertiseSection = document.getElementById('expertise');
@@ -822,188 +626,97 @@ function initExpertiseSectionAnimations() {
   if (header) {
     const headingEls = header.querySelectorAll('h2, p');
     gsap.from(headingEls, {
-      y: 40,
-      opacity: 0,
-      duration: 0.85,
-      stagger: 0.15,
-      ease: 'power3.out',
-      immediateRender: false,
-      scrollTrigger: {
-        trigger: expertiseSection,
-        start: 'top 85%',
-        toggleActions: 'play reverse play reverse',
-      },
+      y: 40, opacity: 0, duration: 0.85, stagger: 0.15, ease: 'power3.out', immediateRender: false,
+      scrollTrigger: { trigger: expertiseSection, start: 'top 85%', toggleActions: 'play reverse play reverse' },
     });
   }
-
   const track = expertiseSection.querySelector('.marquee-track');
   if (track) {
     gsap.from(track, {
-      y: 45,
-      opacity: 0,
-      duration: 1.0,
-      ease: 'power3.out',
-      immediateRender: false,
-      scrollTrigger: {
-        trigger: expertiseSection,
-        start: 'top 80%',
-        toggleActions: 'play reverse play reverse',
-      },
+      y: 45, opacity: 0, duration: 1.0, ease: 'power3.out', immediateRender: false,
+      scrollTrigger: { trigger: expertiseSection, start: 'top 80%', toggleActions: 'play reverse play reverse' },
     });
   }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 13. Opportunity Section — Text & Card Reveal
+// 13. Opportunity Section
 // ─────────────────────────────────────────────────────────────────────────────
 function initOpportunitySectionAnimations() {
   const opportunitySection = document.getElementById('opportunity');
   if (!opportunitySection) return;
 
-  // Section header (including sub-text description)
   const headings = opportunitySection.querySelectorAll('.px-6.md\\:px-16.mb-12 > h2, .px-6.md\\:px-16.mb-12 > p');
   if (headings.length > 0) {
     gsap.from(headings, {
-      y: 45,
-      opacity: 0,
-      duration: 0.9,
-      stagger: 0.15,
-      ease: 'power3.out',
-      immediateRender: false,
-      scrollTrigger: {
-        trigger: opportunitySection,
-        start: 'top 85%',
-        toggleActions: 'play reverse play reverse',
-      },
+      y: 45, opacity: 0, duration: 0.9, stagger: 0.15, ease: 'power3.out', immediateRender: false,
+      scrollTrigger: { trigger: opportunitySection, start: 'top 85%', toggleActions: 'play reverse play reverse' },
     });
   }
 
-  // The two side-by-side cards (friction + CDO)
   const cards = opportunitySection.querySelectorAll('.flex-wrap.lg\\:flex-nowrap > div');
   cards.forEach((card) => {
-    // Animate card container itself
     gsap.from(card, {
-      opacity: 0,
-      y: 45,
-      duration: 0.85,
-      ease: 'power3.out',
-      immediateRender: false,
-      scrollTrigger: {
-        trigger: card,
-        start: 'top 85%',
-        toggleActions: 'play reverse play reverse',
-      },
+      opacity: 0, y: 45, duration: 0.85, ease: 'power3.out', immediateRender: false,
+      scrollTrigger: { trigger: card, start: 'top 85%', toggleActions: 'play reverse play reverse' },
     });
-
-    // Stagger text and sub-text elements inside the cards
     const innerElements = card.querySelectorAll('.flex.items-center, h3, p, .pl-4, span.px-3\\.5');
     if (innerElements.length > 0) {
       gsap.from(innerElements, {
-        opacity: 0,
-        y: 20,
-        duration: 0.7,
-        stagger: 0.08,
-        ease: 'power2.out',
-        immediateRender: false,
-        scrollTrigger: {
-          trigger: card,
-          start: 'top 80%',
-          toggleActions: 'play reverse play reverse',
-        },
+        opacity: 0, y: 20, duration: 0.7, stagger: 0.08, ease: 'power2.out', immediateRender: false,
+        scrollTrigger: { trigger: card, start: 'top 80%', toggleActions: 'play reverse play reverse' },
       });
     }
   });
 
-  // Bottom quote / sign-off text
   const quote = opportunitySection.querySelector('.mt-16, .mt-20');
   if (quote) {
     gsap.from(quote.children, {
-      y: 35,
-      opacity: 0,
-      duration: 0.85,
-      stagger: 0.12,
-      ease: 'power3.out',
-      immediateRender: false,
-      scrollTrigger: {
-        trigger: quote,
-        start: 'top 88%',
-        toggleActions: 'play reverse play reverse',
-      },
+      y: 35, opacity: 0, duration: 0.85, stagger: 0.12, ease: 'power3.out', immediateRender: false,
+      scrollTrigger: { trigger: quote, start: 'top 88%', toggleActions: 'play reverse play reverse' },
     });
   }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 14. About Section — Text & Image Reveal
+// 14. About Section
 // ─────────────────────────────────────────────────────────────────────────────
 function initAboutSectionAnimations() {
   const aboutSections = document.querySelectorAll('section');
   let aboutSection = null;
   aboutSections.forEach((sec) => {
     const h2 = sec.querySelector('h2');
-    if (h2 && h2.textContent.trim().toUpperCase() === 'ABOUT') {
-      aboutSection = sec;
-    }
+    if (h2 && h2.textContent.trim().toUpperCase() === 'ABOUT') aboutSection = sec;
   });
-
   if (!aboutSection) return;
 
-  // Section heading
   const headingEls = aboutSection.querySelectorAll('.px-6.md\\:px-16 > h2, .px-6.md\\:px-16 > p');
   if (headingEls.length > 0) {
     gsap.from(headingEls, {
-      y: 45,
-      opacity: 0,
-      duration: 0.9,
-      stagger: 0.12,
-      ease: 'power3.out',
-      immediateRender: false,
-      scrollTrigger: {
-        trigger: aboutSection,
-        start: 'top 85%',
-        toggleActions: 'play reverse play reverse',
-      },
+      y: 45, opacity: 0, duration: 0.9, stagger: 0.12, ease: 'power3.out', immediateRender: false,
+      scrollTrigger: { trigger: aboutSection, start: 'top 85%', toggleActions: 'play reverse play reverse' },
     });
   }
 
-  // Left text column paragraphs
   const textCols = aboutSection.querySelectorAll('.flex-col.gap-6 > p, .flex-col.gap-6 > div');
   if (textCols.length > 0) {
     gsap.from(textCols, {
-      y: 35,
-      opacity: 0,
-      duration: 0.85,
-      stagger: 0.12,
-      ease: 'power3.out',
-      immediateRender: false,
-      scrollTrigger: {
-        trigger: aboutSection,
-        start: 'top 78%',
-        toggleActions: 'play reverse play reverse',
-      },
+      y: 35, opacity: 0, duration: 0.85, stagger: 0.12, ease: 'power3.out', immediateRender: false,
+      scrollTrigger: { trigger: aboutSection, start: 'top 78%', toggleActions: 'play reverse play reverse' },
     });
   }
 
-  // Right image column
   const imageCol = aboutSection.querySelector('.relative.min-h-\\[400px\\]');
   if (imageCol) {
     gsap.from(imageCol, {
-      x: 60,
-      opacity: 0,
-      duration: 1.0,
-      ease: 'power3.out',
-      immediateRender: false,
-      scrollTrigger: {
-        trigger: aboutSection,
-        start: 'top 80%',
-        toggleActions: 'play reverse play reverse',
-      },
+      x: 60, opacity: 0, duration: 1.0, ease: 'power3.out', immediateRender: false,
+      scrollTrigger: { trigger: aboutSection, start: 'top 80%', toggleActions: 'play reverse play reverse' },
     });
   }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 15. Capabilities Section — Header Reveal
+// 15. Capabilities Section
 // ─────────────────────────────────────────────────────────────────────────────
 function initCapabilitiesSectionAnimations() {
   const capSection = document.getElementById('capabilities');
@@ -1012,17 +725,8 @@ function initCapabilitiesSectionAnimations() {
   const headings = capSection.querySelectorAll('.px-6.md\\:px-16.mb-20 h2, .px-6.md\\:px-16.mb-20 p');
   if (headings.length > 0) {
     gsap.from(headings, {
-      y: 45,
-      opacity: 0,
-      duration: 0.9,
-      stagger: 0.15,
-      ease: 'power3.out',
-      immediateRender: false,
-      scrollTrigger: {
-        trigger: capSection,
-        start: 'top 85%',
-        toggleActions: 'play reverse play reverse',
-      },
+      y: 45, opacity: 0, duration: 0.9, stagger: 0.15, ease: 'power3.out', immediateRender: false,
+      scrollTrigger: { trigger: capSection, start: 'top 85%', toggleActions: 'play reverse play reverse' },
     });
   }
 
@@ -1031,83 +735,44 @@ function initCapabilitiesSectionAnimations() {
 
   if (timelineContent) {
     gsap.from(timelineContent, {
-      y: 40,
-      opacity: 0,
-      duration: 0.9,
-      ease: 'power3.out',
-      immediateRender: false,
-      scrollTrigger: {
-        trigger: '#timeline-track-container',
-        start: 'top 85%',
-        toggleActions: 'play reverse play reverse',
-      },
+      y: 40, opacity: 0, duration: 0.9, ease: 'power3.out', immediateRender: false,
+      scrollTrigger: { trigger: '#timeline-track-container', start: 'top 85%', toggleActions: 'play reverse play reverse' },
     });
   }
-
   if (visualContainer) {
     gsap.from(visualContainer, {
-      x: 40,
-      opacity: 0,
-      duration: 1.0,
-      ease: 'power3.out',
-      immediateRender: false,
-      scrollTrigger: {
-        trigger: '#timeline-track-container',
-        start: 'top 85%',
-        toggleActions: 'play reverse play reverse',
-      },
+      x: 40, opacity: 0, duration: 1.0, ease: 'power3.out', immediateRender: false,
+      scrollTrigger: { trigger: '#timeline-track-container', start: 'top 85%', toggleActions: 'play reverse play reverse' },
     });
   }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 16. Impact Section — Header + Swiper Fade In
+// 16. Impact Section
 // ─────────────────────────────────────────────────────────────────────────────
 function initImpactSectionAnimations() {
   const impactSection = document.getElementById('impact');
   if (!impactSection) return;
 
-  // Main heading and description elements
   const headings = impactSection.querySelectorAll('.text-center.max-w-3xl > h2, .text-center.max-w-3xl > h3, .text-center.max-w-3xl > p');
   if (headings.length > 0) {
     gsap.from(headings, {
-      y: 45,
-      opacity: 0,
-      duration: 0.9,
-      stagger: 0.15,
-      ease: 'power3.out',
-      immediateRender: false,
-      scrollTrigger: {
-        trigger: impactSection,
-        start: 'top 85%',
-        toggleActions: 'play reverse play reverse',
-      },
+      y: 45, opacity: 0, duration: 0.9, stagger: 0.15, ease: 'power3.out', immediateRender: false,
+      scrollTrigger: { trigger: impactSection, start: 'top 85%', toggleActions: 'play reverse play reverse' },
     });
   }
 
   const swiper = impactSection.querySelector('.impact-swiper');
   if (swiper) {
     gsap.from(swiper, {
-      y: 55,
-      opacity: 0,
-      duration: 1.0,
-      ease: 'power3.out',
-      immediateRender: false,
-      scrollTrigger: {
-        trigger: impactSection,
-        start: 'top 80%',
-        toggleActions: 'play reverse play reverse',
-      },
+      y: 55, opacity: 0, duration: 1.0, ease: 'power3.out', immediateRender: false,
+      scrollTrigger: { trigger: impactSection, start: 'top 80%', toggleActions: 'play reverse play reverse' },
     });
   }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 17. Ideal Clients Section — Header Reveal (Merged with Ideal Clients Init)
-// ─────────────────────────────────────────────────────────────────────────────
-
-// ─────────────────────────────────────────────────────────────────────────────
-// 18. Technology Expertise Section — Cards + Header Reveal
+// 18. Technology Expertise Section
 // ─────────────────────────────────────────────────────────────────────────────
 function initTechnologyExpertiseSectionAnimations() {
   const techSection = document.getElementById('technology');
@@ -1117,65 +782,30 @@ function initTechnologyExpertiseSectionAnimations() {
   if (headings.length > 0) {
     gsap.fromTo(headings,
       { y: 45, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 0.9,
-        stagger: 0.15,
-        ease: 'power3.out',
-        immediateRender: false,
-        scrollTrigger: {
-          trigger: techSection,
-          start: 'top 85%',
-          toggleActions: 'play reverse play reverse',
-        },
-      }
+      { y: 0, opacity: 1, duration: 0.9, stagger: 0.15, ease: 'power3.out', immediateRender: false,
+        scrollTrigger: { trigger: techSection, start: 'top 85%', toggleActions: 'play reverse play reverse' } }
     );
   }
 
-  // Animate category headers
   const categories = techSection.querySelectorAll('.flex.flex-col > .text-2xl');
   if (categories.length > 0) {
     categories.forEach((cat) => {
       gsap.fromTo(cat,
         { y: 30, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          ease: 'power3.out',
-          immediateRender: false,
-          scrollTrigger: {
-            trigger: cat,
-            start: 'top 88%',
-            toggleActions: 'play reverse play reverse',
-          },
-        }
+        { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out', immediateRender: false,
+          scrollTrigger: { trigger: cat, start: 'top 88%', toggleActions: 'play reverse play reverse' } }
       );
     });
   }
 
-  // Premium cards stagger reveal (row-by-row)
   const grids = techSection.querySelectorAll('.grid');
   grids.forEach((grid) => {
     const cards = grid.querySelectorAll('.premium-card');
     if (cards.length > 0) {
       gsap.fromTo(cards,
         { y: 40, opacity: 0, scale: 0.96 },
-        {
-          y: 0,
-          opacity: 1,
-          scale: 1,
-          duration: 0.8,
-          stagger: 0.08,
-          ease: 'power3.out',
-          immediateRender: false,
-          scrollTrigger: {
-            trigger: grid,
-            start: 'top 88%',
-            toggleActions: 'play reverse play reverse',
-          },
-        }
+        { y: 0, opacity: 1, scale: 1, duration: 0.8, stagger: 0.08, ease: 'power3.out', immediateRender: false,
+          scrollTrigger: { trigger: grid, start: 'top 88%', toggleActions: 'play reverse play reverse' } }
       );
     }
   });
@@ -1189,7 +819,7 @@ function initAll() {
   initMobileNavigation();
   initSmoothScrollLinks();
   initActiveSectionSpy();
-  
+
   initExpertiseSectionAnimations();
   initOpportunitySectionAnimations();
   initAboutSectionAnimations();

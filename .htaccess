@@ -1,0 +1,19 @@
+# Set index.php as the default index document
+DirectoryIndex index.php index.html
+
+RewriteEngine On
+RewriteBase /
+
+# Redirect /admin and /admin/ to admin/index.php
+RewriteRule ^admin/?$ admin/index.php [L,R=301]
+
+
+# 1. Redirect direct requests for index.php to the root (/)
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /index\.php\ HTTP/
+RewriteRule ^index\.php$ / [R=301,L]
+
+# 2. Hide .php extension (allow accessing pages without .php)
+# If the path is not a directory and the .php file exists, rewrite it
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.php -f
+RewriteRule ^(.*?)/?$ $1.php [L]

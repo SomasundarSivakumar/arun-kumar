@@ -37,17 +37,25 @@ if (!in_array($ext, $allowedExtensions)) {
     exit;
 }
 
-// Ensure target directory exists
-$targetDir = __DIR__ . '/../../public/assets/images/uploads/';
-if (!is_dir($targetDir)) {
-    mkdir($targetDir, 0755, true);
+// Ensure target directories exist
+$publicDir = __DIR__ . '/../../public/assets/images/uploads/';
+$rootAssetsDir = __DIR__ . '/../../assets/images/uploads/';
+
+if (!is_dir($publicDir)) {
+    mkdir($publicDir, 0755, true);
+}
+if (!is_dir($rootAssetsDir)) {
+    mkdir($rootAssetsDir, 0755, true);
 }
 
 // Generate unique filename to avoid overwrites
 $uniqueName = uniqid('img_', true) . '.' . $ext;
-$targetFilePath = $targetDir . $uniqueName;
+$targetFilePath = $publicDir . $uniqueName;
 
 if (move_uploaded_file($fileTmp, $targetFilePath)) {
+    // Copy to root assets directory
+    copy($targetFilePath, $rootAssetsDir . $uniqueName);
+    
     // Also copy to dist if it exists
     $distDir = __DIR__ . '/../../dist/assets/images/uploads/';
     if (is_dir(__DIR__ . '/../../dist/')) {

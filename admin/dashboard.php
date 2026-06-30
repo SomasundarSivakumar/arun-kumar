@@ -36,6 +36,15 @@ function resolve_preview($path, $default = '') {
     if (strpos($path, 'http://') === 0 || strpos($path, 'https://') === 0) return $path;
     $clean = ltrim($path, '/');
     if (strpos($clean, '../') === 0) return $clean;
+    
+    // If path starts with assets/, it's in public/ or dist/
+    if (strpos($clean, 'assets/') === 0) {
+        if (is_dir(__DIR__ . '/../dist')) {
+            return '../dist/' . $clean;
+        } else {
+            return '../public/' . $clean;
+        }
+    }
     return '../' . $clean;
 }
 ?>
@@ -624,13 +633,34 @@ function resolve_preview($path, $default = '') {
             border: 1px solid var(--border);
         }
 
+        .mobile-toggle-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text);
+            cursor: pointer;
+            padding: 8px;
+            margin-right: 12px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            transition: all 0.2s;
+        }
+        .mobile-toggle-btn:hover {
+            background: var(--surface2);
+            color: var(--accent);
+        }
+
         /* ── RESPONSIVE ──────────────────────────────── */
         @media (max-width: 768px) {
-            .sidebar { transform: translateX(-100%); }
+            .sidebar { transform: translateX(-100%); z-index: 999; }
             .sidebar.open { transform: translateX(0); }
-            .main-wrapper { margin-left: 0; }
-            .form-row { grid-template-columns: 1fr; }
-            .form-row.triple { grid-template-columns: 1fr 1fr; }
+            .main-wrapper { margin-left: 0; padding: 16px; }
+            .header { display: flex; align-items: center; }
+            .mobile-toggle-btn { display: flex; }
+            .form-row { grid-template-columns: 1fr !important; }
+            .form-row.triple { grid-template-columns: 1fr !important; }
         }
 
         /* scrollbar */
@@ -645,7 +675,7 @@ function resolve_preview($path, $default = '') {
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <div class="sidebar-brand">
-                <div class="sidebar-logo">AKJ</div>
+                <div class="sidebar-logo">JAK</div>
                 <div class="sidebar-brand-text">
                     <div class="sidebar-brand-name">Portfolio CMS</div>
                     <div class="sidebar-brand-sub">Admin Panel</div>
@@ -751,7 +781,7 @@ function resolve_preview($path, $default = '') {
 
             <div class="nav-section-label">Customization</div>
 
-            <div class="nav-item" data-panel="theme" onclick="switchPanel('theme', this)">
+            <div class="nav-item" data-panel="theme" onclick="switchPanel('theme', this)" style="display: none;">
                 <div class="nav-icon">
                     <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg>
                 </div>
@@ -781,6 +811,10 @@ function resolve_preview($path, $default = '') {
 
         <!-- Header -->
         <header class="header">
+            <!-- Mobile Toggle Menu Button -->
+            <button class="mobile-toggle-btn" onclick="toggleSidebar()" aria-label="Toggle Navigation">
+                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
             <div class="header-title">
                 <h2 id="pageTitle">Dashboard</h2>
                 <p id="pageSub">Welcome back, <strong><?= htmlspecialchars($adminUser) ?></strong></p>
@@ -849,7 +883,7 @@ function resolve_preview($path, $default = '') {
                             ['panel'=>'services','label'=>'Services','icon'=>'brief','color'=>'#fbbf24'],
                             ['panel'=>'experience','label'=>'Experience','icon'=>'school','color'=>'#a78bfa'],
                             ['panel'=>'technology','label'=>'Technology','icon'=>'chip','color'=>'#f472b6'],
-                            ['panel'=>'theme','label'=>'Theme','icon'=>'palette','color'=>'#fb923c'],
+                            // ['panel'=>'theme','label'=>'Theme','icon'=>'palette','color'=>'#fb923c'],
                         ];
                         foreach ($quickLinks as $link): ?>
                         <button onclick="switchPanel('<?= $link['panel'] ?>', null)" style="
@@ -1329,33 +1363,13 @@ function resolve_preview($path, $default = '') {
                             <input class="form-input" id="contact_headline" type="text" value="<?= htmlspecialchars($contact['headline'] ?? 'Get In Touch') ?>">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Subheading</label>
-                            <input class="form-input" id="contact_subheading" type="text" value="<?= htmlspecialchars($contact['subheading'] ?? 'Book a Strategy Call') ?>">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
                             <label class="form-label">Email Address</label>
                             <input class="form-input" id="contact_email" type="email" value="<?= htmlspecialchars($contact['email'] ?? '') ?>">
                         </div>
-                        <div class="form-group">
-                            <label class="form-label">Phone Number</label>
-                            <input class="form-input" id="contact_phone" type="text" value="<?= htmlspecialchars($contact['phone'] ?? '') ?>">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">LinkedIn URL</label>
-                            <input class="form-input" id="contact_linkedin" type="url" value="<?= htmlspecialchars($contact['linkedin'] ?? '') ?>">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Calendly URL</label>
-                            <input class="form-input" id="contact_calendly" type="url" value="<?= htmlspecialchars($contact['calendly'] ?? '') ?>">
-                        </div>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Location</label>
-                        <input class="form-input" id="contact_location" type="text" value="<?= htmlspecialchars($contact['location'] ?? '') ?>">
+                        <label class="form-label">LinkedIn URL</label>
+                        <input class="form-input" id="contact_linkedin" type="url" value="<?= htmlspecialchars($contact['linkedin'] ?? '') ?>">
                     </div>
                 </div>
             </div>
@@ -1380,27 +1394,32 @@ function resolve_preview($path, $default = '') {
                             ['key'=>'bg_color','label'=>'Background Color','desc'=>'Site background'],
                             ['key'=>'text_color','label'=>'Text Color','desc'=>'Body text color'],
                             ['key'=>'sidebar_bg','label'=>'Sidebar Background','desc'=>'Navigation sidebar'],
-                            ['key'=>'card_bg','label'=>'Card Background','desc'=>'Cards and panels'],
-                            ['key'=>'border_color','label'=>'Border Color','desc'=>'Card borders'],
+                            ['key'=>'surface_color','label'=>'Surface Color','desc'=>'Card & panel backgrounds'],
+                            ['key'=>'hover_color','label'=>'Hover Color','desc'=>'Hover state backgrounds'],
+                            ['key'=>'border_color','label'=>'Border Color','desc'=>'Borders & dividers'],
                         ];
                         foreach ($colorSettings as $cs):
                             $val = $theme[$cs['key']] ?? '#ffffff';
                             // Only show color picker for hex colors
                             $isHex = preg_match('/^#[0-9a-fA-F]{3,8}$/', $val);
                         ?>
-                        <div class="color-card" onclick="document.getElementById('cp_<?= $cs['key'] ?>').click()">
-                            <div class="color-preview">
+                        <div class="color-card">
+                            <div class="color-preview" onclick="document.getElementById('cp_<?= $cs['key'] ?>').click()">
                                 <?php if ($isHex): ?>
-                                <div class="color-preview-swatch" style="background:<?= htmlspecialchars($val) ?>"></div>
+                                <div class="color-preview-swatch" id="swatch_<?= $cs['key'] ?>" style="background:<?= htmlspecialchars($val) ?>"></div>
                                 <input type="color" id="cp_<?= $cs['key'] ?>" value="<?= htmlspecialchars($val) ?>"
-                                    oninput="updateColorCard(this,'<?= $cs['key'] ?>')"
-                                    onchange="updateColorCard(this,'<?= $cs['key'] ?>')">
+                                    oninput="updateColorFromPicker(this,'<?= $cs['key'] ?>')"
+                                    onchange="updateColorFromPicker(this,'<?= $cs['key'] ?>')">
                                 <?php else: ?>
                                 <div class="color-preview-swatch" style="background:<?= htmlspecialchars($val) ?>; display:flex;align-items:center;justify-content:center;font-size:10px;color:#888">rgba</div>
                                 <?php endif; ?>
                             </div>
                             <div class="color-label"><?= $cs['label'] ?></div>
-                            <div class="color-value" id="cv_<?= $cs['key'] ?>"><?= htmlspecialchars($val) ?></div>
+                            <div style="margin-top: 4px; display: flex; gap: 6px; align-items: center; margin-bottom: 6px;">
+                                <input type="text" class="form-input" id="ci_<?= $cs['key'] ?>" value="<?= htmlspecialchars($val) ?>"
+                                    style="font-family: monospace; font-size: 13px; padding: 6px 8px; height: 32px; width: 100%;"
+                                    oninput="updateColorFromInput(this,'<?= $cs['key'] ?>')">
+                            </div>
                             <div style="font-size:10px;color:var(--muted);margin-top:3px"><?= $cs['desc'] ?></div>
                             <input type="hidden" id="theme_<?= $cs['key'] ?>" value="<?= htmlspecialchars($val) ?>">
                         </div>
@@ -1741,6 +1760,11 @@ function resolve_preview($path, $default = '') {
 
         let currentPanel = 'dashboard';
 
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar) sidebar.classList.toggle('open');
+        }
+
         function switchPanel(panelId, navEl) {
             // Hide all panels
             document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
@@ -1763,18 +1787,60 @@ function resolve_preview($path, $default = '') {
             const info = pageTitles[panelId] || {title: panelId, sub: ''};
             document.getElementById('pageTitle').textContent = info.title;
             document.getElementById('pageSub').textContent = info.sub;
+
+            // Auto-close sidebar on mobile
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar && window.innerWidth <= 768) {
+                sidebar.classList.remove('open');
+            }
         }
 
         // ── Color Picker ──────────────────────────────────
-        function updateColorCard(input, key) {
+        function updateColorFromPicker(input, key) {
             const val = input.value;
-            document.getElementById('cv_' + key).textContent = val;
+            const txtInput = document.getElementById('ci_' + key);
+            if (txtInput) txtInput.value = val;
+            
             document.getElementById('theme_' + key).value = val;
-            // Update swatch
-            const swatch = input.previousElementSibling;
+            
+            const swatch = document.getElementById('swatch_' + key);
             if (swatch) swatch.style.background = val;
-            // Update live preview
+            
             updateThemePreview();
+        }
+
+        function updateColorFromInput(input, key) {
+            let val = input.value.trim();
+            if (val === '') return;
+            
+            // Auto prepend # if typed raw hex digits
+            if (/^[0-9a-fA-F]{3,8}$/.test(val)) {
+                val = '#' + val;
+                input.value = val;
+            }
+            
+            if (/^#[0-9a-fA-F]{3,8}$/.test(val)) {
+                document.getElementById('theme_' + key).value = val;
+                
+                const swatch = document.getElementById('swatch_' + key);
+                if (swatch) swatch.style.background = val;
+                
+                let pickerVal = val;
+                if (val.length === 4) {
+                    pickerVal = '#' + val[1] + val[1] + val[2] + val[2] + val[3] + val[3];
+                }
+                if (pickerVal.length === 7) {
+                    const picker = document.getElementById('cp_' + key);
+                    if (picker) picker.value = pickerVal.toLowerCase();
+                }
+                
+                updateThemePreview();
+            }
+        }
+
+        // Compatibility function
+        function updateColorCard(input, key) {
+            updateColorFromPicker(input, key);
         }
 
         function updateThemePreview() {
@@ -1960,12 +2026,8 @@ function resolve_preview($path, $default = '') {
         function saveContact() {
             saveSection('contact', {
                 headline: document.getElementById('contact_headline').value,
-                subheading: document.getElementById('contact_subheading').value,
                 email: document.getElementById('contact_email').value,
-                phone: document.getElementById('contact_phone').value,
-                linkedin: document.getElementById('contact_linkedin').value,
-                calendly: document.getElementById('contact_calendly').value,
-                location: document.getElementById('contact_location').value
+                linkedin: document.getElementById('contact_linkedin').value
             });
         }
 
