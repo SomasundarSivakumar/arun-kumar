@@ -11,7 +11,7 @@ function initPreloader() {
   if (!preloader) return;
 
   const startTime = Date.now();
-  const MIN_LOADING_TIME = 1500; // Minimum duration in milliseconds
+  const MIN_LOADING_TIME = 3200; // Minimum duration in milliseconds
   let faded = false;
 
   const fadeOut = () => {

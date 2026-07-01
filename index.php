@@ -384,6 +384,152 @@ function renderMarqueeGroup($items) {
                   0 0 35px color-mix(in srgb, var(--color-accent) 30%, transparent), 
                   inset 0 0 15px color-mix(in srgb, var(--color-accent) 10%, transparent) !important;
     }
+
+    /* ── Premium Transforming Preloader CSS ── */
+    .preloader-perspective-wrapper {
+      perspective: 1000px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 0 20px;
+    }
+    
+    .preloader-brand-container {
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    
+    .preloader-word {
+      display: flex;
+      align-items: baseline;
+      font-size: clamp(1.8rem, 5vw, 2.5rem);
+      font-weight: 700;
+      color: #ffffff;
+      font-family: 'Syne', sans-serif;
+      text-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+    }
+    
+    .letter-initial {
+      font-size: clamp(3rem, 9vw, 4.5rem);
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-primary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+      opacity: 0;
+      transform: scale(0) rotateY(-90deg) translateZ(50px);
+      filter: drop-shadow(0 0 20px rgba(96,165,250,0));
+      animation: popInitial3D 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+    
+    #word-j .letter-initial { animation-delay: 0.2s; }
+    #word-a .letter-initial { animation-delay: 0.45s; }
+    #word-k .letter-initial { animation-delay: 0.7s; }
+    
+    .letter-rest {
+      display: inline-block;
+      overflow: hidden;
+      white-space: nowrap;
+      max-width: 0;
+      opacity: 0;
+      background: linear-gradient(to right, #ffffff, rgba(255, 255, 255, 0.6));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      transform: translateX(-15px);
+      animation: revealRest 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    #word-a .letter-rest { animation-delay: 1.65s; }
+    #word-k .letter-rest { animation-delay: 1.9s; }
+    
+    .preloader-subtitle {
+      margin-top: 28px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.35);
+      opacity: 0;
+      transform: translateY(12px) translateZ(10px);
+      animation: fadeInUp3D 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation-delay: 2.2s;
+      text-align: center;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    .preloader-progress-wrap {
+      margin-top: 36px;
+      width: 180px;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 4px;
+      overflow: hidden;
+      opacity: 0;
+      animation: fadeInSimple 0.5s ease forwards;
+      animation-delay: 0.8s;
+    }
+    
+    .preloader-progress-bar {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+      box-shadow: 0 0 12px var(--color-accent);
+      animation: progressFill 2.6s cubic-bezier(0.1, 0.85, 0.25, 1) forwards;
+    }
+    
+    @keyframes popInitial3D {
+      0% {
+        transform: scale(0) rotateY(-90deg) translateZ(50px);
+        opacity: 0;
+        filter: drop-shadow(0 0 0px rgba(96,165,250,0));
+      }
+      70% {
+        transform: scale(1.15) rotateY(15deg) translateZ(10px);
+        opacity: 1;
+        filter: drop-shadow(0 0 25px rgba(96,165,250,0.6));
+      }
+      100% {
+        transform: scale(1) rotateY(0deg) translateZ(0);
+        opacity: 1;
+        filter: drop-shadow(0 0 12px rgba(96,165,250,0.35));
+      }
+    }
+    
+    @keyframes revealRest {
+      0% {
+        max-width: 0;
+        opacity: 0;
+        transform: translateX(-15px);
+      }
+      100% {
+        max-width: 250px;
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    
+    @keyframes fadeInUp3D {
+      0% {
+        opacity: 0;
+        transform: translateY(12px) translateZ(10px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) translateZ(0);
+      }
+    }
+    
+    @keyframes fadeInSimple {
+      to { opacity: 1; }
+    }
+    
+    @keyframes progressFill {
+      to { width: 100%; }
+    }
   </style>
 </head>
 
@@ -392,16 +538,25 @@ function renderMarqueeGroup($items) {
   <!-- Premium Preloader/Loading Screen -->
   <div id="preloader"
     class="fixed inset-0 bg-[#03050a] z-[9999] flex flex-col items-center justify-center select-none transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]">
-    <div class="relative flex flex-col items-center gap-6">
-      <!-- Glow ambient background -->
-      <div class="absolute w-36 h-36 bg-[#1d4ed8]/10 rounded-full blur-2xl animate-pulse"></div>
-
-      <!-- Premium Spinner Indicator -->
-      <div class="w-16 h-16 rounded-full border-2 border-white/5 border-t-[#60a5fa] animate-spin"></div>
-
-      <!-- Brand Text -->
-      <div class="text-xs font-bold tracking-[0.3em] text-[#60a5fa]/80 uppercase font-sans animate-pulse text-center">
-        Welcome to my portfolio
+    <div class="preloader-perspective-wrapper">
+      <div class="preloader-brand-container">
+        <div class="preloader-word" id="word-j">
+          <span class="letter-initial">J</span>
+        </div>
+        <div class="preloader-word" id="word-a">
+          <span class="letter-initial">A</span><span class="letter-rest">run</span>
+        </div>
+        <div class="preloader-word" id="word-k">
+          <span class="letter-initial">K</span><span class="letter-rest">umar</span>
+        </div>
+      </div>
+      
+      <div class="preloader-subtitle">
+        Fractional CDO & Enterprise Data Strategist
+      </div>
+      
+      <div class="preloader-progress-wrap">
+        <div class="preloader-progress-bar"></div>
       </div>
     </div>
   </div> <!-- Left Vertical Navigation Header (Fixed) -->
