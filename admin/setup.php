@@ -4,6 +4,7 @@
  * Run this ONCE at: http://localhost/arun-kumar/admin/setup.php
  * DELETE this file after setup is complete for security!
  */
+require_once __DIR__ . '/../load_env.php';
 
 // Only allow local access
 if (php_sapi_name() !== 'cli' && !in_array($_SERVER['REMOTE_ADDR'] ?? '', ['127.0.0.1', '::1', 'localhost'])) {
@@ -11,9 +12,9 @@ if (php_sapi_name() !== 'cli' && !in_array($_SERVER['REMOTE_ADDR'] ?? '', ['127.
     die('Access denied');
 }
 
-$host = 'localhost';
-$user = 'root';
-$pass = '';
+$host = getenv('DB_HOST') ?: 'localhost';
+$user = getenv('DB_USER') ?: 'root';
+$pass = getenv('DB_PASS') !== false ? getenv('DB_PASS') : '';
 
 try {
     // Connect without DB first to create it

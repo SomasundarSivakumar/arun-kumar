@@ -2,10 +2,12 @@
 // ─────────────────────────────────────────────────────────────────────
 // Fetch all content from MySQL — NO hardcoded data on this page
 // ─────────────────────────────────────────────────────────────────────
-$dbHost = 'localhost';
-$dbUser = 'root';
-$dbPass = '';
-$dbName = 'arun_portfolio';
+require_once __DIR__ . '/load_env.php';
+
+$dbHost = getenv('DB_HOST') ?: 'localhost';
+$dbUser = getenv('DB_USER') ?: 'root';
+$dbPass = getenv('DB_PASS') !== false ? getenv('DB_PASS') : '';
+$dbName = getenv('DB_NAME') ?: 'arun_portfolio';
 
 $siteContent = [];
 $theme = [];
