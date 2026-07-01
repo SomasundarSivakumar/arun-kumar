@@ -1029,7 +1029,7 @@ function renderMarqueeGroup($items) {
           <div class="w-full lg:w-[calc(50%-1.25rem)] relative min-h-[400px] overflow-hidden rounded-3xl">
             <div
               class="absolute z-10 h-[25rem] w-[31.375rem] lg:w-[34.375rem] xl:w-[45.625rem] rotate-[-12deg] bottom-[3.4rem] -right-[13rem] rounded-[0.6rem]"
-              style="background: linear-gradient(90deg, #1d4ed8 0%, #1d4ed8 35%, rgba(0, 0, 0, 0.98) 60%, rgba(0, 0, 0, 0.98) 100%);">
+              style="background: linear-gradient(90deg, #1d4ed8 0%, #1d4ed8 35%, rgba(6, 16, 34, 0.98) 60%, rgba(6, 16, 34, 0.98) 100%);">
             </div>
             <div class="relative  lg:w-110 z-20 lg:-right-7">
               <img src="<?= h($aboutImage) ?>" class="w-full object-contain h-full" alt="">

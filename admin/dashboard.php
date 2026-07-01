@@ -78,17 +78,55 @@ function resolve_preview($path, $default = '') {
             --warning: #f59e0b;
             --sidebar-width: 240px;
             --header-height: 64px;
+
+            /* Theme overrides variables */
+            --header-bg: rgba(6,9,19,0.85);
+            --text-title: #ffffff;
+
+            /* Sidebar explicit dark styles */
+            --sidebar-border: rgba(255,255,255,0.06);
+            --sidebar-text: #9ca3af;
+            --sidebar-text-hover: #ffffff;
+            --sidebar-text-highlight: #ffffff;
+            --sidebar-nav-bg: rgba(255,255,255,0.04);
+            --sidebar-nav-hover-bg: rgba(255,255,255,0.04);
         }
 
-        html, body { height: 100%; }
+        body.light-theme {
+            --bg: #f3f4f6;
+            --surface: #ffffff;
+            --surface2: #f9fafb;
+            --surface3: #e5e7eb;
+            --border: rgba(0, 0, 0, 0.08);
+            --border-hover: rgba(0, 0, 0, 0.15);
+            --text: #1f2937;
+            --muted: #6b7280;
+            --muted2: #4b5563;
+            --header-bg: rgba(255, 255, 255, 0.85);
+            --text-title: #111827;
+            --primary: #1e40af;
+            --accent: #1d4ed8;
+
+            /* Sidebar light blue overrides */
+            --sidebar-bg: #eaf2fc;
+            --sidebar-border: rgba(29, 78, 216, 0.08);
+            --sidebar-text: #4b5563;
+            --sidebar-text-hover: #1d4ed8;
+            --sidebar-text-highlight: #1e3a8a;
+            --sidebar-nav-bg: rgba(29, 78, 216, 0.03);
+            --sidebar-nav-hover-bg: rgba(29, 78, 216, 0.06);
+        }
+
+        html, body { height: 100%; overflow: hidden; }
 
         body {
             background: var(--bg);
             color: var(--text);
             font-family: 'Inter', sans-serif;
             display: flex;
-            min-height: 100vh;
+            height: 100vh;
             line-height: 1.6;
+            overflow: hidden;
         }
 
         /* ── SIDEBAR ─────────────────────────────────── */
@@ -96,7 +134,7 @@ function resolve_preview($path, $default = '') {
             width: var(--sidebar-width);
             height: 100vh;
             background: var(--sidebar-bg);
-            border-right: 1px solid var(--border);
+            border-right: 1px solid var(--sidebar-border);
             display: flex;
             flex-direction: column;
             position: fixed;
@@ -108,7 +146,7 @@ function resolve_preview($path, $default = '') {
 
         .sidebar-header {
             padding: 20px 20px 16px;
-            border-bottom: 1px solid var(--border);
+            border-bottom: 1px solid var(--sidebar-border);
         }
         .sidebar-brand {
             display: flex;
@@ -134,7 +172,7 @@ function resolve_preview($path, $default = '') {
             font-family: 'Syne', sans-serif;
             font-size: 14px;
             font-weight: 800;
-            color: #fff;
+            color: var(--sidebar-text-highlight, #fff);
         }
         .sidebar-brand-sub {
             font-size: 10px;
@@ -171,7 +209,7 @@ function resolve_preview($path, $default = '') {
             border-radius: 10px;
             cursor: pointer;
             transition: all 0.18s ease;
-            color: var(--muted2);
+            color: var(--sidebar-text, var(--muted2));
             font-size: 13.5px;
             font-weight: 500;
             text-decoration: none;
@@ -181,9 +219,9 @@ function resolve_preview($path, $default = '') {
             user-select: none;
         }
         .nav-item:hover {
-            color: #fff;
-            background: rgba(255,255,255,0.04);
-            border-color: var(--border);
+            color: var(--sidebar-text-hover, #fff);
+            background: var(--sidebar-nav-hover-bg, rgba(255,255,255,0.04));
+            border-color: var(--sidebar-border);
         }
         .nav-item.active {
             color: var(--accent);
@@ -200,8 +238,8 @@ function resolve_preview($path, $default = '') {
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            background: rgba(255,255,255,0.04);
-            border: 1px solid var(--border);
+            background: var(--sidebar-nav-bg, rgba(255,255,255,0.04));
+            border: 1px solid var(--sidebar-border);
             transition: all 0.18s;
         }
         .nav-item:hover .nav-icon, .nav-item.active .nav-icon {
@@ -222,7 +260,7 @@ function resolve_preview($path, $default = '') {
 
         .sidebar-footer {
             padding: 14px 12px;
-            border-top: 1px solid var(--border);
+            border-top: 1px solid var(--sidebar-border);
         }
 
         /* ── MAIN AREA ───────────────────────────────── */
@@ -231,14 +269,15 @@ function resolve_preview($path, $default = '') {
             margin-left: var(--sidebar-width);
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
+            height: 100vh;
             min-width: 0;
+            overflow: hidden;
         }
 
         /* ── HEADER ──────────────────────────────────── */
         .header {
             height: var(--header-height);
-            background: rgba(6,9,19,0.85);
+            background: var(--header-bg);
             border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
@@ -248,6 +287,7 @@ function resolve_preview($path, $default = '') {
             top: 0;
             z-index: 50;
             backdrop-filter: blur(12px);
+            flex-shrink: 0;
         }
         .header-title {
             flex: 1;
@@ -256,7 +296,7 @@ function resolve_preview($path, $default = '') {
         .header-title h2 {
             font-size: 17px;
             font-weight: 700;
-            color: #fff;
+            color: var(--text-title, #fff);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -288,6 +328,12 @@ function resolve_preview($path, $default = '') {
             border: 1px solid transparent;
             font-family: 'Inter', sans-serif;
         }
+        .header-btn:disabled {
+            opacity: 0.45 !important;
+            cursor: not-allowed !important;
+            pointer-events: none !important;
+            box-shadow: none !important;
+        }
         .btn-primary {
             background: var(--primary);
             color: white;
@@ -302,9 +348,9 @@ function resolve_preview($path, $default = '') {
             border-color: var(--border);
         }
         .btn-outline:hover {
-            color: #fff;
+            color: var(--text-title, #fff);
             border-color: var(--border-hover);
-            background: rgba(255,255,255,0.04);
+            background: var(--surface2);
         }
 
         .user-avatar {
@@ -326,6 +372,7 @@ function resolve_preview($path, $default = '') {
         .content-area {
             flex: 1;
             padding: 28px;
+            overflow-y: auto;
         }
 
         /* ── PANELS ──────────────────────────────────── */
@@ -360,7 +407,7 @@ function resolve_preview($path, $default = '') {
         .card-title {
             font-size: 15px;
             font-weight: 700;
-            color: #fff;
+            color: var(--text-title, #fff);
         }
         .card-subtitle {
             font-size: 12px;
@@ -464,7 +511,7 @@ function resolve_preview($path, $default = '') {
         .color-value {
             font-size: 13px;
             font-weight: 600;
-            color: #fff;
+            color: var(--text-title, #fff);
             font-family: monospace;
         }
 
@@ -600,7 +647,7 @@ function resolve_preview($path, $default = '') {
             margin-bottom: 14px;
         }
         .stat-icon svg { width: 20px; height: 20px; }
-        .stat-value { font-size: 24px; font-weight: 700; color: #fff; }
+        .stat-value { font-size: 24px; font-weight: 700; color: var(--text-title, #fff); }
         .stat-label { font-size: 12px; color: var(--muted); margin-top: 3px; }
 
         /* ── SAVE BAR ────────────────────────────────── */
@@ -640,6 +687,114 @@ function resolve_preview($path, $default = '') {
             );
             margin-top: 12px;
             border: 1px solid var(--border);
+        }
+
+        /* ── SUCCESS MODAL POPUP ─────────────────────── */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(3, 5, 10, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .modal-backdrop.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .modal-container {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 32px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 
+                        0 0 30px rgba(59, 130, 246, 0.15);
+            transform: scale(0.9) translateY(20px);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .modal-backdrop.open .modal-container {
+            transform: scale(1) translateY(0);
+        }
+        
+        .modal-icon-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .checkmark-circle {
+            width: 64px;
+            height: 64px;
+            position: relative;
+            border-radius: 50%;
+            background: rgba(16, 185, 129, 0.1);
+            border: 2px solid var(--success);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulseSuccess 2s infinite;
+        }
+        .checkmark-circle::before {
+            content: '✓';
+            font-size: 32px;
+            color: var(--success);
+            font-weight: 600;
+            line-height: 1;
+            animation: popCheckmark 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        
+        @keyframes pulseSuccess {
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.3); }
+            70% { box-shadow: 0 0 0 12px rgba(16, 185, 129, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+        
+        @keyframes popCheckmark {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text-title, #fff);
+            margin-bottom: 10px;
+        }
+        
+        .modal-message {
+            font-size: 13.5px;
+            color: var(--muted);
+            line-height: 1.5;
+            margin-bottom: 24px;
+            padding: 0 10px;
+        }
+        
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+        
+        .modal-btn {
+            padding: 10px 24px;
+            border-radius: 10px;
+            font-size: 13.5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+            font-family: 'Inter', sans-serif;
+            min-width: 110px;
         }
 
         .mobile-toggle-btn {
@@ -886,11 +1041,18 @@ function resolve_preview($path, $default = '') {
                 <p id="pageSub">Welcome back, <strong><?= htmlspecialchars($adminUser) ?></strong></p>
             </div>
             <div class="header-actions">
+                <button class="header-btn btn-outline" id="themeToggleBtn" onclick="toggleAdminTheme()" title="Toggle Light/Dark Theme" style="padding: 8px 12px;">
+                    <!-- Sun icon for light mode -->
+                    <svg id="theme-icon-sun" style="display:none; width:14px; height:14px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42m12.72-12.72l1.42-1.42"/></svg>
+                    <!-- Moon icon for dark mode -->
+                    <svg id="theme-icon-moon" style="width:14px; height:14px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+                    <span id="themeToggleText">Theme</span>
+                </button>
                 <a href="../index.php" target="_blank" class="header-btn btn-outline" title="View Site">
                     <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
                     <span>View Site</span>
                 </a>
-                <button class="header-btn btn-primary" onclick="saveCurrentSection()" title="Save Changes">
+                <button class="header-btn btn-primary" id="saveChangesBtn" onclick="saveCurrentSection()" title="Save Changes" disabled>
                     <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
                     <span>Save Changes</span>
                 </button>
@@ -967,7 +1129,7 @@ function resolve_preview($path, $default = '') {
                                 $emojis=['play'=>'▶','user'=>'👤','brief'=>'💼','school'=>'🎓','chip'=>'⚙️','palette'=>'🎨'];
                                 echo $emojis[$link['icon']] ?? '📄';
                             ?></div>
-                            <div style="font-size:13px; font-weight:600; color:#fff;"><?= $link['label'] ?></div>
+                            <div style="font-size:13px; font-weight:600; color:var(--text-title);"><?= $link['label'] ?></div>
                             <div style="font-size:11px; color:var(--muted); margin-top:2px;">Edit content →</div>
                         </button>
                         <?php endforeach; ?>
@@ -980,28 +1142,28 @@ function resolve_preview($path, $default = '') {
                     </div>
                     <div style="display:flex; gap:16px; flex-wrap:wrap; align-items:center;">
                         <div style="display:flex; align-items:center; gap:8px;">
-                            <div style="width:32px;height:32px;border-radius:8px;background:<?= htmlspecialchars($primary) ?>;border:1px solid rgba(255,255,255,0.1)"></div>
+                            <div style="width:32px;height:32px;border-radius:8px;background:<?= htmlspecialchars($primary) ?>;border:1px solid var(--border)"></div>
                             <div>
                                 <div style="font-size:11px;color:var(--muted)">Primary</div>
                                 <div style="font-size:13px;font-weight:600;font-family:monospace"><?= htmlspecialchars($primary) ?></div>
                             </div>
                         </div>
                         <div style="display:flex; align-items:center; gap:8px;">
-                            <div style="width:32px;height:32px;border-radius:8px;background:<?= htmlspecialchars($accent) ?>;border:1px solid rgba(255,255,255,0.1)"></div>
+                            <div style="width:32px;height:32px;border-radius:8px;background:<?= htmlspecialchars($accent) ?>;border:1px solid var(--border)"></div>
                             <div>
                                 <div style="font-size:11px;color:var(--muted)">Accent</div>
                                 <div style="font-size:13px;font-weight:600;font-family:monospace"><?= htmlspecialchars($accent) ?></div>
                             </div>
                         </div>
                         <div style="display:flex; align-items:center; gap:8px;">
-                            <div style="width:32px;height:32px;border-radius:8px;background:<?= htmlspecialchars($bgColor) ?>;border:1px solid rgba(255,255,255,0.1)"></div>
+                            <div style="width:32px;height:32px;border-radius:8px;background:<?= htmlspecialchars($bgColor) ?>;border:1px solid var(--border)"></div>
                             <div>
                                 <div style="font-size:11px;color:var(--muted)">Background</div>
                                 <div style="font-size:13px;font-weight:600;font-family:monospace"><?= htmlspecialchars($bgColor) ?></div>
                             </div>
                         </div>
                         <div style="display:flex; align-items:center; gap:8px;">
-                            <div style="width:32px;height:32px;border-radius:8px;background:<?= htmlspecialchars($textColor) ?>;border:1px solid rgba(255,255,255,0.1)"></div>
+                            <div style="width:32px;height:32px;border-radius:8px;background:<?= htmlspecialchars($textColor) ?>;border:1px solid var(--border)"></div>
                             <div>
                                 <div style="font-size:11px;color:var(--muted)">Text</div>
                                 <div style="font-size:13px;font-weight:600;font-family:monospace"><?= htmlspecialchars($textColor) ?></div>
@@ -1797,6 +1959,21 @@ function resolve_preview($path, $default = '') {
         </div><!-- /.content-area -->
     </div><!-- /.main-wrapper -->
 
+    <!-- Success Modal Popup -->
+    <div id="saveSuccessModal" class="modal-backdrop">
+        <div class="modal-container">
+            <div class="modal-icon-container">
+                <div class="checkmark-circle"></div>
+            </div>
+            <h3 class="modal-title">Saved Successfully!</h3>
+            <p class="modal-message">Your updates have been applied. Reload the portfolio website to see the changes.</p>
+            <div class="modal-actions">
+                <a href="../index.php" target="_blank" class="modal-btn btn-primary" onclick="closeSuccessModal()" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">View Site</a>
+                <button class="modal-btn btn-outline" onclick="closeSuccessModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Toast container -->
     <div class="toast-container" id="toastContainer"></div>
 
@@ -1963,7 +2140,8 @@ function resolve_preview($path, $default = '') {
                 });
                 const result = await response.json();
                 if (result.success) {
-                    showToast(`${section} saved successfully!`, 'success');
+                    showSuccessModal();
+                    setUnsavedChanges(false);
                 } else {
                     showToast(result.error || 'Save failed', 'error');
                 }
@@ -2283,6 +2461,7 @@ function resolve_preview($path, $default = '') {
                     const pathEl = document.getElementById(pathInputId);
                     if (previewEl) { previewEl.src = '..' + result.filePath; previewEl.style.display = ''; }
                     if (pathEl) pathEl.value = result.filePath;
+                    setUnsavedChanges(true);
                     showToast('Image uploaded successfully!', 'success');
                 } else {
                     showToast(result.error || 'Upload failed', 'error');
@@ -2313,6 +2492,7 @@ function resolve_preview($path, $default = '') {
                         if (preview) { preview.src = '..' + result.filePath; preview.style.display = ''; }
                         if (pathInput) pathInput.value = result.filePath;
                     }
+                    setUnsavedChanges(true);
                     showToast('Image uploaded successfully!', 'success');
                 } else {
                     showToast(result.error || 'Upload failed', 'error');
@@ -2590,6 +2770,102 @@ function resolve_preview($path, $default = '') {
             `;
             container.appendChild(div);
         }
+
+        // ── Admin Light/Dark Theme Toggle ────────────────
+        function initAdminTheme() {
+            const savedTheme = localStorage.getItem('admin-theme') || 'dark';
+            const sunIcon = document.getElementById('theme-icon-sun');
+            const moonIcon = document.getElementById('theme-icon-moon');
+            const toggleText = document.getElementById('themeToggleText');
+
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-theme');
+                if (sunIcon) sunIcon.style.display = 'block';
+                if (moonIcon) moonIcon.style.display = 'none';
+                if (toggleText) toggleText.textContent = 'Light';
+            } else {
+                document.body.classList.remove('light-theme');
+                if (sunIcon) sunIcon.style.display = 'none';
+                if (moonIcon) moonIcon.style.display = 'block';
+                if (toggleText) toggleText.textContent = 'Dark';
+            }
+        }
+
+        function toggleAdminTheme() {
+            const isLight = document.body.classList.toggle('light-theme');
+            localStorage.setItem('admin-theme', isLight ? 'light' : 'dark');
+            
+            const sunIcon = document.getElementById('theme-icon-sun');
+            const moonIcon = document.getElementById('theme-icon-moon');
+            const toggleText = document.getElementById('themeToggleText');
+
+            if (isLight) {
+                if (sunIcon) sunIcon.style.display = 'block';
+                if (moonIcon) moonIcon.style.display = 'none';
+                if (toggleText) toggleText.textContent = 'Light';
+                showToast('Light theme enabled', 'success');
+            } else {
+                if (sunIcon) sunIcon.style.display = 'none';
+                if (moonIcon) moonIcon.style.display = 'block';
+                if (toggleText) toggleText.textContent = 'Dark';
+                showToast('Dark theme enabled', 'success');
+            }
+        }
+
+        // Initialize theme immediately
+        initAdminTheme();
+
+        // ── Success Modal Functions ───────────────────
+        function showSuccessModal() {
+            const modal = document.getElementById('saveSuccessModal');
+            if (modal) modal.classList.add('open');
+        }
+
+        function closeSuccessModal() {
+            const modal = document.getElementById('saveSuccessModal');
+            if (modal) modal.classList.remove('open');
+        }
+
+        function reloadDashboard() {
+            location.reload();
+        }
+
+        // ── Unsaved Changes Tracker ───────────────────
+        let hasUnsavedChanges = false;
+
+        function setUnsavedChanges(value) {
+            hasUnsavedChanges = value;
+            const btn = document.getElementById('saveChangesBtn');
+            if (btn) {
+                btn.disabled = !value;
+            }
+        }
+
+        // Initialize state as false on load
+        setUnsavedChanges(false);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const contentArea = document.querySelector('.content-area');
+            if (contentArea) {
+                // Listen to form input edits
+                contentArea.addEventListener('input', (e) => {
+                    if (e.target.matches('input, textarea, select')) {
+                        setUnsavedChanges(true);
+                    }
+                });
+                contentArea.addEventListener('change', (e) => {
+                    if (e.target.matches('input, textarea, select')) {
+                        setUnsavedChanges(true);
+                    }
+                });
+                // Listen to dynamic lists adds/removes
+                contentArea.addEventListener('click', (e) => {
+                    if (e.target.closest('.btn-add, .btn-icon')) {
+                        setUnsavedChanges(true);
+                    }
+                });
+            }
+        });
     </script>
 </body>
 </html>
