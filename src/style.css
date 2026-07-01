@@ -1,8 +1,5 @@
-@import "tailwindcss";
-@source "../index.php";
-@source "../admin/**/*.php";
-
 /* Design Tokens & Theme Configuration (Tailwind CSS v4 syntax) */
+
 @theme {
   --font-sans: 'Montserrat', sans-serif;
   --font-serif: 'Syne', sans-serif;
@@ -49,8 +46,13 @@ body {
   background-color: var(--color-bg-base);
   color: #f3f4f6;
   overflow-x: hidden;
-  font-family: var(--font-sans);
+  font-family: 'Montserrat', sans-serif;
 }
+
+/* Explicit font-family rules (ensures fonts apply regardless of Tailwind CDN processing) */
+.font-sans  { font-family: 'Montserrat', sans-serif; }
+.font-serif { font-family: 'Syne', sans-serif; }
+.font-inter { font-family: 'Inter', sans-serif; }
 
 /* Lenis Custom Integration Styles */
 html.lenis,

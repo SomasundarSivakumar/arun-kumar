@@ -119,29 +119,13 @@ $metaKeywords    = $meta['keywords']    ?? '';
 // Theme defaults
 $primaryColor = $theme['primary_color'] ?? '#1d4ed8';
 $accentColor  = $theme['accent_color']  ?? '#60a5fa';
-$bgColor      = $theme['bg_color']      ?? '#0b1a36';
+$bgColor      = $theme['bg_color']      ?? '#061022';
 $textColor    = $theme['text_color']    ?? '#f3f4f6';
 $sidebarBg    = $theme['sidebar_bg']    ?? '#03050a';
 
-// ── Asset Loader ──────────────────────────────────────────────────────
-$isDev = false;
-$viteHost = 'http://localhost:5173';
-$fp = @fsockopen('127.0.0.1', 5173, $errno, $errstr, 0.02);
-if ($fp) {
-    $isDev = true;
-    fclose($fp);
-}
-$cssPath = '';
-$jsPath = '';
-if ($isDev) {
-    $cssPath = $viteHost . '/src/style.css';
-    $jsPath = $viteHost . '/src/main.js';
-} else {
-    $cssMatches = glob(__DIR__ . '/dist/assets/*.css');
-    if (!empty($cssMatches)) { $cssPath = 'dist/assets/' . basename($cssMatches[0]); }
-    $jsMatches = glob(__DIR__ . '/dist/assets/*.js');
-    if (!empty($jsMatches)) { $jsPath = 'dist/assets/' . basename($jsMatches[0]); }
-}
+// ── Asset Paths ──────────────────────────────────────────────────────
+$cssPath = 'src/style.css?v=' . filemtime(__DIR__ . '/src/style.css');
+$jsPath = 'src/main.js?v=' . filemtime(__DIR__ . '/src/main.js');
 
 function h($s) { return htmlspecialchars($s ?? '', ENT_QUOTES, 'UTF-8'); }
 
@@ -283,14 +267,42 @@ function renderMarqueeGroup($items) {
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
-  <?php if ($isDev): ?>
-    <script type="module" src="http://localhost:5173/@vite/client"></script>
-  <?php endif; ?>
-  <?php if (!empty($cssPath)): ?>
-    <link rel="stylesheet" href="<?= h($cssPath) ?>" />
-  <?php endif; ?>
+  <link rel="stylesheet" href="<?= h($cssPath) ?>" />
+  <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+  <style type="tailwindcss">
+    @theme {
+      --font-sans: 'Montserrat', sans-serif;
+      --font-serif: 'Syne', sans-serif;
+      --font-inter: 'Inter', sans-serif;
+
+      --color-bg-deep: <?= h($sidebarBg) ?>;
+      --color-bg-base: <?= h($bgColor) ?>;
+      --color-bg-surface: <?= h($sidebarBg) ?>;
+      --color-primary: <?= h($accentColor) ?>;
+      --color-accent: <?= h($accentColor) ?>;
+      --color-dark-accent: <?= h($primaryColor) ?>;
+    }
+  </style>
   <!-- ── Dynamic Theme CSS Variables from Admin ── -->
   <style>
+    /* ── Font Family Overrides (ensures Google Fonts load correctly) ── */
+    :root {
+      --font-sans:  'Montserrat', sans-serif;
+      --font-serif: 'Syne', sans-serif;
+      --font-inter: 'Inter', sans-serif;
+    }
+
+    html, body {
+      font-family: 'Montserrat', sans-serif !important;
+    }
+
+    /* Tailwind font utility class overrides */
+    .font-sans  { font-family: 'Montserrat', sans-serif !important; }
+    .font-serif { font-family: 'Syne', sans-serif !important; }
+    .font-inter { font-family: 'Inter', sans-serif !important; }
+    .font-mono  { font-family: ui-monospace, 'Courier New', monospace !important; }
+
+    /* ── Dynamic Theme CSS Variables from Admin ── */
     :root {
       --color-primary:  <?= h($primaryColor) ?>;
       --color-accent:   <?= h($accentColor) ?>;
@@ -298,6 +310,10 @@ function renderMarqueeGroup($items) {
       --color-text:     <?= h($textColor) ?>;
       --color-sidebar:  <?= h($sidebarBg) ?>;
       --hero-bg-url:    url('<?= h($heroBgImage) ?>');
+    }
+    #hero::before {
+      display: none !important;
+      content: none !important;
     }
     body {
       background-color: <?= h($bgColor) ?> !important;
@@ -307,10 +323,69 @@ function renderMarqueeGroup($items) {
     .text-\[\#1d4ed8\], .text-\[\#3b82f6\], .text-\[\#60a5fa\], .text-violet-500 { color: var(--color-accent) !important; }
     .bg-\[\#060913\], .bg-\[\#0a0a0a\] { background-color: var(--color-bg) !important; }
     .bg-\[\#03050a\] { background-color: var(--color-sidebar) !important; }
+
+    /* ── Dynamic Hover Neon Border & Glow Overrides ── */
+    .marquee-item:hover {
+      border-color: color-mix(in srgb, var(--color-accent) 45%, transparent) !important;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), 
+                  0 0 20px color-mix(in srgb, var(--color-accent) 20%, transparent) !important;
+    }
+    .service-card:hover {
+      border-color: color-mix(in srgb, var(--color-accent) 45%, transparent) !important;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 
+                  0 0 25px color-mix(in srgb, var(--color-accent) 25%, transparent), 
+                  inset 0 0 15px color-mix(in srgb, var(--color-accent) 8%, transparent) !important;
+    }
+    .premium-card:hover {
+      border-color: color-mix(in srgb, var(--color-accent) 45%, transparent) !important;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.55), 
+                  0 0 25px color-mix(in srgb, var(--color-accent) 25%, transparent), 
+                  inset 0 0 15px color-mix(in srgb, var(--color-accent) 8%, transparent) !important;
+    }
+    .exp-card:hover {
+      border-color: color-mix(in srgb, var(--color-accent) 45%, transparent) !important;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 
+                  0 0 25px color-mix(in srgb, var(--color-accent) 20%, transparent), 
+                  inset 0 0 15px color-mix(in srgb, var(--color-accent) 8%, transparent) !important;
+    }
+    .opp-card:hover {
+      border-color: color-mix(in srgb, var(--color-accent) 45%, transparent) !important;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 
+                  0 0 25px color-mix(in srgb, var(--color-accent) 20%, transparent), 
+                  inset 0 0 15px color-mix(in srgb, var(--color-accent) 8%, transparent) !important;
+    }
+    .nav-icon-box:hover, .nav-item:hover .nav-icon-box {
+      border-color: color-mix(in srgb, var(--color-accent) 35%, transparent) !important;
+      box-shadow: 0 0 15px color-mix(in srgb, var(--color-accent) 15%, transparent) !important;
+    }
+    .hover\:border-\[\#1d4ed8\]\/30:hover { border-color: color-mix(in srgb, var(--color-accent) 45%, transparent) !important; }
+    .hover\:border-\[\#1d4ed8\]\/45:hover { border-color: color-mix(in srgb, var(--color-accent) 45%, transparent) !important; }
+    .hover\:border-\[\#1d4ed8\]\/50:hover { border-color: color-mix(in srgb, var(--color-accent) 45%, transparent) !important; }
+    .hover\:border-\[\#60a5fa\]\/40:hover { border-color: color-mix(in srgb, var(--color-accent) 45%, transparent) !important; }
+    .group-hover\:border-\[\#1d4ed8\]\/35:hover, .group:hover .group-hover\:border-\[\#1d4ed8\]\/35 { border-color: color-mix(in srgb, var(--color-accent) 45%, transparent) !important; }
+    .group-hover\:border-\[\#3b82f6\]\/50:hover, .group:hover .group-hover\:border-\[\#3b82f6\]\/50 { border-color: color-mix(in srgb, var(--color-accent) 45%, transparent) !important; }
+
+    /* Swiper slide / Impact card overrides */
+    .swiper-slide {
+      border-color: rgba(255, 255, 255, 0.07) !important;
+      transition: transform 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease, filter 0.5s ease, opacity 0.5s ease !important;
+    }
+    .swiper-slide-active {
+      border-color: color-mix(in srgb, var(--color-accent) 45%, transparent) !important;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.55), 
+                  0 0 30px color-mix(in srgb, var(--color-accent) 25%, transparent), 
+                  inset 0 0 15px color-mix(in srgb, var(--color-accent) 8%, transparent) !important;
+    }
+    .swiper-slide:hover {
+      border-color: color-mix(in srgb, var(--color-accent) 55%, transparent) !important;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 
+                  0 0 35px color-mix(in srgb, var(--color-accent) 30%, transparent), 
+                  inset 0 0 15px color-mix(in srgb, var(--color-accent) 10%, transparent) !important;
+    }
   </style>
 </head>
 
-<body class=" text-[#f3f4f6] font-sans antialiased selection:bg-violet-500 selection:text-white">
+<body class="bg-[var(--color-bg)] text-[#f3f4f6] font-sans antialiased selection:bg-violet-500 selection:text-white">
 
   <!-- Premium Preloader/Loading Screen -->
   <div id="preloader"
@@ -431,16 +506,16 @@ function renderMarqueeGroup($items) {
 
   <!-- Mobile Sticky Header (Fixed) -->
   <header id="mobile-header"
-    class="md:hidden fixed top-0 left-0 right-0 h-16 bg-[#03050a]/85 backdrop-blur-md border-b border-white/5 z-50 flex items-center justify-between px-6 select-none">
+    class="md:hidden fixed top-0 left-0 right-0 h-20 bg-[#03050a]/85 backdrop-blur-md border-b border-white/5 z-50 flex items-center justify-between px-6 select-none">
     <!-- Brand Avatar Logo -->
     <a href="#hero"
-      class="w-9 h-9 rounded-full bg-gradient-to-tr from-[#3b82f6] to-[#1d4ed8] flex items-center justify-center border border-white/10 shadow-[0_0_10px_rgba(29,78,216,0.15)] text-black text-[11px] font-bold cursor-pointer transition-transform hover:scale-105 duration-300">
+      class="w-11 h-11 rounded-full bg-gradient-to-tr from-[#3b82f6] to-[#1d4ed8] flex items-center justify-center border border-white/10 shadow-[0_0_10px_rgba(29,78,216,0.15)] text-black text-xs font-bold cursor-pointer transition-transform hover:scale-105 duration-300">
       JAK
     </a>
 
     <!-- Hamburger Button -->
     <button id="mobile-menu-toggle"
-      class="text-gray-400 hover:text-white transition-colors focus:outline-none cursor-pointer"
+      class="w-11 h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all duration-300 focus:outline-none cursor-pointer"
       aria-label="Toggle menu">
       <svg class="w-6 h-6 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2"
         viewBox="0 0 24 24">
@@ -502,9 +577,13 @@ function renderMarqueeGroup($items) {
   </div>
 
   <!-- Main Container -->
-  <main class="w-full md:pl-[100px] pt-16 md:pt-0">
+  <main class="w-full md:pl-[100px] pt-20 md:pt-0">
 
     <section id="hero" class="relative min-h-screen w-full overflow-hidden flex items-center">
+      <!-- Hero Background Image Layer -->
+      <div class="absolute inset-0 z-0 pointer-events-none"
+        style="background-image: linear-gradient(to bottom, transparent 65%, var(--color-bg) 100%), url('<?= h($heroBgImage) ?>'); background-size: cover; background-position: center; background-repeat: no-repeat; opacity: 0.35;">
+      </div>
 
       <div class="absolute top-1/3 left-1/4 w-[500px] h-[500px] rounded-full pointer-events-none z-[1]"
         style="background: radial-gradient(circle, rgba(29,78,216,0.08) 0%, transparent 70%); filter: blur(60px);">
@@ -549,9 +628,9 @@ function renderMarqueeGroup($items) {
     </section>
 
     <section id="expertise" class="py-10 lg:py-24 overflow-hidden w-full select-none">
-      <div class="max-w-[90%] mx-auto md:px-16 mb-12">
-        <h2 class="text-[3.2vw] md:text-xs lg:text-sm font-semibold uppercase tracking-widest text-[#1d4ed8] mb-2 font-inter">Core Verticals</h2>
-        <p class="text-[7.5vw] md:text-[6vw] lg:text-5xl font-serif font-bold text-white">Strategic Domain Expertise</p>
+      <div class="max-w-[90%] mx-auto  md:px-16 mb-12">
+        <h2 class="text-sm font-semibold uppercase tracking-widest text-[#1d4ed8] mb-2 font-inter">Core Verticals</h2>
+        <p class="text-3xl md:text-5xl font-serif font-bold text-white">Strategic Domain Expertise</p>
       </div>
 
       <style>
@@ -597,7 +676,7 @@ function renderMarqueeGroup($items) {
         }
 
         .marquee-item:hover {
-          border-[#1d4ed8]olor: rgba(59, 130, 246, 0.4);
+          border-color: color-mix(in srgb, var(--color-accent) 40%, transparent) !important;
           background: rgba(29,78,216,0.05);
           transform: translateY(-2px);
           box-shadow: 0 4px 20px rgba(29,78,216,0.15);
@@ -626,7 +705,7 @@ function renderMarqueeGroup($items) {
 
         .marquee-item:hover .icon-badge {
           background: linear-gradient(135deg, rgba(96, 165, 250, 0.14) 0%, rgba(96, 165, 250, 0.06) 100%);
-          border-[#1d4ed8]olor: rgba(96, 165, 250, 0.45);
+          border-color: color-mix(in srgb, var(--color-accent) 45%, transparent) !important;
           box-shadow: 0 0 28px rgba(96, 165, 250, 0.18), inset 0 1px 0 rgba(96, 165, 250, 0.2);
           transform: translateZ(25px) scale(1.15);
         }
@@ -669,15 +748,15 @@ function renderMarqueeGroup($items) {
         class="absolute inset-0 w-full h-full pointer-events-none opacity-40 z-0"></canvas>
 
       <div class="mx-auto max-w-[90%] pb-10 lg:pb-30 relative z-10">
-        <div class="  md:px-16 mb-12">
-          <h2 class="text-[3.2vw] md:text-xs lg:text-sm font-semibold uppercase tracking-widest text-[#1d4ed8] mb-2 font-inter">THE OPPORTUNITY</h2>
-          <p class="text-[7.5vw] md:text-[6vw] lg:text-5xl leading-14 font-serif font-bold text-white"><?= h($oppTitle) ?> </p>
+        <div class=" md:px-16 mb-12">
+          <h2 class="text-sm font-semibold uppercase tracking-widest text-[#1d4ed8] mb-2 font-inter">THE OPPORTUNITY</h2>
+          <p class="text-3xl md:text-5xl lg:leading-14 font-serif font-bold text-white"><?= h($oppTitle) ?> </p>
         </div>
         <div class="flex flex-wrap lg:flex-nowrap items-stretch w-full gap-8 md:gap-10  md:px-16">
 
           <!-- Left Column: The Friction / The Challenge -->
           <div
-            class="w-full lg:w-[calc(50%-1.25rem)] flex flex-col gap-6 p-8 md:p-10 rounded-3xl bg-white/[0.01] border border-white/5 backdrop-blur-md relative overflow-hidden group hover:border-white/10 transition-all duration-500">
+            class="opp-card w-full lg:w-[calc(50%-1.25rem)] flex flex-col gap-6 p-8 md:p-10 rounded-3xl bg-white/[0.01] border border-white/5 backdrop-blur-md relative overflow-hidden group hover:border-white/10 transition-all duration-500">
             <!-- Left gold background glow -->
             <div
               class="absolute -top-10 -left-10 w-40 h-40 rounded-full bg-[#1d4ed8]/5 blur-3xl pointer-events-none group-hover:bg-[#1d4ed8]/8 transition-all duration-500">
@@ -702,7 +781,7 @@ function renderMarqueeGroup($items) {
 
           <!-- Right Column: The CDO Solution -->
           <div
-            class="w-full lg:w-[calc(50%-1.25rem)] flex flex-col gap-6 p-8 md:p-10 rounded-3xl bg-gradient-to-br from-white/[0.03] to-white/[0.01] border border-[#1d4ed8]/25 backdrop-blur-md relative overflow-hidden group hover:border-[#1d4ed8]/45 transition-all duration-500 shadow-[0_0_30px_rgba(29,78,216,0.02)] hover:shadow-[0_0_35px_rgba(29,78,216,0.06)]">
+            class="opp-card w-full lg:w-[calc(50%-1.25rem)] flex flex-col gap-6 p-8 md:p-10 rounded-3xl bg-gradient-to-br from-white/[0.03] to-white/[0.01] border border-[#1d4ed8]/25 backdrop-blur-md relative overflow-hidden group hover:border-[#1d4ed8]/45 transition-all duration-500 shadow-[0_0_30px_rgba(29,78,216,0.02)] hover:shadow-[0_0_35px_rgba(29,78,216,0.06)]">
             <!-- Top-right gold glow -->
             <div
               class="absolute -bottom-10 -right-10 w-40 h-40 rounded-full bg-[#1d4ed8]/8 blur-3xl pointer-events-none group-hover:bg-[#1d4ed8]/12 transition-all duration-500">
@@ -750,10 +829,10 @@ function renderMarqueeGroup($items) {
     <!-- About section  -->
     <section id="about">
       <div class="pb-10 lg:pb-30 mx-auto max-w-[90%]">
-        <div class="  md:px-16 ">
-          <h2 class="text-[3.2vw] md:text-xs lg:text-sm font-semibold uppercase tracking-widest text-[#1d4ed8] mb-2 font-inter">ABOUT
+        <div class=" md:px-16">
+          <h2 class="text-sm font-semibold uppercase tracking-widest text-[#1d4ed8] mb-2 font-inter">ABOUT
           </h2>
-          <p class="text-3xl md:text-5xl lg:leading-14 font-serif font-bold text-white">Meet<br /><span class="text-white text-[9vw] md:text-[8vw] lg:text-6xl"><?= h($heroName) ?></span>
+          <p class="text-3xl md:text-5xl lg:leading-14 font-serif font-bold text-white">Meet<br /><span class="text-white text-4xl lg:text-6xl"><?= h($heroName) ?></span>
           </p>
         </div>
         <div class="w-full flex flex-wrap lg:flex-nowrap justify-between items-center gap-10  md:px-16 mt-6 lg:mt-12">
@@ -763,7 +842,7 @@ function renderMarqueeGroup($items) {
               <p class="text-lg text-white font-medium">
                 <?= nl2br(h($aboutBio)) ?>
               </p>
-              <div class="mt-4 p-5 rounded-2xl bg-[#1d4ed8]/5 border border-[#1d4ed8]/15 relative overflow-hidden group">
+              <div class="mt-2 lg:mt-4 p-5 rounded-2xl bg-[#1d4ed8]/5 border border-[#1d4ed8]/15 relative overflow-hidden group">
                 <div
                   class="absolute left-0 top-0 bottom-0 w-[3px] bg-[#1d4ed8]/60 group-hover:bg-[#3b82f6] transition-colors duration-300">
                 </div>
@@ -772,7 +851,7 @@ function renderMarqueeGroup($items) {
                 </p>
               </div>
               
-              <div class="flex flex-wrap gap-4 mt-8 w-full">
+              <div class="flex flex-wrap gap-4 mt-4 lg:mt-8 w-full">
                 <?php foreach ($aboutStats as $stat): ?>
                 <div class="flex-grow flex-shrink-0 w-[calc(50%-0.5rem)] min-w-[130px] p-6 rounded-2xl bg-[#0a0e1c]/40 backdrop-blur-md border border-[#1d4ed8]/15 hover:border-[#60a5fa]/40 hover:-translate-y-1 transition-all duration-300 text-center shadow-[0_4px_20px_rgba(0,0,0,0.3)] relative overflow-hidden group">
                   <!-- Glow Effect inside card -->
@@ -804,12 +883,12 @@ function renderMarqueeGroup($items) {
     </section>
 
     <!-- CAPABILITIES & EXPERIENCE SECTION -->
-    <section id="capabilities" class="relative pb-20 lg:pb-30 pt-10 overflow-hidden w-full select-none">
+    <section id="capabilities" class="relative pb-10 lg:pb-30 pt-10 overflow-hidden w-full select-none">
       <div class="mx-auto max-w-[90%] relative z-10">
 
-        <div class="px-6 md:px-16 mb-15 lg:mb-20">
-          <h2 class="text-[3.2vw] md:text-xs lg:text-sm font-semibold uppercase tracking-widest text-[#1d4ed8] mb-2 font-inter">Capabilities</h2>
-          <p class="text-[7.5vw] md:text-[6vw] lg:text-5xl font-serif font-bold text-white">Professional Footprint</p>
+        <div class=" md:px-16 mb-20">
+          <h2 class="text-sm font-semibold uppercase tracking-widest text-[#1d4ed8] mb-2 font-inter">Capabilities</h2>
+          <p class="text-3xl md:text-5xl font-serif font-bold text-white">Professional Footprint</p>
         </div>
 
         <div class="relative w-full  flex flex-col lg:flex-row gap-12 lg:gap-16 items-center">
@@ -1282,11 +1361,11 @@ function renderMarqueeGroup($items) {
         <div class=" md:px-[4rem] mb-[2rem] lg:mb-[4rem]">
           <h2 class="text-xs md:text-sm font-semibold uppercase tracking-widest text-[#1d4ed8] mb-[0.5rem] font-inter">
             Services</h2>
-          <p class="text-4xl lg:text-5xl font-serif font-bold text-white leading-tight">How I Help Organizations Succeed
+          <p class="text-3xl md:text-5xl font-serif font-bold text-white leading-tight">How I Help Organizations Succeed
           </p>
         </div>
 
-        <div class="flex flex-wrap justify-center gap-[1.5rem] lg:gap-[2rem] px-0 md:px-[4rem] mt-[3rem] lg:mt-[4rem]">
+        <div class="flex flex-wrap justify-center gap-[1.5rem] lg:gap-[2rem]  md:px-[4rem] mt-[1.5rem] lg:mt-[4rem]">
           <?php
           $serviceSvgs = [
               0 => '<svg class="w-[1.75rem] h-[1.75rem]" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /><path d="M7 10l3-2 2 4 2-4 3 2v4H7v-4z" fill="#3b82f6" fill-opacity="0.2" /></svg>',
@@ -1430,11 +1509,11 @@ function renderMarqueeGroup($items) {
 
       <div class="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
         <!-- Section Header -->
-        <div class="text-center max-w-3xl mx-auto mb-6 lg:mb-16">
-          <h2 class="text-[3.2vw] md:text-xs lg:text-sm font-semibold uppercase tracking-widest text-[#1d4ed8] mb-2 font-inter">Impact</h2>
-          <h3 class="text-[5.5vw] md:text-[6vw] lg:text-5xl font-serif font-extrabold tracking-tight text-white mb-6">Delivered Results —
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <h2 class="text-xs md:text-sm font-semibold uppercase tracking-widest text-[#1d4ed8] mb-2 font-inter">Impact</h2>
+          <h3 class="text-3xl md:text-5xl font-serif font-extrabold tracking-tight text-white mb-6">Delivered Results —
             Across Industries</h3>
-          <p class="text-white/60 text-[3.8vw] md:text-sm lg:text-base leading-relaxed font-inter">
+          <p class="text-white/60 text-sm md:text-base leading-relaxed font-inter">
             The measure of successful data leadership is not the sophistication of the technology deployed. It is the
             quality of decisions made, the speed of business response, and the competitive advantage unlocked.
           </p>
@@ -1497,8 +1576,8 @@ function renderMarqueeGroup($items) {
       <div class="max-w-5xl mx-auto px-6 md:px-12 relative z-10">
         <!-- Section Header -->
         <div class="text-center max-w-3xl mx-auto mb-20 exp-header">
-          <h2 class="text-[3.2vw] md:text-xs lg:text-sm font-semibold uppercase tracking-widest text-[#1d4ed8] mb-2 font-inter">Experience</h2>
-          <h3 class="text-[7.5vw] md:text-[6vw] lg:text-5xl font-serif font-extrabold tracking-tight text-white mb-6">Career Highlights</h3>
+          <h2 class="text-xs md:text-sm font-semibold uppercase tracking-widest text-[#1d4ed8] mb-2 font-inter">Experience</h2>
+          <h3 class="text-3xl md:text-5xl font-serif font-extrabold tracking-tight text-white mb-6">Career Highlights</h3>
         </div>
 
         <!-- Timeline Container -->
@@ -1740,12 +1819,12 @@ function renderMarqueeGroup($items) {
     <section id="technology" class="relative pb-10 lg:pb-30 pt-10 overflow-hidden w-full">
 
 
-      <div class="max-w-[90%] mx-auto px-6 md:px-12 relative z-10">
+      <div class="max-w-[90%] mx-auto  md:px-12 relative z-10">
         <!-- Section Header -->
         <div class="text-center mx-auto">
-          <h2 class="text-[3.2vw] md:text-xs lg:text-sm font-semibold uppercase tracking-widest text-[#1d4ed8] mb-2 font-inter">TECHNOLOGY EXPERTISE</h2>
-          <h3 class="text-[7.5vw] md:text-[6vw] lg:text-5xl font-serif font-extrabold tracking-tight text-white mb-6">Platforms & Technologies</h3>
-          <p class="text-white/60 w-full lg:w-1/2 mx-auto text-[3.8vw] md:text-sm lg:text-base leading-relaxed font-inter">
+          <h2 class="text-xs md:text-sm font-semibold uppercase tracking-widest text-[#1d4ed8] mb-2 font-inter">TECHNOLOGY EXPERTISE</h2>
+          <h3 class="text-3xl md:text-5xl font-serif font-extrabold tracking-tight text-white mb-6">Platforms & Technologies</h3>
+          <p class="text-white/60 w-full lg:w-1/2 mx-auto text-base md:text-lg leading-relaxed font-inter">
             I bring hands-on proficiency across the full data and analytics stack — from strategy and governance through
             to platform architecture and delivery execution.
           </p>
@@ -1798,7 +1877,7 @@ function renderMarqueeGroup($items) {
         style="background: radial-gradient(circle, rgba(29, 78, 216,0.04) 0%, transparent 70%); filter: blur(80px);">
       </div>
 
-      <div class="max-w-[90%] mx-auto px-6 md:px-12 relative z-10">
+      <div class="max-w-[90%] mx-auto md:px-12 relative z-10">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
 
           <!-- Left Column: Header & Context -->
@@ -1810,10 +1889,10 @@ function renderMarqueeGroup($items) {
               Why Work With Me
             </h3>
             <p class="text-white/85 text-base md:text-lg leading-relaxed font-sans mt-2">
-            <?= h($diffText1) ?>
+            <?= $diffText1 ?>
           </p>
             <p class="text-white/60 text-sm md:text-base leading-relaxed font-sans">
-            <?= h($diffText2) ?>
+            <?= $diffText2 ?>
           </p>
           </div>
 
@@ -1848,7 +1927,7 @@ function renderMarqueeGroup($items) {
     </section>
 
     <!-- Call to Action Section -->
-    <section id="cta" class="relative py-28 md:py-36 overflow-hidden w-full ">
+    <section id="cta" class="relative py-10 md:py-36 overflow-hidden w-full ">
       <!-- Background subtle glow -->
       <div
         class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full pointer-events-none z-0"
@@ -2069,10 +2148,64 @@ function renderMarqueeGroup($items) {
   <script>
     window.HERO_TITLE = <?= json_encode($heroTitle) ?>;
   </script>
+  <!-- CDNs for GSAP, ScrollTrigger, and Lenis -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.20/dist/lenis.min.js"></script>
+
   <?php if (!empty($jsPath)): ?>
     <script type="module" src="<?= h($jsPath) ?>"></script>
   <?php endif; ?>
 
+  <!-- ── Late Font Override: ensures fonts win after Tailwind CDN async injection ── -->
+  <style id="font-override">
+    html, body { font-family: 'Montserrat', sans-serif !important; }
+    .font-sans  { font-family: 'Montserrat', sans-serif !important; }
+    .font-serif { font-family: 'Syne', sans-serif !important; }
+    .font-inter { font-family: 'Inter', sans-serif !important; }
+    .font-mono  { font-family: ui-monospace, 'Courier New', monospace !important; }
+    .hero-name  { font-family: 'Montserrat', sans-serif !important; }
+  </style>
+  <script>
+    // Watch for Tailwind CDN async style injection and re-apply font overrides afterward
+    (function() {
+      var CSS = [
+        "html, body { font-family: 'Montserrat', sans-serif !important; }",
+        ".font-sans  { font-family: 'Montserrat', sans-serif !important; }",
+        ".font-serif { font-family: 'Syne', sans-serif !important; }",
+        ".font-inter { font-family: 'Inter', sans-serif !important; }",
+        ".font-mono  { font-family: ui-monospace, 'Courier New', monospace !important; }",
+        ".hero-name  { font-family: 'Montserrat', sans-serif !important; }"
+      ].join('\n');
+
+      function applyFonts() {
+        var existing = document.getElementById('font-override-late');
+        if (existing) existing.remove();
+        var s = document.createElement('style');
+        s.id = 'font-override-late';
+        s.textContent = CSS;
+        document.head.appendChild(s);
+      }
+
+      // MutationObserver: watches for Tailwind CDN injecting <style> tags
+      var observer = new MutationObserver(function(mutations) {
+        for (var m of mutations) {
+          for (var n of m.addedNodes) {
+            if (n.tagName === 'STYLE' && n.id !== 'font-override' && n.id !== 'font-override-late') {
+              applyFonts();
+            }
+          }
+        }
+      });
+      observer.observe(document.head, { childList: true });
+
+      // Disconnect after 5 seconds — Tailwind should be done by then
+      setTimeout(function() { observer.disconnect(); applyFonts(); }, 5000);
+
+      // Also apply on DOMContentLoaded immediately
+      document.addEventListener('DOMContentLoaded', applyFonts);
+    })();
+  </script>
 
 </body>
 

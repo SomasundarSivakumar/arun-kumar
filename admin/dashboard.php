@@ -232,6 +232,7 @@ function resolve_preview($path, $default = '') {
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            min-width: 0;
         }
 
         /* ── HEADER ──────────────────────────────────── */
@@ -250,15 +251,22 @@ function resolve_preview($path, $default = '') {
         }
         .header-title {
             flex: 1;
+            min-width: 0;
         }
         .header-title h2 {
             font-size: 17px;
             font-weight: 700;
             color: #fff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         .header-title p {
             font-size: 12px;
             color: var(--muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .header-actions {
@@ -384,6 +392,7 @@ function resolve_preview($path, $default = '') {
 
         .form-input, .form-textarea, .form-select {
             width: 100%;
+            min-width: 0;
             padding: 10px 14px;
             background: var(--surface2);
             border: 1px solid var(--border);
@@ -653,14 +662,70 @@ function resolve_preview($path, $default = '') {
         }
 
         /* ── RESPONSIVE ──────────────────────────────── */
+        .sidebar-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 998;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+        .sidebar-backdrop.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .tech-item-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: rgba(255,255,255,0.02);
+            transition: border-color 0.2s;
+        }
+        .tech-item-row:hover {
+            border-color: var(--border-hover);
+        }
+
         @media (max-width: 768px) {
             .sidebar { transform: translateX(-100%); z-index: 999; }
             .sidebar.open { transform: translateX(0); }
-            .main-wrapper { margin-left: 0; padding: 16px; }
-            .header { display: flex; align-items: center; }
-            .mobile-toggle-btn { display: flex; }
+            .main-wrapper { margin-left: 0; padding: 0; }
+            .content-area { padding: 16px; }
+            .header { display: flex; align-items: center; padding: 50px 16px; gap: 8px; }
+            .header-title h2 { font-size: 15px; }
+            .header-title p { display: none; }
+            .header-actions { gap: 8px; }
+            .header .header-btn span { display: none; }
+            .header .header-btn { padding: 8px; justify-content: center; width: 36px; height: 36px; }
+            .mobile-toggle-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 44px;
+                height: 44px;
+                border-radius: 10px;
+                background: rgba(255,255,255,0.03);
+            }
             .form-row { grid-template-columns: 1fr !important; }
             .form-row.triple { grid-template-columns: 1fr !important; }
+        }
+
+        @media (max-width: 600px) {
+            .tech-item-row { flex-wrap: wrap; gap: 8px; }
+            .tech-item-row .tech-item-name { flex: 1 1 calc(50% - 10px); min-width: 100px; }
+            .tech-item-row .tech-item-image { flex: 1 1 100%; }
+        }
+
+        @media (max-width: 500px) {
+            .stats-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
+            .color-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
+            .toast-container { right: 16px; left: 16px; width: calc(100% - 32px); }
+            .toast { min-width: 0; width: 100%; }
         }
 
         /* scrollbar */
@@ -670,6 +735,7 @@ function resolve_preview($path, $default = '') {
     </style>
 </head>
 <body>
+    <div class="sidebar-backdrop" id="sidebarBackdrop" onclick="toggleSidebar()"></div>
 
     <!-- ── SIDEBAR ─────────────────────────────────── -->
     <aside class="sidebar" id="sidebar">
@@ -820,13 +886,13 @@ function resolve_preview($path, $default = '') {
                 <p id="pageSub">Welcome back, <strong><?= htmlspecialchars($adminUser) ?></strong></p>
             </div>
             <div class="header-actions">
-                <a href="../index.php" target="_blank" class="header-btn btn-outline">
+                <a href="../index.php" target="_blank" class="header-btn btn-outline" title="View Site">
                     <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                    View Site
+                    <span>View Site</span>
                 </a>
-                <button class="header-btn btn-primary" onclick="saveCurrentSection()">
+                <button class="header-btn btn-primary" onclick="saveCurrentSection()" title="Save Changes">
                     <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
-                    Save Changes
+                    <span>Save Changes</span>
                 </button>
                 <div class="user-avatar" title="<?= htmlspecialchars($adminUser) ?>"><?= strtoupper(substr($adminUser, 0, 2)) ?></div>
             </div>
@@ -1279,7 +1345,7 @@ function resolve_preview($path, $default = '') {
                                         $itName = is_array($it) ? ($it['name'] ?? '') : $it;
                                         $itImage = is_array($it) ? ($it['image'] ?? '') : '';
                                     ?>
-                                    <div class="tech-item-row" style="display:flex; align-items:center; gap:10px; padding:8px; border:1px solid var(--border); border-radius:8px; background:rgba(255,255,255,0.02);">
+                                    <div class="tech-item-row">
                                         <img class="tech-item-preview" src="<?= htmlspecialchars(resolve_preview($itImage)) ?>" style="width:40px; height:40px; object-fit:contain; border-radius:6px; border:1px solid var(--border); flex-shrink:0; <?= empty($itImage) ? 'display:none' : '' ?>" onerror="this.style.display='none'">
                                         <input class="form-input tech-item-name" type="text" value="<?= htmlspecialchars($itName) ?>" placeholder="Technology name" style="flex:1;">
                                         <input class="form-input tech-item-image" type="text" value="<?= htmlspecialchars($itImage) ?>" placeholder="Image path" style="flex:1; font-size:11px;">
@@ -1762,7 +1828,17 @@ function resolve_preview($path, $default = '') {
 
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
-            if (sidebar) sidebar.classList.toggle('open');
+            const backdrop = document.getElementById('sidebarBackdrop');
+            if (sidebar) {
+                const isOpen = sidebar.classList.toggle('open');
+                if (backdrop) {
+                    if (isOpen) {
+                        backdrop.classList.add('open');
+                    } else {
+                        backdrop.classList.remove('open');
+                    }
+                }
+            }
         }
 
         function switchPanel(panelId, navEl) {
@@ -1790,8 +1866,10 @@ function resolve_preview($path, $default = '') {
 
             // Auto-close sidebar on mobile
             const sidebar = document.getElementById('sidebar');
+            const backdrop = document.getElementById('sidebarBackdrop');
             if (sidebar && window.innerWidth <= 768) {
                 sidebar.classList.remove('open');
+                if (backdrop) backdrop.classList.remove('open');
             }
         }
 
@@ -2253,7 +2331,6 @@ function resolve_preview($path, $default = '') {
         function addTechItem(container) {
             const div = document.createElement('div');
             div.className = 'tech-item-row';
-            div.style.cssText = 'display:flex; align-items:center; gap:10px; padding:8px; border:1px solid var(--border); border-radius:8px; background:rgba(255,255,255,0.02);';
             div.innerHTML = `
                 <img class="tech-item-preview" style="width:40px; height:40px; object-fit:contain; border-radius:6px; border:1px solid var(--border); flex-shrink:0; display:none" onerror="this.style.display='none'">
                 <input class="form-input tech-item-name" type="text" placeholder="Technology name" style="flex:1;">

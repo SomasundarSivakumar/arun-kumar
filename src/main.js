@@ -1,7 +1,4 @@
-import './style.css';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Lenis from 'lenis';
+// ESM imports removed: loaded via CDN globally in index.php
 
 // Register GSAP plugins
 gsap.registerPlugin(ScrollTrigger);
@@ -15,8 +12,12 @@ function initPreloader() {
 
   const startTime = Date.now();
   const MIN_LOADING_TIME = 1500; // Minimum duration in milliseconds
+  let faded = false;
 
   const fadeOut = () => {
+    if (faded) return;
+    faded = true;
+
     const elapsed = Date.now() - startTime;
     const remainingTime = Math.max(0, MIN_LOADING_TIME - elapsed);
 
@@ -33,6 +34,9 @@ function initPreloader() {
   } else {
     window.addEventListener('load', fadeOut);
   }
+
+  // Fallback: force dismiss the preloader after 4 seconds if load event hasn't fired
+  setTimeout(fadeOut, 4000);
 }
 initPreloader();
 
@@ -146,7 +150,7 @@ function initHeroScrollAnimations() {
 
   const heroName = heroSection.querySelector('.hero-name');
   const heroRole = document.getElementById('hero-role');
-  const taglines = heroSection.querySelectorAll('.hero-tagline > span');
+  const taglines = Array.from(heroSection.querySelectorAll('.hero-tagline > span'));
   const heroEls = [heroName, heroRole, ...taglines].filter(Boolean);
   if (heroEls.length === 0) return;
 
@@ -252,9 +256,9 @@ function initSmoothScrollLinks() {
           window.closeMobileMenu();
         }
 
-        // Calculate responsive offset for mobile top bar (64px)
+        // Calculate responsive offset for mobile top bar (80px)
         const isMobile = window.innerWidth < 768;
-        const scrollOffset = isMobile ? -64 : 0;
+        const scrollOffset = isMobile ? -80 : 0;
 
         lenis.scrollTo(targetId, {
           duration: 1.2,
@@ -321,68 +325,8 @@ function initActiveSectionSpy() {
 // ─────────────────────────────────────────────────────────────────────────────
 // 4. Capabilities Timeline ScrollTrigger Animation
 // ─────────────────────────────────────────────────────────────────────────────
-const capabilitiesSection  = document.getElementById('capabilities');
-const timelineScrollLine   = document.getElementById('timeline-scroll-line');
-const timelineDots         = document.querySelectorAll('.timeline-dot');
-const timelineItems        = document.querySelectorAll('.timeline-item');
-const timelineVisuals      = document.querySelectorAll('.timeline-visual');
-const timelineHeight       = 600;
-
-if (capabilitiesSection && timelineScrollLine) {
-  gsap.to(timelineScrollLine, {
-    height: timelineHeight,
-    ease: 'none',
-    scrollTrigger: {
-      trigger: '#timeline-track-container',
-      start: 'top 45%',
-      end: 'bottom 55%',
-      scrub: 0.5,
-      onUpdate: (self) => {
-        const progress    = self.progress;
-        const currentHeight = progress * timelineHeight;
-        let activeIndex   = 0;
-
-        timelineDots.forEach((dot, index) => {
-          const dotTop = (index / (timelineDots.length - 1)) * timelineHeight;
-          if (currentHeight >= dotTop - 15) {
-            activeIndex = index;
-            dot.classList.remove('bg-[#121216]', 'border-white/10');
-            dot.classList.add('bg-[#60a5fa]', 'border-[#60a5fa]', 'shadow-[0_0_12px_rgba(96,165,250,0.65)]');
-            const innerDot = dot.querySelector('.inner-dot');
-            if (innerDot) {
-              innerDot.classList.remove('bg-white/20');
-              innerDot.classList.add('bg-black', 'scale-125');
-            }
-            if (timelineItems[index]) {
-              timelineItems[index].classList.remove('opacity-25', 'translate-x-4');
-              timelineItems[index].classList.add('opacity-100', 'translate-x-0');
-            }
-          } else {
-            dot.classList.remove('bg-[#60a5fa]', 'border-[#60a5fa]', 'shadow-[0_0_12px_rgba(96,165,250,0.65)]');
-            dot.classList.add('bg-[#121216]', 'border-white/10');
-            const innerDot = dot.querySelector('.inner-dot');
-            if (innerDot) {
-              innerDot.classList.remove('bg-black', 'scale-125');
-              innerDot.classList.add('bg-white/20');
-            }
-            if (timelineItems[index]) {
-              timelineItems[index].classList.add('opacity-25', 'translate-x-4');
-              timelineItems[index].classList.remove('opacity-100', 'translate-x-0');
-            }
-          }
-        });
-
-        timelineVisuals.forEach((visual, index) => {
-          if (index === activeIndex) {
-            visual.classList.add('active');
-          } else {
-            visual.classList.remove('active');
-          }
-        });
-      },
-    },
-  });
-}
+// 5. Capabilities Timeline ScrollTrigger Animation (Moved to initCapabilitiesSectionAnimations)
+// ─────────────────────────────────────────────────────────────────────────────
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 6. Services Cards ScrollTrigger Entrance
@@ -391,9 +335,9 @@ function initServicesAnimations() {
   const servicesSection = document.getElementById('services');
   if (!servicesSection) return;
 
-  const header = servicesSection.querySelector('.px-\\[1\\.5rem\\], .px-6');
-  if (header) {
-    gsap.from(header.children, {
+  const header = servicesSection.querySelector('h2')?.parentElement;
+  if (header && header.children.length > 0) {
+    gsap.from(Array.from(header.children), {
       y: 35,
       opacity: 0,
       duration: 0.85,
@@ -454,22 +398,24 @@ function initIdealClientsAnimations() {
   if (!section) return;
 
   // Section Header
-  const header = section.querySelector('.w-full.lg\\:w-\\[45\\%\\]');
+  const header = section.querySelector('h2')?.parentElement;
   if (header) {
     const headings = header.querySelectorAll('h2, h3');
-    gsap.from(headings, {
-      y: 40,
-      opacity: 0,
-      duration: 0.85,
-      stagger: 0.15,
-      ease: 'power3.out',
-      immediateRender: false,
-      scrollTrigger: {
-        trigger: section,
-        start: 'top 85%',
-        toggleActions: 'play reverse play reverse',
-      },
-    });
+    if (headings.length > 0) {
+      gsap.from(headings, {
+        y: 40,
+        opacity: 0,
+        duration: 0.85,
+        stagger: 0.15,
+        ease: 'power3.out',
+        immediateRender: false,
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 85%',
+          toggleActions: 'play reverse play reverse',
+        },
+      });
+    }
   }
 
   const clientNavItems  = section.querySelectorAll('.client-nav-item');
@@ -642,12 +588,12 @@ function initExperienceAnimations() {
   const expSection = document.getElementById('experience');
   if (!expSection) return;
 
-  const expHeader   = expSection.querySelector('.exp-header');
+  const expHeader   = expSection.querySelector('h2')?.parentElement;
   const expItems    = expSection.querySelectorAll('.exp-item');
   const lineFill    = expSection.querySelector('.exp-line-fill');
 
-  if (expHeader) {
-    gsap.from(expHeader.children, {
+  if (expHeader && expHeader.children.length > 0) {
+    gsap.from(Array.from(expHeader.children), {
       y: 45,
       opacity: 0,
       duration: 0.9,
@@ -732,11 +678,11 @@ function initDifferenceAnimations() {
   const differenceSection = document.getElementById('the-difference');
   if (!differenceSection) return;
 
-  const header = differenceSection.querySelector('.difference-header');
+  const header = differenceSection.querySelector('h2')?.parentElement;
   const items  = differenceSection.querySelectorAll('.difference-item');
 
-  if (header) {
-    gsap.from(header.children, {
+  if (header && header.children.length > 0) {
+    gsap.from(Array.from(header.children), {
       y: 40,
       opacity: 0,
       duration: 0.85,
@@ -778,8 +724,8 @@ function initCTAAnimations() {
   const container = ctaSection.querySelector('.cta-container');
   const links     = ctaSection.querySelectorAll('.cta-link-item');
 
-  if (container) {
-    gsap.from(container.children, {
+  if (container && container.children.length > 0) {
+    gsap.from(Array.from(container.children), {
       y: 45,
       opacity: 0,
       duration: 0.9,
@@ -818,22 +764,24 @@ function initExpertiseSectionAnimations() {
   const expertiseSection = document.getElementById('expertise');
   if (!expertiseSection) return;
 
-  const header = expertiseSection.querySelector('.max-w-\\[90\\%\\]');
+  const header = expertiseSection.querySelector('h2')?.parentElement;
   if (header) {
     const headingEls = header.querySelectorAll('h2, p');
-    gsap.from(headingEls, {
-      y: 40,
-      opacity: 0,
-      duration: 0.85,
-      stagger: 0.15,
-      ease: 'power3.out',
-      immediateRender: false,
-      scrollTrigger: {
-        trigger: expertiseSection,
-        start: 'top 85%',
-        toggleActions: 'play reverse play reverse',
-      },
-    });
+    if (headingEls.length > 0) {
+      gsap.from(headingEls, {
+        y: 40,
+        opacity: 0,
+        duration: 0.85,
+        stagger: 0.15,
+        ease: 'power3.out',
+        immediateRender: false,
+        scrollTrigger: {
+          trigger: expertiseSection,
+          start: 'top 85%',
+          toggleActions: 'play reverse play reverse',
+        },
+      });
+    }
   }
 
   const track = expertiseSection.querySelector('.marquee-track');
@@ -861,7 +809,8 @@ function initOpportunitySectionAnimations() {
   if (!opportunitySection) return;
 
   // Section header (including sub-text description)
-  const headings = opportunitySection.querySelectorAll('.px-6.md\\:px-16.mb-12 > h2, .px-6.md\\:px-16.mb-12 > p');
+  const header = opportunitySection.querySelector('h2')?.parentElement;
+  const headings = header ? Array.from(header.children) : [];
   if (headings.length > 0) {
     gsap.from(headings, {
       y: 45,
@@ -915,9 +864,9 @@ function initOpportunitySectionAnimations() {
   });
 
   // Bottom quote / sign-off text
-  const quote = opportunitySection.querySelector('.mt-16, .mt-20');
-  if (quote) {
-    gsap.from(quote.children, {
+  const quote = opportunitySection.querySelector('.max-w-4xl');
+  if (quote && quote.children.length > 0) {
+    gsap.from(Array.from(quote.children), {
       y: 35,
       opacity: 0,
       duration: 0.85,
@@ -949,7 +898,8 @@ function initAboutSectionAnimations() {
   if (!aboutSection) return;
 
   // Section heading
-  const headingEls = aboutSection.querySelectorAll('.px-6.md\\:px-16 > h2, .px-6.md\\:px-16 > p');
+  const header = aboutSection.querySelector('h2')?.parentElement;
+  const headingEls = header ? Array.from(header.children) : [];
   if (headingEls.length > 0) {
     gsap.from(headingEls, {
       y: 45,
@@ -967,7 +917,7 @@ function initAboutSectionAnimations() {
   }
 
   // Left text column paragraphs
-  const textCols = aboutSection.querySelectorAll('.flex-col.gap-6 > p, .flex-col.gap-6 > div');
+  const textCols = Array.from(aboutSection.querySelectorAll('.flex-col.gap-6 > p, .flex-col.gap-6 > div'));
   if (textCols.length > 0) {
     gsap.from(textCols, {
       y: 35,
@@ -1009,7 +959,8 @@ function initCapabilitiesSectionAnimations() {
   const capSection = document.getElementById('capabilities');
   if (!capSection) return;
 
-  const headings = capSection.querySelectorAll('.px-6.md\\:px-16.mb-20 h2, .px-6.md\\:px-16.mb-20 p');
+  const header = capSection.querySelector('h2')?.parentElement;
+  const headings = header ? Array.from(header.children) : [];
   if (headings.length > 0) {
     gsap.from(headings, {
       y: 45,
@@ -1058,6 +1009,69 @@ function initCapabilitiesSectionAnimations() {
       },
     });
   }
+
+  // Vertical timeline line height and active state mapping
+  const timelineScrollLine   = document.getElementById('timeline-scroll-line');
+  const timelineDots         = document.querySelectorAll('.timeline-dot');
+  const timelineItems        = document.querySelectorAll('.timeline-item');
+  const timelineVisuals      = document.querySelectorAll('.timeline-visual');
+  const timelineHeight       = 600;
+
+  if (timelineScrollLine) {
+    gsap.to(timelineScrollLine, {
+      height: timelineHeight,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '#timeline-track-container',
+        start: 'top 45%',
+        end: 'bottom 55%',
+        scrub: 0.5,
+        onUpdate: (self) => {
+          const progress    = self.progress;
+          const currentHeight = progress * timelineHeight;
+          let activeIndex   = 0;
+
+          timelineDots.forEach((dot, index) => {
+            const dotTop = (index / (timelineDots.length - 1)) * timelineHeight;
+            if (currentHeight >= dotTop - 15) {
+              activeIndex = index;
+              dot.classList.remove('bg-[#121216]', 'border-white/10');
+              dot.classList.add('bg-[#60a5fa]', 'border-[#60a5fa]', 'shadow-[0_0_12px_rgba(96,165,250,0.65)]');
+              const innerDot = dot.querySelector('.inner-dot');
+              if (innerDot) {
+                innerDot.classList.remove('bg-white/20');
+                innerDot.classList.add('bg-black', 'scale-125');
+              }
+              if (timelineItems[index]) {
+                timelineItems[index].classList.remove('opacity-25', 'translate-x-4');
+                timelineItems[index].classList.add('opacity-100', 'translate-x-0');
+              }
+            } else {
+              dot.classList.remove('bg-[#60a5fa]', 'border-[#60a5fa]', 'shadow-[0_0_12px_rgba(96,165,250,0.65)]');
+              dot.classList.add('bg-[#121216]', 'border-white/10');
+              const innerDot = dot.querySelector('.inner-dot');
+              if (innerDot) {
+                innerDot.classList.remove('bg-black', 'scale-125');
+                innerDot.classList.add('bg-white/20');
+              }
+              if (timelineItems[index]) {
+                timelineItems[index].classList.add('opacity-25', 'translate-x-4');
+                timelineItems[index].classList.remove('opacity-100', 'translate-x-0');
+              }
+            }
+          });
+
+          timelineVisuals.forEach((visual, index) => {
+            if (index === activeIndex) {
+              visual.classList.add('active');
+            } else {
+              visual.classList.remove('active');
+            }
+          });
+        },
+      },
+    });
+  }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1068,7 +1082,8 @@ function initImpactSectionAnimations() {
   if (!impactSection) return;
 
   // Main heading and description elements
-  const headings = impactSection.querySelectorAll('.text-center.max-w-3xl > h2, .text-center.max-w-3xl > h3, .text-center.max-w-3xl > p');
+  const header = impactSection.querySelector('h2')?.parentElement;
+  const headings = header ? Array.from(header.children) : [];
   if (headings.length > 0) {
     gsap.from(headings, {
       y: 45,
@@ -1113,7 +1128,8 @@ function initTechnologyExpertiseSectionAnimations() {
   const techSection = document.getElementById('technology');
   if (!techSection) return;
 
-  const headings = techSection.querySelectorAll('.text-center.mx-auto > h2, .text-center.mx-auto > h3, .text-center.mx-auto > p');
+  const header = techSection.querySelector('h2')?.parentElement;
+  const headings = header ? Array.from(header.children) : [];
   if (headings.length > 0) {
     gsap.fromTo(headings,
       { y: 45, opacity: 0 },

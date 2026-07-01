@@ -277,6 +277,21 @@ if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in']) {
         }
         .view-site:hover { color: var(--accent); }
         .view-site svg { width: 14px; height: 14px; }
+
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 32px 24px;
+                border-radius: 16px;
+                margin: 16px;
+                width: calc(100% - 32px);
+            }
+            .login-title {
+                font-size: 22px;
+            }
+            .brand {
+                margin-bottom: 28px;
+            }
+        }
     </style>
 </head>
 <body>

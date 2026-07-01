@@ -15,8 +15,12 @@ function initPreloader() {
 
   const startTime = Date.now();
   const MIN_LOADING_TIME = 1500;
+  let faded = false;
 
   const fadeOut = () => {
+    if (faded) return;
+    faded = true;
+
     const elapsed = Date.now() - startTime;
     const remainingTime = Math.max(0, MIN_LOADING_TIME - elapsed);
 
@@ -33,6 +37,9 @@ function initPreloader() {
   } else {
     window.addEventListener('load', fadeOut);
   }
+
+  // Fallback: force dismiss the preloader after 4 seconds if load event hasn't fired
+  setTimeout(fadeOut, 4000);
 }
 initPreloader();
 
